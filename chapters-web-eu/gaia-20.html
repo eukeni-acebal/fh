@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -41,14 +44,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-946b8259dbb7e15e23be5cfe10679035.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8844d5f7d9f77201dfdabae81953214c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -79,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="../../theme/print.css">
+<link rel="stylesheet" href="../../../quarto-theme/print.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -270,6 +273,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
 </div>
     </div>
@@ -507,7 +511,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- 20. gaia · Bira linguistikoa eta postmodernitatea · 2. faseko jakintzak: C7.1 §72, C7.2 §73, C3.4 §74, C6.2 §75 · Idatzia (5. fasea): sarrera + §72-§75 (osoa). ~3.815 hitz ES-n; orrialde-kontaketa egiteke (sandboxean ez da konpilatzen). · Harrobia: Wittgenstein eta postmodernitatea = aipamen orokorrak baino ez eskuliburu zaharrean (ezagutzatik idazten da); Habermas = referencias/ortega-y-habermas.md §46 (muina §75erako gordea §70etik); Txillardegi/Azurmendi = harrobirik gabe. · ERABAKIA (Eukeni, 2026-06-22): §73 eta §74 gainerakoen sakontasun berarekin garatzen dira (EU bertsioa ES-aren itzulpena da, ez dago dibergentziarik); Wittgensteinen erretratua bakarrik (gainerako figurak XX. mendekoak edo biziak dira). · Itzulpena (6. fasea): ES kanonikoaren itzulpena, ITZULPEN-KIT V. zatia. -->
 <section id="bira-linguistikoan-eta-postmodernitatean-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="bira-linguistikoan-eta-postmodernitatean-sartzeko">Bira linguistikoan eta postmodernitatean sartzeko</h2>
 <p>Komeni da lehen lerrotik ohartaraztea: hau da, itxuraz, ikasturteko gairik heterogeneoena. Bertan elkartzen dira proposizio zenbakituetan idazten zuen logikari vienar bat, euskarari buruz gogoeta egiten duten bi pentsalari euskaldun eta egia handien amaiera aldarrikatzen duen filosofo frantsesen talde bat. Lehen begiratuan ez dute zerikusirik. Baina badute, eta <em>zer</em> duten ulertzea da, hain zuzen, gaiaren giltza; hura gabe galdu egiten zara, eta harekin dena ahokatzen da. Horregatik komeni da poliki sartzea, mapa eskuan dela.</p>
@@ -657,7 +660,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/eukeni-acebal\.github\.io\/fh\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,13 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -41,14 +44,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-946b8259dbb7e15e23be5cfe10679035.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-5967cef00f2c77978b35329c0fde67f6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-8844d5f7d9f77201dfdabae81953214c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b7eae173dd9acb1693931f0d737955e4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -79,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="../../theme/print.css">
+<link rel="stylesheet" href="../../../quarto-theme/print.css">
 </head>
 
 <body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -270,6 +273,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
         <div class="sidebar-tools-main">
+    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
 </div>
     </div>
@@ -508,12 +512,6 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<!-- Gaia 3 · Platon · ES kanonikoaren itzulpena · fase 6 · MUESTRA: §09-§10 itzulita (2026-07-01); SARRERA + §11-§13 itzulita (2026-07-02, Fable paraleloa + Opus berrikuspena). GAI OSOA ITZULITA (berrikusketa: Eukeni).
-     Glosategia: Formak · mundu sentikorra/adigarria · adimena · arima · beregaineko (subsistente; Euskalterm) · iritzia/zientzia (doxa/episteme, finkatua) · irudimena/sinestea/arrazoi diskurtsiboa/kontenplazioa (eikasía/pistis/diánoia/nóesis) · anamnesia · dialektika · haitzuloaren alegoria
-     FINKATUA (Eukeni, 2026-07-02): episteme = zientzia · nóesis (mailarik gorena) = kontenplazioa (cantera pre-LOMLOE) — adimen-ulermena baztertua
-     Irudi-oina: delimitadorea «|| Egiletza:» (ES: «|| Atribución:»); txantiloiak bi tokenak onartu behar ditu
-     EGIAZTATU: 509b aipua (Klasikoak)
-     fase 2 jakintzak: A6.1, A6.2, A7.2, A8.2, A9.1 -->
 <section id="platonengan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="platonengan-sartzeko">Platonengan sartzeko</h2>
 <p>Platonekin (o.a.a. 427 inguru - o.a.a. 347) aldatu egiten da irakurriko dugunaren eskala. Honaino ideia solteak, zatiak, jarrerak bildu ditugu; orain, lehen aldiz, <em>sistema</em> batekin egiten dugu topo: azalpen oso batekin, non errealitateak, ezagutzak, arimak, bertuteak eta politikak elkarri eusten baitiote. Horregatik eskaintzen diogu gai oso bat, eta horregatik komeni da mapa ikustea xehetasunetan sartu aurretik.</p>
@@ -615,7 +613,6 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-11" class="level2">
 <h2 class="anchored" data-anchor-id="sec-11">§11 · Platon: psikea</h2>
-<!-- autoría §11: base EA · redacción Claude -->
 <p><a href="gaia-03.html#sec-10">§10</a> galdera batekin amaitu zen: zer da Formak gogoratzen dituen, itzaletatik argira igotzen den eta gorputzetik askatzen den arima hori? Platonen ezagutzaren teoria osoa arimaren ideia baten gainean dago eraikita —<em>psyché</em>aren gainean—, eta horri eskaintzen diogu atal hau.</p>
 <p><strong>Bi printzipio: arima eta gorputza.</strong> Platonen antropologia <strong>dualista</strong> da: gizakia bi printzipioz osatua dago, arimaz eta gorputzaz, eta ez zati berdinetan. Gorputza jaio, aldatu eta hil egiten da; arimarengandik jasotzen du bizia, arima baita haren <em>bizi-printzipioa</em>. Arima, aldiz, zati jainkotiarra da, benetan gizaki egiten gaituena: gorputza baino lehen sortu zen, mundu sentikorraren gorabeherek ez dute ukitzen eta —bere zatirik gorenean bederen— hilezkorra da. Bien artean ez dago harmoniarik, tentsioa baizik. Orfismoaren oinordeko (<a href="gaia-01.html#sec-03">§03</a>), Platonek gorputza ia arimaren gartzelatzat dauka: haren erruz, dio, pasioetan, liskarretan eta ezjakintasunean nahasten gara<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Horregatik, filosofoaren zeregina arima <em>araztea</em> da gorputzean dagoen bitartean, sentikorretik askatzen trebatuz.</p>
 <p><strong>Hiru zatiko arima.</strong> Baina arima ez da bakuna. Platonek <strong>hiru zati</strong> bereizten ditu hartan, bakoitza bere funtzioarekin, gorputzean bere kokalekuarekin eta bere desira propioarekin. Hori begi-bistakoa egiteko, irudi batera jo zuen, <em>Fedro</em>ko gurdi hegodunarenera: gidari bat, bi zaldiko uztarri bat gidatzen.</p>
@@ -630,7 +627,6 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-12" class="level2">
 <h2 class="anchored" data-anchor-id="sec-12">§12 · Platon: bertuteak</h2>
-<!-- autoría §12: base EA · redacción Claude -->
 <p><a href="gaia-03.html#sec-11">§11</a>k galdera bat utzi zuen airean: noiz dago ondo arima bat? Platonen erantzuna dotorea da, eta haren psikologiaren forma bera du. Arima bat ondo dago bere hiru zatietako bakoitzak berea egiten duenean eta arrazoiak gobernatzen duenean; gaizki dago zaldiek gainezka egin eta gurdi-gidaria arrastaka daramatenean. Arimaren jarrera on horri <strong>bertutea</strong> (<em>areté</em>) deitzen diogu.</p>
 <p><strong>Bertute bat zati bakoitzarentzat.</strong> Gogora dezagun zer den <em>areté</em> bat: zerbaitek bere funtzioa ondo betetzea dakarren bikaintasuna; zaldiarena, korrika egitea da, eta aiztoarena, ebakitzea (<a href="gaia-02.html#sec-06">§06</a>). Arimak hiru zati dituenez (<a href="gaia-03.html#sec-11">§11</a>), hiru bikaintasun ditu, zati bakoitzeko bana:</p>
 <ul>
@@ -809,7 +805,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/eukeni-acebal\.github\.io\/fh\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
