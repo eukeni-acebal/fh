@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-17.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-18.html"><span class="chapter-title">18. gaia · Espainiar pentsamendua: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-18.html"><span class="chapter-title">18. gaia · Espainiar pentsamendua: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-18.html"><span class="chapter-title">18. gaia · Espainiar pentsamendua: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-18.html"><span class="chapter-title">18. gaia · Espainiar pentsamendua: Unamuno, Ortega, Zambrano</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">18. gaia · Espainiar pentsamendua: Unamuno, Ortega, Zambrano</span></h1>
 </div>
@@ -516,13 +528,13 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="espainiar-pentsamenduan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="espainiar-pentsamenduan-sartzeko">Espainiar pentsamenduan sartzeko</h2>
-<p>Heideggerrek izateaz galdetzen zuen bitartean, eta Sartrek libre izatera kondenatuak gaudela aldarrikatzen zuen bitartean (<a href="gaia-17.html#sec-63">§63</a>-<a href="gaia-17.html#sec-64">§64</a>), Espainian, bide propio batetik eta bere erara, hiru pentsalari <em>bizitza</em> filosofiaren erdigune bihurtzen ari ziren. Ez zuten existentzialismoa kopiatzen: neurri batean aurrea hartzen diote —Unamunok bere obra nagusia Heideggerrek baino hamalau urte lehenago idazten du— eta neurri batean harekin parez pare jarduten dute solasean. Partekatzen dutena mesfidantza bera da: arrazoi hotz eta abstraktuarekiko mesfidantza, dena kanpotik uler dezakeela uste duen horrekikoa, bizi, sufritu eta hiltzen dena kontuan hartu gabe.</p>
-<p>Horregatik balio die hirurei keinu berak: <em>arrazoiari</em> abizen bat jartzea, bizitzari lotuko diona. Ordena kronologikoan jarraituko diogu, maisutza baten ordena ere badena. Lehenik, <em>Miguel de Unamuno</em>, <em>sentimendu tragikoaren</em> gizona, arrazoia bihotzaren aurkako borroka gisa bizi duena (<a href="gaia-18.html#sec-65">§65</a>). Gero, haren arerio gazteagoa, <em>José Ortega y Gasset</em>, <em>bizi-arrazoi</em> baten bila dabilena, bizitza pentsatzeko gauza izango dena kontzeptuaren argitasunari uko egin gabe (<a href="gaia-18.html#sec-66">§66</a>). Eta, azkenik, Ortegaren ikaslerik originalena, <em>María Zambrano</em>, urrats bat gehiago eman eta <em>arrazoi poetiko</em> bat aldarrikatzen duena, kontzeptuak kanpoan uzten duenarekin adiskidetua (<a href="gaia-18.html#sec-67">§67</a>).</p>
+<p>Heideggerrek izateaz galdetzen zuen bitartean, eta Sartrek libre izatera kondenatuak gaudela aldarrikatzen zuen bitartean (<a href="../chapters-web-eu/gaia-17.html#sec-63">§63</a>-<a href="../chapters-web-eu/gaia-17.html#sec-64">§64</a>), Espainian, bide propio batetik eta bere erara, hiru pentsalari <em>bizitza</em> filosofiaren erdigune bihurtzen ari ziren. Ez zuten existentzialismoa kopiatzen: neurri batean aurrea hartzen diote —Unamunok bere obra nagusia Heideggerrek baino hamalau urte lehenago idazten du— eta neurri batean harekin parez pare jarduten dute solasean. Partekatzen dutena mesfidantza bera da: arrazoi hotz eta abstraktuarekiko mesfidantza, dena kanpotik uler dezakeela uste duen horrekikoa, bizi, sufritu eta hiltzen dena kontuan hartu gabe.</p>
+<p>Horregatik balio die hirurei keinu berak: <em>arrazoiari</em> abizen bat jartzea, bizitzari lotuko diona. Ordena kronologikoan jarraituko diogu, maisutza baten ordena ere badena. Lehenik, <em>Miguel de Unamuno</em>, <em>sentimendu tragikoaren</em> gizona, arrazoia bihotzaren aurkako borroka gisa bizi duena (<a href="../chapters-web-eu/gaia-18.html#sec-65">§65</a>). Gero, haren arerio gazteagoa, <em>José Ortega y Gasset</em>, <em>bizi-arrazoi</em> baten bila dabilena, bizitza pentsatzeko gauza izango dena kontzeptuaren argitasunari uko egin gabe (<a href="../chapters-web-eu/gaia-18.html#sec-66">§66</a>). Eta, azkenik, Ortegaren ikaslerik originalena, <em>María Zambrano</em>, urrats bat gehiago eman eta <em>arrazoi poetiko</em> bat aldarrikatzen duena, kontzeptuak kanpoan uzten duenarekin adiskidetua (<a href="../chapters-web-eu/gaia-18.html#sec-67">§67</a>).</p>
 <p>Hiru ahots dira, ez eskola bat, eta sarritan eztabaidan aritzen dira elkarrekin. Baina, elkarrekin, filosofatzeko modu penintsular bat marrazten dute: bizitza konkretutik, hizkuntza biziarekin eta pentsamenduak literatura ukitzeari beldurrik gabe.</p>
 </section>
 <section id="sec-65" class="level2">
 <h2 class="anchored" data-anchor-id="sec-65">§65 · Miguel de Unamuno</h2>
-<p><strong>Haragizko eta hezurrezko gizakia.</strong> <em>Miguel de Unamunok</em> (1864-1936) —bilbotarra, Salamancako Unibertsitateko katedraduna eta errektorea, 98ko belaunaldiko figura nagusia<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>— protesta batekin irekitzen du bere filosofia. Sistemen filosofiak —halaxe kexatzen da— «gizakiaz» hitz egiten du, abstraktuan: aurpegirik gabeko subjektu batez, jaiotzen ez denaz eta hiltzen ez denaz. Mamu horren aurrez aurre, <em>haragizko eta hezurrezko gizakia</em> jartzen du Unamunok: «jaio, sufritu eta hiltzen dena —batez ere hiltzen dena—, jaten eta edaten eta jolasten eta lo egiten eta pentsatzen eta nahi izaten duena». Filosofia ez da jakin-min hutsetik sortzen, gizaki konkretu horrengandik eta heriotzaren aurrean duen larriduratik baizik. Honetan, Unamunok Kierkegaard luzatzen du (<a href="gaia-17.html#sec-62">§62</a>) eta existentzialismoari aurrea hartzen dio: abiapuntua ez da jakitea, existitzea baizik.</p>
+<p><strong>Haragizko eta hezurrezko gizakia.</strong> <em>Miguel de Unamunok</em> (1864-1936) —bilbotarra, Salamancako Unibertsitateko katedraduna eta errektorea, 98ko belaunaldiko figura nagusia<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>— protesta batekin irekitzen du bere filosofia. Sistemen filosofiak —halaxe kexatzen da— «gizakiaz» hitz egiten du, abstraktuan: aurpegirik gabeko subjektu batez, jaiotzen ez denaz eta hiltzen ez denaz. Mamu horren aurrez aurre, <em>haragizko eta hezurrezko gizakia</em> jartzen du Unamunok: «jaio, sufritu eta hiltzen dena —batez ere hiltzen dena—, jaten eta edaten eta jolasten eta lo egiten eta pentsatzen eta nahi izaten duena». Filosofia ez da jakin-min hutsetik sortzen, gizaki konkretu horrengandik eta heriotzaren aurrean duen larriduratik baizik. Honetan, Unamunok Kierkegaard luzatzen du (<a href="../chapters-web-eu/gaia-17.html#sec-62">§62</a>) eta existentzialismoari aurrea hartzen dio: abiapuntua ez da jakitea, existitzea baizik.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-unamuno.jpg" class="img-fluid figure-img"></p>
@@ -536,27 +548,27 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-66" class="level2">
 <h2 class="anchored" data-anchor-id="sec-66">§66 · Ortega y Gasset: bizi-arrazoia</h2>
-<p><strong>Ni neu naiz eta nire zirkunstantzia.</strong> <em>José Ortega y Gasset</em> (1883-1955) madrildarra da XX. mendeko filosofo espainiar eragin handienekoa: hainbat belaunalditako maisua, prosalari liluragarria eta <em>Revista de Occidente</em>-ren sortzailea; aldizkari horren bidez sartu zen Espainian Europako pentsamenduaren zati handi bat. Bere garaiko grina <em>erregenerazionistak</em> bultzatuta —Espainia bere atzerapenetik ateratzea, Europara irekiz—, filosofia zeregin publiko bihurtu zuen, eta haren pentsamendua hiru alditan heldu zen: gaztaroko <em>objektibismotik</em> (artean subjektiboan ikusten zuen errakuntza) <em>perspektibismora</em> eta, azkenik, <em>arraziobitalismora</em>. Haren filosofia osoa formula batean sartzen da, oso gazterik eman zuena, <em>Meditaciones del Quijote</em>-n (1914): «<em>Ni neu naiz eta nire zirkunstantzia, eta hura salbatzen ez badut, ez naiz neu ere salbatzen</em>». Nia ez da substantzia isolatu bat, gero mundura begiratzen duena, Descartesen <em>cogito</em>-a bezala (<a href="gaia-08.html#sec-36">§36</a>); baina mundua ere ez da dena. Lehen errealitatea bien <em>batasuna</em> da: ni, beti, nire <em>zirkunstantziarekin</em> batera; eta zirkunstantzia horrek bi maila ditu —<em>historiko-kulturala</em> (nire garaia, nire tradizioa) eta <em>partikularra</em> (nire gorputza, nire familia, egunero haien artean bizitzea egokitzen zaidan gauzak eta jendea)—. Hortik ondorio bat, Ortegak metodo bihurtuko duena: <em>errealitatearen datu bakar bat ere, txikiena izanda ere, ez da filosofiatik kanpo geratzen</em>. «Zirkunstantzia salbatzea» haren kargu egitea da, eta zentzua ematea; eta hura salbatuz bakarrik salbatzen naiz ni.</p>
+<p><strong>Ni neu naiz eta nire zirkunstantzia.</strong> <em>José Ortega y Gasset</em> (1883-1955) madrildarra da XX. mendeko filosofo espainiar eragin handienekoa: hainbat belaunalditako maisua, prosalari liluragarria eta <em>Revista de Occidente</em>-ren sortzailea; aldizkari horren bidez sartu zen Espainian Europako pentsamenduaren zati handi bat. Bere garaiko grina <em>erregenerazionistak</em> bultzatuta —Espainia bere atzerapenetik ateratzea, Europara irekiz—, filosofia zeregin publiko bihurtu zuen, eta haren pentsamendua hiru alditan heldu zen: gaztaroko <em>objektibismotik</em> (artean subjektiboan ikusten zuen errakuntza) <em>perspektibismora</em> eta, azkenik, <em>arraziobitalismora</em>. Haren filosofia osoa formula batean sartzen da, oso gazterik eman zuena, <em>Meditaciones del Quijote</em>-n (1914): «<em>Ni neu naiz eta nire zirkunstantzia, eta hura salbatzen ez badut, ez naiz neu ere salbatzen</em>». Nia ez da substantzia isolatu bat, gero mundura begiratzen duena, Descartesen <em>cogito</em>-a bezala (<a href="../chapters-web-eu/gaia-08.html#sec-36">§36</a>); baina mundua ere ez da dena. Lehen errealitatea bien <em>batasuna</em> da: ni, beti, nire <em>zirkunstantziarekin</em> batera; eta zirkunstantzia horrek bi maila ditu —<em>historiko-kulturala</em> (nire garaia, nire tradizioa) eta <em>partikularra</em> (nire gorputza, nire familia, egunero haien artean bizitzea egokitzen zaidan gauzak eta jendea)—. Hortik ondorio bat, Ortegak metodo bihurtuko duena: <em>errealitatearen datu bakar bat ere, txikiena izanda ere, ez da filosofiatik kanpo geratzen</em>. «Zirkunstantzia salbatzea» haren kargu egitea da, eta zentzua ematea; eta hura salbatuz bakarrik salbatzen naiz ni.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-ortega.jpg" class="img-fluid figure-img"></p>
 <figcaption>José Ortega y Gasset (1883-1955), XX. mendeko filosofo espainiar eragin handienekoa eta «bizi-arrazoiaren» maisua. || Egiletza: <em>Nuevo Mundo</em> aldizkaria, 1920, jabari publikoa / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Perspektibismoa.</strong> Hortik dator haren <em>perspektibismoa</em>. Bizitza bakoitza munduari buruzko ikuspuntu bakar eta ordezkaezin bat da: «nire begi-ninia dagoen tokian ez dago beste bat ere». Ortegak gogoan hartzea komeni den adibide batekin azaltzen du: Guadarramako mendilerroa ez da bera Madrildik begiratuta eta Segoviatik begiratuta. Bietatik zein da benetako ikuspegia? Galderak ez du zentzurik: biak dira, berdin egiazkoak, eta elkar <em>osatzen</em> dute —hobeto ezagutzen da mendilerroa Madrildik <em>eta</em> Segoviatik begiratuta, alde bakar batetik baino—. Horrela, Nietzscheren perspektibismoa jasotzen du (<a href="gaia-16.html#sec-60">§60</a>), egia oro interpretazio bihurtzen zuena, baina baiezko bihurtzen du: perspektibak ez du errealitatea <em>desitxuratzen</em>, hartara iristeko modu bakarra da, eta egia ikuspuntuen <em>osaketa progresiboa</em> da. Faltsua den gauza bakarra «inongo lekutatik» egia bat nahi izatea da:</p>
+<p><strong>Perspektibismoa.</strong> Hortik dator haren <em>perspektibismoa</em>. Bizitza bakoitza munduari buruzko ikuspuntu bakar eta ordezkaezin bat da: «nire begi-ninia dagoen tokian ez dago beste bat ere». Ortegak gogoan hartzea komeni den adibide batekin azaltzen du: Guadarramako mendilerroa ez da bera Madrildik begiratuta eta Segoviatik begiratuta. Bietatik zein da benetako ikuspegia? Galderak ez du zentzurik: biak dira, berdin egiazkoak, eta elkar <em>osatzen</em> dute —hobeto ezagutzen da mendilerroa Madrildik <em>eta</em> Segoviatik begiratuta, alde bakar batetik baino—. Horrela, Nietzscheren perspektibismoa jasotzen du (<a href="../chapters-web-eu/gaia-16.html#sec-60">§60</a>), egia oro interpretazio bihurtzen zuena, baina baiezko bihurtzen du: perspektibak ez du errealitatea <em>desitxuratzen</em>, hartara iristeko modu bakarra da, eta egia ikuspuntuen <em>osaketa progresiboa</em> da. Faltsua den gauza bakarra «inongo lekutatik» egia bat nahi izatea da:</p>
 <blockquote class="blockquote">
 <p>Errealitateak, paisaia batek bezala, perspektiba infinituak ditu, guztiak berdin egiazko eta benetakoak. Perspektiba faltsu bakarra, bakarra izan nahi duen hura da.</p>
 <p>—José Ortega y Gasset, <em>El Espectador</em> I, «Verdad y perspectiva» (1916)</p>
 </blockquote>
 <p>Hortik bi ondorio ateratzen ditu Ortegak. Bat, ezagutzari buruzkoa: nire begirada partziala bada eta besteenek nireari falta zaiona ekartzen badute, besteak objektibotasunarentzat oztopo izateari uzten diote eta harentzat <em>beharrezko</em> bihurtzen dira —indibidualismoa, gu geure baitan itxi beharrean, ezagutza aberatsago baten baldintza da—. Bestea, zibikoa: perspektiba batek ere egia agortzen ez badu eta guztiak behar badira hura osatzeko, <em>tolerantzia</em> kontzesio bat izateari uzten dio eta ezagutzeko nahiz elkarrekin bizitzeko baldintza bihurtzen da.</p>
-<p><strong>Bizi-arrazoia.</strong> Haren ideiarik berezkoenak faltsutzat jotzen duen hautabide bati erantzuten dio. <em>Arrazionalismoak</em> (<a href="gaia-08.html#sec-34">§34</a>) bizitzari bizkarra ematen dion arrazoi huts eta abstraktu batean jarri zuen konfiantza; irrazionalismoak, hartaz aspertuta, arrazoiari uko egin zion. <em>Ni vitalismo ni racionalismo</em> (1924) artikuluan, Ortegak hirugarren bide bat bilatzen du: <em>bizi-arrazoi</em> bat, bizitzaren zerbitzura jarria eta hartan errotua. Horrekin bi gehiegikeriatatik urruntzen da, batetik zein bestetik: <em>arrazionalismotik</em>, mugarik gabeko arrazoi bat amesten duelako, dena ezagutzeko eta dena gobernatzeko gauza; eta Bergson baten <em>bitalismotik</em>, dena intuizioaren eta bizi-bulkadaren esku utzita, arrazoia bigarren mailan uzten duelako. Ortegarentzat arrazoia bizitzaren <em>barruan</em> ematen da, hark inguratua eta mugatua: ez da errealaren legegilea, haren <em>kronista</em> baizik. Zeren <em>bizitza</em> baita <em>errealitate erradikala</em>: ez materia, ez espiritua, baizik eta beste gauza oro agertzen den eremua. Horregatik, irauli egiten du filosofia aisiari lotzen zion hierarkia zaharra: «ez gara pentsatzeko bizi, bizitzeko pentsatzen dugu baizik». Eta bizitzea ez da gauza egin bat, <em>egiteko</em> bat baizik: nork bere burua zirkunstantzia batera jaurtia aurkitzea, eta urrats bakoitzean erabaki behar izatea zer egin harekin —proiektua, askatasuna eta, aldi berean, muga—. Bizitza emana zaigu, baina ez zaigu eginda emana: geuk egin behar dugu.</p>
+<p><strong>Bizi-arrazoia.</strong> Haren ideiarik berezkoenak faltsutzat jotzen duen hautabide bati erantzuten dio. <em>Arrazionalismoak</em> (<a href="../chapters-web-eu/gaia-08.html#sec-34">§34</a>) bizitzari bizkarra ematen dion arrazoi huts eta abstraktu batean jarri zuen konfiantza; irrazionalismoak, hartaz aspertuta, arrazoiari uko egin zion. <em>Ni vitalismo ni racionalismo</em> (1924) artikuluan, Ortegak hirugarren bide bat bilatzen du: <em>bizi-arrazoi</em> bat, bizitzaren zerbitzura jarria eta hartan errotua. Horrekin bi gehiegikeriatatik urruntzen da, batetik zein bestetik: <em>arrazionalismotik</em>, mugarik gabeko arrazoi bat amesten duelako, dena ezagutzeko eta dena gobernatzeko gauza; eta Bergson baten <em>bitalismotik</em>, dena intuizioaren eta bizi-bulkadaren esku utzita, arrazoia bigarren mailan uzten duelako. Ortegarentzat arrazoia bizitzaren <em>barruan</em> ematen da, hark inguratua eta mugatua: ez da errealaren legegilea, haren <em>kronista</em> baizik. Zeren <em>bizitza</em> baita <em>errealitate erradikala</em>: ez materia, ez espiritua, baizik eta beste gauza oro agertzen den eremua. Horregatik, irauli egiten du filosofia aisiari lotzen zion hierarkia zaharra: «ez gara pentsatzeko bizi, bizitzeko pentsatzen dugu baizik». Eta bizitzea ez da gauza egin bat, <em>egiteko</em> bat baizik: nork bere burua zirkunstantzia batera jaurtia aurkitzea, eta urrats bakoitzean erabaki behar izatea zer egin harekin —proiektua, askatasuna eta, aldi berean, muga—. Bizitza emana zaigu, baina ez zaigu eginda emana: geuk egin behar dugu.</p>
 <p><strong>Arrazoi historikoa.</strong> Bizitza egitekoa bada eta ez natura finkoa, orduan gizakia ez da gauza bat bezala ulertzen, historia bat bezala baizik. «Gizakiak ez du naturarik; historia du… ordea» (<em>Historia como sistema</em>, 1935): izan garena gara, eta orainaldi bakoitza <em>zoru</em> baten gainean sostengatzen da —iragana— eta <em>proiektu</em> baterantz jaurtitzen da —etorkizuna—. Horregatik, bizitzaren zerbitzura dagoen arrazoiak <em>historikoa</em> izan behar du, eta <em>narratiboa</em> ere bai: giza zerbait ulertzeko —zer den «maitasuna», zer den nazio bat— ez da haren betiereko esentzia bilatzen, haren historia kontatzen da. Kant baten arrazoi hutsaren aurrean, <em>arrazoi narratibo</em> bat. Eta iragan hori aldi batetik bestera aldatzen denez, historiaren motorra <em>belaunaldiak</em> dira: bakoitza sinesmen apur bat desberdinekin iristen da mundura, aurrekoenekin alderatuta, eta errelebo horretan —beti puntu gatazkatsu samarra— egiten du aurrera denbora historikoak. Azterketa berari dagokio beste bereizketa hau ere: eduki —eta eztabaidatu— egiten ditugun <em>ideien</em> eta ohartu gabe barruan gauden <em>sinesmenen</em> artekoa: «ideiak eduki egiten dira; sinesmenetan egon egiten da». Sinesmenak zapaltzen dugun zoru pentsatu gabea dira; haietako bat kordokatzen denean, <em>zalantza</em> bat irekitzen da eta <em>krisia</em> dator, eta berriz pentsatu behar da ziurtzat ematen zena<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<p><strong>Masa-gizakia.</strong> Azterketa hori bera gizartera eraman zuen Ortegak, bere obrarik irakurrienean, <em>La rebelión de las masas</em>-en (1930). Haren tesia ez da ekonomikoa, morala baizik: bizitza publikoan <em>masa-gizakia</em> sartu da oldarrean, eta hori ez du klaseak definitzen, ez diruak, jarrera batek baizik —bere buruaz pozik dagoen «batez besteko gizakia», eskubide guztiak dituela eta betebehar bat ere ez uste duena, eta besteei bere buruari eskatzen ez diena eskatzen diena—. Haren aurrean, <em>gutxiengoa</em> edo <em>elitea</em> ez da kasta pribilegiatu bat, bere buruari diziplina eta eskakizunak ezartzen dizkiona baizik; bien arteko aldea ez da kantitatezkoa, kalitatezkoa baizik. Ortegak gaur egun ere ezagun diren hiru irudiren bidez erretratatzen du: <em>jauntxo asebetea</em>, dena zor zaiola ziurtzat ematen duena; <em>espezialista barbaroa</em>, zientzia baten txoko bat menderatzeagatik edozertaz iritzia emateko baimena duela uste duena; eta <em>ume mainatua</em>, bere apeta lege bihurtzen duena. Eta, Marxek ez bezala (<a href="gaia-15.html#sec-58">§58</a>), Ortegak ukatu egiten du historia bermatuta dagoenik: kultura edozein unetan kraska daitekeen berniz bat besterik ez da, eta azpian, ukitu gabe, basakeria dago zain.</p>
+<p><strong>Masa-gizakia.</strong> Azterketa hori bera gizartera eraman zuen Ortegak, bere obrarik irakurrienean, <em>La rebelión de las masas</em>-en (1930). Haren tesia ez da ekonomikoa, morala baizik: bizitza publikoan <em>masa-gizakia</em> sartu da oldarrean, eta hori ez du klaseak definitzen, ez diruak, jarrera batek baizik —bere buruaz pozik dagoen «batez besteko gizakia», eskubide guztiak dituela eta betebehar bat ere ez uste duena, eta besteei bere buruari eskatzen ez diena eskatzen diena—. Haren aurrean, <em>gutxiengoa</em> edo <em>elitea</em> ez da kasta pribilegiatu bat, bere buruari diziplina eta eskakizunak ezartzen dizkiona baizik; bien arteko aldea ez da kantitatezkoa, kalitatezkoa baizik. Ortegak gaur egun ere ezagun diren hiru irudiren bidez erretratatzen du: <em>jauntxo asebetea</em>, dena zor zaiola ziurtzat ematen duena; <em>espezialista barbaroa</em>, zientzia baten txoko bat menderatzeagatik edozertaz iritzia emateko baimena duela uste duena; eta <em>ume mainatua</em>, bere apeta lege bihurtzen duena. Eta, Marxek ez bezala (<a href="../chapters-web-eu/gaia-15.html#sec-58">§58</a>), Ortegak ukatu egiten du historia bermatuta dagoenik: kultura edozein unetan kraska daitekeen berniz bat besterik ez da, eta azpian, ukitu gabe, basakeria dago zain.</p>
 <p>Guri gogoan hartzea interesatzen zaiguna arraziobitalismo hori da: bizitzarekin eta denborarekin adiskidetutako arrazoia. Eta horren gainean lan egingo du, hain zuzen, haren ikaslerik sakonenak, María Zambranok: bizi-arrazoia onartuko du, berehala kontzeptuari lotuegia aurkitzeko.</p>
 </section>
 <section id="sec-67" class="level2">
 <h2 class="anchored" data-anchor-id="sec-67">§67 · María Zambrano: arrazoi poetikoa</h2>
-<p><strong>Bizi-arrazoitik arrazoi poetikora.</strong> <em>María Zambrano</em> (1904-1991) malagarra Madrilen hezi zen, <em>Ortega</em>rekin eta <em>Xavier Zubiri</em>rekin, eta bere maisuaren bizi-arrazoitik abiatzen da (<a href="gaia-18.html#sec-66">§66</a>); baina laster objekzio erabakigarri bat egiten dio. Bizi-arrazoiak arrazoia bizitzan errotzen du, ados, baina arrazoi <em>diskurtsibo</em> bat izaten jarraitzen du, kontzeptuz, definizioz eta argudioz aurrera egiten duena. Eta kontzeptuak, bere objektua harrapatzeko, <em>bortxatu</em> egiten du: bereizi egiten du, finkatu, eta harengan berezi, bizi eta ilun zen guztiaz biluzten du. Kanpoan geratzen da, horrela, errealaren eskualde oso bat —arima, sufrimendua, sakratua, erabat esan ezinik sentitzen dena—, filosofiak, Platonez geroztik, poesiaren aldean utzia zuena. <em>Filosofía y poesía</em>-n (1939) planteatu zuen jada Zambranok norgehiagoka zahar hori: filosofiak presaka bilatzen du bat eta unibertsal dena; poesia, leial eta presarik gabe, ematen zaion anitz eta konkretuarekin geratzen da. Haren ahalegina biak adiskidetzea izango da, <em>arrazoi poetikoa</em> deitzen dion ezagutza-modu batean: pentsatzearen zorroztasuna, kontzeptuaren bortxarik gabe.</p>
+<p><strong>Bizi-arrazoitik arrazoi poetikora.</strong> <em>María Zambrano</em> (1904-1991) malagarra Madrilen hezi zen, <em>Ortega</em>rekin eta <em>Xavier Zubiri</em>rekin, eta bere maisuaren bizi-arrazoitik abiatzen da (<a href="../chapters-web-eu/gaia-18.html#sec-66">§66</a>); baina laster objekzio erabakigarri bat egiten dio. Bizi-arrazoiak arrazoia bizitzan errotzen du, ados, baina arrazoi <em>diskurtsibo</em> bat izaten jarraitzen du, kontzeptuz, definizioz eta argudioz aurrera egiten duena. Eta kontzeptuak, bere objektua harrapatzeko, <em>bortxatu</em> egiten du: bereizi egiten du, finkatu, eta harengan berezi, bizi eta ilun zen guztiaz biluzten du. Kanpoan geratzen da, horrela, errealaren eskualde oso bat —arima, sufrimendua, sakratua, erabat esan ezinik sentitzen dena—, filosofiak, Platonez geroztik, poesiaren aldean utzia zuena. <em>Filosofía y poesía</em>-n (1939) planteatu zuen jada Zambranok norgehiagoka zahar hori: filosofiak presaka bilatzen du bat eta unibertsal dena; poesia, leial eta presarik gabe, ematen zaion anitz eta konkretuarekin geratzen da. Haren ahalegina biak adiskidetzea izango da, <em>arrazoi poetikoa</em> deitzen dion ezagutza-modu batean: pentsatzearen zorroztasuna, kontzeptuaren bortxarik gabe.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-zambrano.jpg" class="img-fluid figure-img"></p>
@@ -566,33 +578,145 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Zer den arrazoi poetikoa.</strong> Ez da arrazoiari uko egitea sentimendu hutsaren alde, ezta filosofiaren ordez poesia egitea ere. Poesiarekin <em>ezkontzen</em> den arrazoi bat da: pentsatzea eta sentitzea ezagutza-egintza berean batzen dituena. Gauzez jabetzen den, haiek definitzen eta bereganatzen dituen arrazoi bortitzaren aurrean, arrazoi poetikoa <em>harkorra</em> da: itxaron egiten du, entzun egiten du, eta gauzak berez ager daitezen uzten du. Zambranok irudi eder batekin pentsatzen du, <em>basoko argiuneen</em> irudiarekin: zuhaitzen arteko argi-hutsarte horietara ez da iristen indarrez bilatuz, baizik eta gelditurik, itxaronaldi erne batean, egia ager dadin. Horregatik, haren idazkerak berak forma aldatzen du: ez du frogatzen, <em>argitara ekartzen</em> du; haren hitzak ez du gauza harrapatu nahi, ager dadin utzi baizik, goiz-argiaren argitasuna bezala —hortik datorkio <em>aurorekiko</em> zaletasuna—. Harentzat, ezagutzea ez da hainbeste ehizatzea, <em>jasotzea</em> baizik.</p>
 <p><strong>Arimaren jakintza eta jainkozkoa.</strong> Irekitasun horretan, arrazoi modernoak kanporatuak zituen bi gauza berreskuratzen ditu Zambranok. Bata <em>arima</em> bera da: kanpora bakarrik —mundura eta haren objektuetara— begiratzen duen arrazoi baten aurrean, barruko jakintza bat aldarrikatzen du berak: ametsena, bizi izandako denborarena, <em>aitortzen</em> den bizitzarena. Bestea <em>sakratua</em> eta <em>jainkozkoa</em> dira: <em>El hombre y lo divino</em>-n (1955) arakatzen du nola sakratuaren jatorrizko esperientziatik —izenik izan aurretik hunkitu eta ikaratzen gaituen horretatik— jaioz joan ziren jainkoak eta, denborarekin, filosofia bera; ez du dogma gisa tratatzen, pentsamenduak alde batera utzi beharko ez lukeen giza esperientziaren dimentsio gisa baizik. Eta hori guztia <em>pietateak</em> gobernatzen du; fintasunez definitzen du berak: «bestelakoarekin egoki tratatzen jakitea» —desberdinarekin, ilunarekin, ni bezalakoa ez denarekin—. Arrazoi poetikoa, horrela, arrazoi <em>pietatezkoa</em> da, abegikorra arrazoi diskurtsiboak, nahasitzat joz, mespretxatu ohi duenarekin.</p>
 <p><strong>Erbestea baldintza gisa.</strong> Haren pentsamendua ez da ulertzen haren biografiarik gabe. Errepublikanoa eta gerra galdu zuen Espainiaren alaba, Zambrano 1939an atera zen herrialdetik, eta erbeste luze-luzea bizi izan zuen —Frantzia, Mexiko, Habana, Puerto Rico, Erroma, baita Suitzako Jurako herrixka bat ere—, berrogei urtetik gorakoa; ez zen itzuli 1984ra arte. Eta ez zuen zoritxar gisa bakarrik pairatu: <em>pentsatu</em> egin zuen. <em>Erbestea</em> kategoria filosofiko bihurtu zuen: gabetzetik eta bazterretik ezagutzeko modu bat, non dena galdu duenak ikusten baitu eroso kokatua dagoenak ikustera iristen ez duena. Deserri hartan idatzi zuen bere obraren onena —<em>El hombre y lo divino</em>, <em>Claros del bosque</em> (1977)—, eta handik iritsi zitzaion, jada oso adinekoa zela, aitortza: Asturiasko Printzea Saria 1981ean, Espainiara itzulera 1984an eta, 1988an, Cervantes Saria, gaztelaniazko letren gorena, ordura arte emakume batek ere jaso gabea. Madrilen hil zen 1991n. Kanpoan utzitakoa abegiz hartzen duen arrazoia pentsatu zuen hura, bera ere, luzaroan, ahots baztertua izan zen.</p>
-<p>Hiru ahots hauekin —Unamunoren borroka, Ortegaren argitasuna, Zambranoren entzutea— ixten da arrazoia bizitzatik eta sentimendutik pentsatzeko modu bat. Baina XX. mendeak beste gudu handi bat ere jokatu zuen arrazoiaren inguruan: totalitarismoen hondamendiaren ostean, gizartean, zientzian eta politikan arrazoiarengandik zer espero daitekeen galdetzen duena. Fronte horri —Frankfurteko Eskolatik Rawlsera— eskaintzen zaio hurrengo gaia (<a href="gaia-19.html#sec-68">§68</a>).</p>
+<p>Hiru ahots hauekin —Unamunoren borroka, Ortegaren argitasuna, Zambranoren entzutea— ixten da arrazoia bizitzatik eta sentimendutik pentsatzeko modu bat. Baina XX. mendeak beste gudu handi bat ere jokatu zuen arrazoiaren inguruan: totalitarismoen hondamendiaren ostean, gizartean, zientzian eta politikan arrazoiarengandik zer espero daitekeen galdetzen duena. Fronte horri —Frankfurteko Eskolatik Rawlsera— eskaintzen zaio hurrengo gaia (<a href="../chapters-web-eu/gaia-19.html#sec-68">§68</a>).</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Unamuno idazleari zor diogu, bide batez, gaurko feminismoan berragertzen den keinu bat: 1921ean bera izan zen gaztelaniaz <em>sororidad</em> hitza erabili zuen lehena —«Antigona <em>soror</em> zen, arreba. Eta komeniko litzateke agian <em>sororitateaz</em> eta <em>sororalaz</em> hitz egitea, emakumeen arteko ahizpatasunaz»—, RAEk hitza onartu (2018) eta ideia Beauvoirrekin lotu (<a href="gaia-21.html#sec-77">§77</a>) baino ia mende bete lehenago.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Unamuno idazleari zor diogu, bide batez, gaurko feminismoan berragertzen den keinu bat: 1921ean bera izan zen gaztelaniaz <em>sororidad</em> hitza erabili zuen lehena —«Antigona <em>soror</em> zen, arreba. Eta komeniko litzateke agian <em>sororitateaz</em> eta <em>sororalaz</em> hitz egitea, emakumeen arteko ahizpatasunaz»—, RAEk hitza onartu (2018) eta ideia Beauvoirrekin lotu (<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>) baino ia mende bete lehenago.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Hortik dator haren beste obra baten izenburua, <em>La agonía del cristianismo</em> (1925): ez kristautasunaren heriotza, baizik eta kristautasuna etengabeko barne-borroka gisa ulertua. Unamunorentzat, agoniarik gabeko fede bat —zalantzarekin borrokatzen ez dena— hilda dago.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Bereizketa <em>Ideas y creencias</em>-ekoa da (1940); krisi historikoa sinesmen <em>kolektibo</em> batek huts egiten duenean dator, eta kultura da garai batek hutsune horretan orientatzen saiatzeko darabilen ideia-bilduma.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -671,7 +795,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -680,8 +805,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -695,6 +881,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -857,44 +1044,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -993,7 +1190,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-17.html" class="pagination-link" aria-label="17. gaia · Existentzialismoa">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">17. gaia · Existentzialismoa</span></span>

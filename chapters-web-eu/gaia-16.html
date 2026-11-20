@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-15.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-16.html"><span class="chapter-title">16. gaia · Nietzsche</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-16.html"><span class="chapter-title">16. gaia · Nietzsche</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-16.html"><span class="chapter-title">16. gaia · Nietzsche</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-16.html"><span class="chapter-title">16. gaia · Nietzsche</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">16. gaia · Nietzsche</span></h1>
 </div>
@@ -516,13 +528,13 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="nietzscherengan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="nietzscherengan-sartzeko">Nietzscherengan sartzeko</h2>
-<p>Marxekin susmoaren filosofoetako lehena ezagutu genuen (<a href="gaia-14.html#sec-55">§55</a>); <em>Friedrich Nietzsche</em> da bigarrena, eta etxekotzen zailena. Ez du sistemarik eraikitzen; aforismotan idazten du, kolpeka, berak «mailukadaz filosofatzea» deitu zuen hura eginez: idoloak jotzea, soinuaren bidez entzuteko zeintzuk dauden hutsik. Haren mailuak ez du errespetatzen Mendebaldeak sendotzat zeukan ezer (morala, erlijioa, metafisika eta, azkenean, egia bera), eta horregatik da, aldi berean, pentsalari modernoetan suntsitzaileena eta gaizkien interpretatua.</p>
-<p>Haren kritikari jarraituko diogu, hark jaurti zuen hiru norabideetan. Lehenik, <em>moralaren</em> aurka: balioak beren jatorriraino arakatzen dituen genealogia bat, Jainkoaren heriotzan amaitzen dena (<a href="gaia-16.html#sec-59">§59</a>). Gero, <em>ezagutzaren</em> aurka: egiak ez du berbaitango errealitaterik kopiatzen, ezagutze oro perspektiba batetik interpretatzea baita (<a href="gaia-16.html#sec-60">§60</a>). Eta, eraispenaren ondoren, <em>biziari</em> buruzko erantzun baiezko bat: nihilismoa gaindituta, botere-nahia, supergizakia eta betiereko itzulera (<a href="gaia-16.html#sec-61">§61</a>).</p>
+<p>Marxekin susmoaren filosofoetako lehena ezagutu genuen (<a href="../chapters-web-eu/gaia-14.html#sec-55">§55</a>); <em>Friedrich Nietzsche</em> da bigarrena, eta etxekotzen zailena. Ez du sistemarik eraikitzen; aforismotan idazten du, kolpeka, berak «mailukadaz filosofatzea» deitu zuen hura eginez: idoloak jotzea, soinuaren bidez entzuteko zeintzuk dauden hutsik. Haren mailuak ez du errespetatzen Mendebaldeak sendotzat zeukan ezer (morala, erlijioa, metafisika eta, azkenean, egia bera), eta horregatik da, aldi berean, pentsalari modernoetan suntsitzaileena eta gaizkien interpretatua.</p>
+<p>Haren kritikari jarraituko diogu, hark jaurti zuen hiru norabideetan. Lehenik, <em>moralaren</em> aurka: balioak beren jatorriraino arakatzen dituen genealogia bat, Jainkoaren heriotzan amaitzen dena (<a href="../chapters-web-eu/gaia-16.html#sec-59">§59</a>). Gero, <em>ezagutzaren</em> aurka: egiak ez du berbaitango errealitaterik kopiatzen, ezagutze oro perspektiba batetik interpretatzea baita (<a href="../chapters-web-eu/gaia-16.html#sec-60">§60</a>). Eta, eraispenaren ondoren, <em>biziari</em> buruzko erantzun baiezko bat: nihilismoa gaindituta, botere-nahia, supergizakia eta betiereko itzulera (<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a>).</p>
 <p>Pentsalari gutxik izan dute hainbesteko pisua XX. eta XXI. mendeen gainean: existentzialismoa, Foucault eta egungo pentsamenduaren zati on bat pentsaezinak dira hura gabe. Baina bat bera ere ez da hainbeste desitxuratua izan, halako muturreraino non nazismoak (berak mespretxatuko zukeenak) beretzat aldarrikatu baitzuen. Komeni da kontu handiz irakurtzea, Nietzsche maskaren atzean ezkutatzen baita eta, berak aitortu zuenez, gaizki interpreta zezaten idazten baitzuen. Gaia, Marxekin egin genuen bezala, haren obra besteek harekin egindakotik bereiziz itxiko dugu.</p>
 </section>
 <section id="sec-59" class="level2">
 <h2 class="anchored" data-anchor-id="sec-59">§59 · Nietzsche: moralaren kritika</h2>
-<p><strong>Genealogia, oinarriaren ordez.</strong> <em>Friedrich Nietzsche</em> (1844-1900) Röcken-en jaio zen, Prusia luteranoan, artzainen seme eta biloba. Filologo klasiko txit bikaina zen (Basileako katedraduna, hogeita lau urte besterik ez zituela), baina laster utzi zuen erudizioa filosofiaren alde eta, osasun hauskor batek jota, urte sukartsu gutxitan idatzi zituen bere obra nagusiak: <em>Honela mintzatu zen Zaratustra</em>, <em>Ongiaz eta gaizkiaz haratago</em>, <em>Moralaren genealogia</em>. 1889an zerraldo erori zen Turingo kale batean, eta azken hamaika urteak eromenean murgildurik eman zituen. Haren keinu filosofikoa ezin nahasizkoa da. Moralaren aurrean, ez du galdetzen «zer egin behar dut?», ezta «egiazkoa al da moral hau?» ere, baizik eta zerbait aurreragokoa eta arriskutsuagoa: <em>nondik dator morala?, nori egiten dio mesede?</em> Horixe da <em>genealogia</em> bat: balioak beren jatorriraino arakatzea, jatorri hori sarritan uherra dela. Horrekin, Nietzsche, Marxekin eta Freudekin batera, susmoaren maisu bat da (<a href="gaia-14.html#sec-55">§55</a>): «ona» deitzen diogunaren azpian beti dago interes bat taupaka.</p>
+<p><strong>Genealogia, oinarriaren ordez.</strong> <em>Friedrich Nietzsche</em> (1844-1900) Röcken-en jaio zen, Prusia luteranoan, artzainen seme eta biloba. Filologo klasiko txit bikaina zen (Basileako katedraduna, hogeita lau urte besterik ez zituela), baina laster utzi zuen erudizioa filosofiaren alde eta, osasun hauskor batek jota, urte sukartsu gutxitan idatzi zituen bere obra nagusiak: <em>Honela mintzatu zen Zaratustra</em>, <em>Ongiaz eta gaizkiaz haratago</em>, <em>Moralaren genealogia</em>. 1889an zerraldo erori zen Turingo kale batean, eta azken hamaika urteak eromenean murgildurik eman zituen. Haren keinu filosofikoa ezin nahasizkoa da. Moralaren aurrean, ez du galdetzen «zer egin behar dut?», ezta «egiazkoa al da moral hau?» ere, baizik eta zerbait aurreragokoa eta arriskutsuagoa: <em>nondik dator morala?, nori egiten dio mesede?</em> Horixe da <em>genealogia</em> bat: balioak beren jatorriraino arakatzea, jatorri hori sarritan uherra dela. Horrekin, Nietzsche, Marxekin eta Freudekin batera, susmoaren maisu bat da (<a href="../chapters-web-eu/gaia-14.html#sec-55">§55</a>): «ona» deitzen diogunaren azpian beti dago interes bat taupaka.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-nietzsche.jpg" class="img-fluid figure-img"></p>
@@ -532,20 +544,20 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Nagusiaren morala eta esklaboaren morala.</strong> Azterketa elkarren aurkako bi balio-sistemaren arteko bereizketa batetik abiatzen da. <em>Nagusiaren morala</em> aristokrazia gerlariena da (heroi homerikoarena, patrizio erromatarrarena): indartsuak bere burua baieztatzen du, eta «ona» deitzen dio bera denari (noblea, boteretsua, bizitasunez betea, gauza dena), eta «txarra», besterik gabe, arrotz zaionari (doilorra, ahula, koldarra). Betetasunetik sortzen den morala da, biziari «bai» esaten diona. Haren aurrean, <em>esklaboaren morala</em> menderatuengandik jaiotzen da, beren burua ezarri ezin duten askorengandik. Jarduteko gauza ez denez, moral horrek erreakzionatu egiten du: nagusiaren taula alderantzikatu, eta «ona» deitzen dio ahulak nahitaez duenari (apaltasunari, otzantasunari, obedientziari, errukiari), eta «gaiztoa» (jada ez «txarra» soilik) indartsua denari.</p>
 <p><strong>Esklaboen matxinada eta gaitzondoa.</strong> Alderantzikatze hori da Nietzschek <em>esklaboen matxinada moralean</em> deitzen duena, eta haren protagonista historiko handia judu-kristautasuna da. Eskuz mendekatu ezin zirenak balioen bidez mendekatu ziren: <em>gaitzondotik</em> (ekintzetan deskargatu ezinik sortzaile bihurtzen den eta taula berri bat sortzen duen herra batetik) jaio zen moral bat, nagusia kondenatzen eta morroia kontsolatzen duena. Kristautasunak Erromatar Inperioko esklaboen artean egin zuen arrakasta, hain zuzen ere horixe eskaintzen zielako: beren nagusi indartsu eta ankerrak bekatari deklaratzen zituen moral bat, mundu honetan ukatutako justizia beste mundu batean agintzen zuena. Hala, «ona/txarra» aurkakotza noblearen lekuan «ona/gaiztoa» aurkakotza ezarri zen, eta <em>biziaren aurkako</em> moral bat nagusitu: ahultasuna goresten duena, eta indarraz, pozaz eta gorputzaz susmo txarra duena. Eragiketa horri <em>balioen iraultzea</em> deituko dio Nietzschek (balio guztien alderantzikatzea), eta berak, bere aldetik, iraultze hori bera iraultzea proposatuko du.</p>
 <p><strong>Kontzientzia gaiztoa eta errua.</strong> Nondik ateratzen da, orduan, epaitzen gaituen barne-ahots hori? Nietzschek kontzientzia moralaren genealogia bat eskaintzen du. Gizarteko bizitzak erasorako senak kanporantz deskargatzea debekatzen duenean, sen horiek ez dira desagertzen: barrurantz itzultzen dira, eta gizakia bere buruari min egiten hasten da. Barneratutako ankerkeria hori da <em>kontzientzia gaiztoa</em>. Apaizak izen bat eta erabilera bat ematen dizkio: <em>erru</em> bihurtzen du, <em>bekatu</em>, Jainkoarekiko zor ordainezin. Eta urrats bat gehiago egiten du, guztietan kaltegarriena: <em>ideal aszetikoaren</em> bidez, <em>zentzu</em> bat ematen dio sufrimenduari. Ahula gaizki tratatua izatea nahiko txarra da berez; baina apaizak, gainera, irakasten dio bere oinazearen <em>erantzule</em> dela, oinazeak erredimitu egiten duela eta balioa duela<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Hala, bizia eramangarri egiteko jaiotako moral batek hura pozoituz amaitzen du.</p>
-<p><strong>Jainkoaren heriotza.</strong> Dena diagnostiko batean amaitzen da, ez blasfemia batean: «Jainkoa hil da, eta guk hil dugu»<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Ez du esan nahi zeruko jaun bat zendu denik, baizik eta Mendebaldeko balioei eusten zien oinarriak (Jainkoak, sentikorraz haraindiko munduak, absolutuak) sinesgarritasun oro galdu duela. Iraultza zientifikoak, darwinismoak (<a href="gaia-14.html#sec-55">§55</a>) eta Ilustrazioak berak desegin dute, eta harekin batera airean geratzen dira hartan bermatzen ziren balioak. Horregatik aldarrikatzen du Nietzschek bere burua <em>Antikristo</em>: ez deabruaren gurtzaile gisa, ordena kristau-moralaren amaiera ziurtatzen duenaren gisa baizik. Galdera da zer datorren heriotza horren ondoren; eta galdera horrek izen beldurgarri bat du, <em>nihilismoa</em>, harekin irekiko baita azken atala. Aurretik, ordea, mailua pieza are barnekoago baten aurka itzultzen da: egiaren aurka.</p>
+<p><strong>Jainkoaren heriotza.</strong> Dena diagnostiko batean amaitzen da, ez blasfemia batean: «Jainkoa hil da, eta guk hil dugu»<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Ez du esan nahi zeruko jaun bat zendu denik, baizik eta Mendebaldeko balioei eusten zien oinarriak (Jainkoak, sentikorraz haraindiko munduak, absolutuak) sinesgarritasun oro galdu duela. Iraultza zientifikoak, darwinismoak (<a href="../chapters-web-eu/gaia-14.html#sec-55">§55</a>) eta Ilustrazioak berak desegin dute, eta harekin batera airean geratzen dira hartan bermatzen ziren balioak. Horregatik aldarrikatzen du Nietzschek bere burua <em>Antikristo</em>: ez deabruaren gurtzaile gisa, ordena kristau-moralaren amaiera ziurtatzen duenaren gisa baizik. Galdera da zer datorren heriotza horren ondoren; eta galdera horrek izen beldurgarri bat du, <em>nihilismoa</em>, harekin irekiko baita azken atala. Aurretik, ordea, mailua pieza are barnekoago baten aurka itzultzen da: egiaren aurka.</p>
 </section>
 <section id="sec-60" class="level2">
 <h2 class="anchored" data-anchor-id="sec-60">§60 · Nietzsche: perspektibismoa eta egia</h2>
-<p><strong>Egiari berari buruzko galdera.</strong> Nietzscheren bigarren itu handia ez da egia hau edo hura, egia bera baizik: <em>zer da egia, eta zergatik gurtzen dugu?</em> Tradizio osoak (Platonek bere Formekin, <a href="gaia-03.html#sec-09">§09</a>; Descartesek bere ziurtasunarekin, <a href="gaia-08.html#sec-36">§36</a>; Kantek bere kritikarekin, <a href="gaia-12.html#sec-50">§50</a>) oinarri sendo bat bilatua zuen ezagutzarentzat: berbaitango errealitate bat <em>kopiatuko</em> zuen egia bat. Nietzschek ukatu egiten du badagoenik kopiatzeko halako errealitaterik, ezta hura deformatu gabe ikusteko gauza den begirik ere. Aurrekoek zimenduak zulatzen zituzten tokian, berak lurra kentzen du. Hori da haren alderdi epistemologikoa, eta komeni da autore haiekin paraleloan irakurtzea, galdera berari emandako erantzunik erradikalena baita: ezagutzaren jatorriari, irismenari eta mugei buruzkoari.</p>
+<p><strong>Egiari berari buruzko galdera.</strong> Nietzscheren bigarren itu handia ez da egia hau edo hura, egia bera baizik: <em>zer da egia, eta zergatik gurtzen dugu?</em> Tradizio osoak (Platonek bere Formekin, <a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>; Descartesek bere ziurtasunarekin, <a href="../chapters-web-eu/gaia-08.html#sec-36">§36</a>; Kantek bere kritikarekin, <a href="../chapters-web-eu/gaia-12.html#sec-50">§50</a>) oinarri sendo bat bilatua zuen ezagutzarentzat: berbaitango errealitate bat <em>kopiatuko</em> zuen egia bat. Nietzschek ukatu egiten du badagoenik kopiatzeko halako errealitaterik, ezta hura deformatu gabe ikusteko gauza den begirik ere. Aurrekoek zimenduak zulatzen zituzten tokian, berak lurra kentzen du. Hori da haren alderdi epistemologikoa, eta komeni da autore haiekin paraleloan irakurtzea, galdera berari emandako erantzunik erradikalena baita: ezagutzaren jatorriari, irismenari eta mugei buruzkoari.</p>
 <p><strong>Egia, «metaforen armada higikorra».</strong> Azterketa testu goiztiar batean ainguratzen da: <em>Egiaz eta gezurraz zentzu extramoralean</em> (1873). Han Nietzschek «egia» deitzen diogun horren sorrera berreraikitzen du. Kinada nerbioso bat irudi bihurtzen da; irudia, soinu; soinua, hitz; eta hitza, inoiz berdinak ez diren gauzen arteko aldeak ezabatzean, <em>kontzeptu</em> bihurtzen da. Urrats bakoitzean jauzi bat dago, zerbaitetik zerbait desberdinera egindako itzulpen bat: <em>metafora</em> bat. Hizkuntzak ez du mundua kopiatzen: eskematizatu egiten du eta gure neurrira ekartzen, <em>antropomorfizatu</em> egiten du. Hortik dator haren definizio ospetsua: «zer da, orduan, egia? Metaforen armada higikor bat»; egiak «ilusioak dira, hala direla ahaztu zaizkigunak», erabilerak erliebea ezabatu dien txanponak bezala higatutako metaforak. «Egiazko» deitzen diogu ohiko metafora multzoari, metaforak zirela ahaztu dugularik.</p>
-<p><strong>Perspektibismoa.</strong> Kontzeptuaren kritika horretatik dator tesi zentrala: «ez dago egitaterik, interpretazioak baino ez»<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Ezagutze oro perspektiba batetik gertatzen da: kokatua, interesduna, ezagutzen duenaren biziaren zerbitzuan dagoena. Ez dago «begi jainkotiarrik», ez inongo lekutatikako begiradarik, ezta «berbaitango gauza» eskuragarririk ere; eta hemen Kanten noumenoarekin (<a href="gaia-12.html#sec-50">§50</a>) eta Platonen Formekin (<a href="gaia-03.html#sec-09">§09</a>) talka zuzenekoa da. Hori ez da kexa bat: perspektibak ugaritzeak, ezagutza pobretzetik urrun, aberastu egiten du. Baina objektibotasunak mundu bakar baten isla izateari uzten dio, eta ikuspuntu askoren batura bihurtzen da, beti irekia.</p>
-<p><strong>Egia-nahia eta fikzio baliagarriak.</strong> Egia hau baldin bada, zergatik sinesten dugu hartan hain irmoki? Biziak behar duelako: bizitzeak fikzio egonkorrak eskatzen ditu. «Arrazoiaren kategoria» handiak (<em>substantzia</em>, <em>nia</em>, <em>kausa</em>) ez dira errealitatearen ezaugarriak, fikzio baliagarriak baizik, gure espezieak orientatzeko eta bizirauteko ezarri zituenak; hemen Nietzschek luzatu egiten du Humek (<a href="gaia-09.html#sec-39">§39</a>) niaren eta kausalitatearen aurka zuzendua zuen susmoa. Zientzia bera ere aztertzen ez duen fede baten gainean dago: <em>egia-nahia</em>, egiak ilusioak baino gehiago balio duelako uste sendoa. Eta uste sendo hori, ohartarazten du Nietzschek, hondar moral bat da, ia erlijiosoa, eta bere buruaren aurka itzultzen du: eta ilusioak, batzuetan, egiak baino mesede handiagoa egingo balio biziari?</p>
+<p><strong>Perspektibismoa.</strong> Kontzeptuaren kritika horretatik dator tesi zentrala: «ez dago egitaterik, interpretazioak baino ez»<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Ezagutze oro perspektiba batetik gertatzen da: kokatua, interesduna, ezagutzen duenaren biziaren zerbitzuan dagoena. Ez dago «begi jainkotiarrik», ez inongo lekutatikako begiradarik, ezta «berbaitango gauza» eskuragarririk ere; eta hemen Kanten noumenoarekin (<a href="../chapters-web-eu/gaia-12.html#sec-50">§50</a>) eta Platonen Formekin (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>) talka zuzenekoa da. Hori ez da kexa bat: perspektibak ugaritzeak, ezagutza pobretzetik urrun, aberastu egiten du. Baina objektibotasunak mundu bakar baten isla izateari uzten dio, eta ikuspuntu askoren batura bihurtzen da, beti irekia.</p>
+<p><strong>Egia-nahia eta fikzio baliagarriak.</strong> Egia hau baldin bada, zergatik sinesten dugu hartan hain irmoki? Biziak behar duelako: bizitzeak fikzio egonkorrak eskatzen ditu. «Arrazoiaren kategoria» handiak (<em>substantzia</em>, <em>nia</em>, <em>kausa</em>) ez dira errealitatearen ezaugarriak, fikzio baliagarriak baizik, gure espezieak orientatzeko eta bizirauteko ezarri zituenak; hemen Nietzschek luzatu egiten du Humek (<a href="../chapters-web-eu/gaia-09.html#sec-39">§39</a>) niaren eta kausalitatearen aurka zuzendua zuen susmoa. Zientzia bera ere aztertzen ez duen fede baten gainean dago: <em>egia-nahia</em>, egiak ilusioak baino gehiago balio duelako uste sendoa. Eta uste sendo hori, ohartarazten du Nietzschek, hondar moral bat da, ia erlijiosoa, eta bere buruaren aurka itzultzen du: eta ilusioak, batzuetan, egiak baino mesede handiagoa egingo balio biziari?</p>
 <p><strong>Irismena eta objekzio bat.</strong> Hainbesteko erradikaltasunak objekzio nabarira gonbidatzen du: «egia al da ez dagoela egiarik?». Dena interpretazioa bada, perspektibismoa interpretazio bat gehiago litzateke, eta bere burua gezurtatuko luke. Nietzschek lehen erdia onartuko luke, porrot gisa ikusi gabe: perspektibismoa ez da errealitateari buruzko dogma berri bat, bere burua barne hartzen duen metodo bat baizik, bere soinua ere probatzen duen mailu bat. Erabakigarria, harentzat, jada ez da sineste bat zentzu zaharrean «egiazkoa» den, baizik eta biziari zerbitzu egiten dion ala hura pobretzen duen. Lekualdatze horrekin (<em>egiaren</em> irizpidetik <em>biziaren</em> irizpidera) amaitzen da eraispena, eta hasten da zati eraikitzailea.</p>
 </section>
 <section id="sec-61" class="level2">
 <h2 class="anchored" data-anchor-id="sec-61">§61 · Nietzsche: nihilismoa, botere-nahia eta supergizakia</h2>
-<p><strong>Nihilismoa.</strong> Jainkoa hil bada (<a href="gaia-16.html#sec-59">§59</a>) eta berbaitango egiarik ez badago (<a href="gaia-16.html#sec-60">§60</a>), zerk eusten die gure balioei? Ezerk ez: eta egoera horri <em>nihilismoa</em> deitzen dio Nietzschek, «gonbidatuetan kezkagarriena», Europako atea jotzen duena. Esan nahi du «balio gorenak balioz husten direla»: oinarria erorita, hartan bermatzen zen guztia kordokan dago. Nietzschek bi forma bereizten ditu. <em>Nihilismo pasiboa</em> akidurarena da, «zertarako?» galderarena, <em>Zaratustra</em>ko «azken gizakiarengan» haragitua: erosotasuna eta zoriontasun kaskar bat baino ez ditu nahi, eta begiak kliskatzen ditu. <em>Nihilismo aktiboak</em>, aldiz, jada hilda dauden balioak suntsitzen ditu, balio berriak landatzeko lursaila garbitzeko. Nihilismoa, hala, arrisku handia eta beharrezko urratsa da aldi berean: ez dago hura inguratzerik, zeharkatu egin behar da.</p>
-<p><strong>Botere-nahia.</strong> Zer dago, orduan, biziaren azpian, oinarriak kendu ondoren? Nietzschek ez du bizidunaren hondoan bizirauteko nahi bat irakurtzen (Darwinen aurka), ez plazer-nahi bat (utilitaristen aurka, <a href="gaia-13.html#sec-53">§53</a>), ezta atseden-nahi bat ere, <em>botere-nahi</em> bat baizik: hazteko, hedatzeko, bere burua gainditzeko bulkada bat. Errealitatea ez da gauza-substantzien multzo bat, indarren joko bat baizik, elkar interpretatzen eta elkar menderatzen duten botere-nahiena; «izatea», hondoan, <em>bilakaera</em> da. Hori da haren ontologia, bitala eta ez metafisikoa, eta haren etikaren zimendua: <em>ona</em> da ahalmena, goranzko bizia, areagotzen duena; <em>txarra</em>, hura ahultzen duena.</p>
+<p><strong>Nihilismoa.</strong> Jainkoa hil bada (<a href="../chapters-web-eu/gaia-16.html#sec-59">§59</a>) eta berbaitango egiarik ez badago (<a href="../chapters-web-eu/gaia-16.html#sec-60">§60</a>), zerk eusten die gure balioei? Ezerk ez: eta egoera horri <em>nihilismoa</em> deitzen dio Nietzschek, «gonbidatuetan kezkagarriena», Europako atea jotzen duena. Esan nahi du «balio gorenak balioz husten direla»: oinarria erorita, hartan bermatzen zen guztia kordokan dago. Nietzschek bi forma bereizten ditu. <em>Nihilismo pasiboa</em> akidurarena da, «zertarako?» galderarena, <em>Zaratustra</em>ko «azken gizakiarengan» haragitua: erosotasuna eta zoriontasun kaskar bat baino ez ditu nahi, eta begiak kliskatzen ditu. <em>Nihilismo aktiboak</em>, aldiz, jada hilda dauden balioak suntsitzen ditu, balio berriak landatzeko lursaila garbitzeko. Nihilismoa, hala, arrisku handia eta beharrezko urratsa da aldi berean: ez dago hura inguratzerik, zeharkatu egin behar da.</p>
+<p><strong>Botere-nahia.</strong> Zer dago, orduan, biziaren azpian, oinarriak kendu ondoren? Nietzschek ez du bizidunaren hondoan bizirauteko nahi bat irakurtzen (Darwinen aurka), ez plazer-nahi bat (utilitaristen aurka, <a href="../chapters-web-eu/gaia-13.html#sec-53">§53</a>), ezta atseden-nahi bat ere, <em>botere-nahi</em> bat baizik: hazteko, hedatzeko, bere burua gainditzeko bulkada bat. Errealitatea ez da gauza-substantzien multzo bat, indarren joko bat baizik, elkar interpretatzen eta elkar menderatzen duten botere-nahiena; «izatea», hondoan, <em>bilakaera</em> da. Hori da haren ontologia, bitala eta ez metafisikoa, eta haren etikaren zimendua: <em>ona</em> da ahalmena, goranzko bizia, areagotzen duena; <em>txarra</em>, hura ahultzen duena.</p>
 <p><strong>Supergizakia.</strong> Nork sortzen ditu balioak, Jainkoa hil denean? <em>Supergizakiak</em> (<em>Übermensch</em>), Zaratustrak iragartzen duen figurak. Ez da arraza biologiko bat, ezta tirano bat ere (puntu honetan gaizki interpretatuko dute, ikusiko dugun bezala), <em>tipo espiritual</em> bat baizik: bere burua gainditzen duen gizakia, bere balio propioak asmatzen dituena eta «lurrari leial» irauten diona, haraindiko batera ihes egin beharrean. Espirituaren hiru metamorfosiek marrazten dute bidea: <em>gameluak</em>, jasotako balioak bere gainean kargatzen dituenak; <em>lehoiak</em>, «ez» esaten duenak eta eginbehar zaharretatik askatasuna konkistatzen duenak; eta <em>haurrak</em>, berriro sortzen duenak, errugabe eta baiezkor. Supergizakia «lurraren zentzua» da: nihilismoari erantzutea ez da galdutako oinarriari negar egitea, norbera oinarri bihurtzea baizik.</p>
 <p><strong>Betiereko itzulera eta amor fati.</strong> Baieztapen horren proba-harria <em>betiereko itzuleraren</em> pentsamendua da. Nietzschek esperimentu gisa aurkezten du (<em>Zientzia alaia</em>, § 341): imajinatu deabru bat isilka sartzen dela zure bakardaderik sakonenean eta esaten dizula:</p>
 <blockquote class="blockquote">
@@ -556,10 +568,10 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li><em>Perspektibismoaren autoerreferentzia.</em> Egiarik ez badago, tesia bere buruaren aurka itzultzen da; Nietzschek metodo bihurtuz erantzuten dio, baina tentsioak hor dirau, eta haren irakurleak zatitzen ditu gaur arte.</li>
 <li><em>Estilo asistematikoa eta maskarak.</em> Aforismoak eta probokazioak uko egiten diote irakurketa bakar bati: botere-nahiak eta betiereko itzulerak elkarren aurkako interpretazioak onartzen dituzte (bitalista, metafisikoa, politikoa), eta berak «gaizki interpreta zezaten idazten zuen». Sistemarik eza, aldi berean, hautu bat da eta arrisku bat.</li>
-<li><em>«Nagusiaren moralaren» arriskua.</em> Indarraren eta hierarkiaren gorespena, eta errukiaren eta berdintasunaren mespretxua, demokraziaren eta Kantek defendatzen zuen duintasun unibertsalaren (<a href="gaia-12.html#sec-51">§51</a>) aurkako eraso gisa irakur daitezke, eta hala irakurri izan dira. Interpretaziorik zintzoena edozein dela ere, tentsioa erreala da.</li>
+<li><em>«Nagusiaren moralaren» arriskua.</em> Indarraren eta hierarkiaren gorespena, eta errukiaren eta berdintasunaren mespretxua, demokraziaren eta Kantek defendatzen zuen duintasun unibertsalaren (<a href="../chapters-web-eu/gaia-12.html#sec-51">§51</a>) aurkako eraso gisa irakur daitezke, eta hala irakurri izan dira. Interpretaziorik zintzoena edozein dela ere, tentsioa erreala da.</li>
 </ol>
-<p>Desitxuratzerik larriena, ordea, hil ondorengoa izan zen. Haren eromenaren ostean, <em>Elisabeth Förster-Nietzsche</em> arrebak (antisemita eta nazionalista alemanak) kudeatu zuen haren ondarea, argitaragabeko oharrak liburu batean bildu zituen (<em>Boterearen nahia</em>, Nietzschek halako gisa inoiz idatzi ez zuena), eta nazismoarekiko hurbiltasuna landu zuen, eta hark aitzindaritzat hartu zuen. Baina Nietzschek mespretxatu egin zituen antisemitismoa, nazionalismo alemana eta nazismoak haragitzen zuen «artaldearen» morala; Wagnerrekin berarekin ere hautsi zuen, miresten zuen arren, neurri batean horregatik. Komeni da, Marxekin bezala (<a href="gaia-15.html#sec-57">§57</a>-<a href="gaia-15.html#sec-58">§58</a>), obra ez nahastea ondorengoek harekin egin zutenarekin.</p>
-<p>Hala ere, haren indarrak bizirik dirau. Existentzialismoak (<a href="gaia-17.html#sec-62">§62</a>) haren «Jainkoa hil da» eta bermerik gabe balioak sortzeko zeregina jasotzen ditu oinordetzan; Foucaultek eta ondare posmodernoak (<a href="gaia-20.html#sec-75">§75</a>) genealogia metodo bihurtuko dute, jakintzaren eta boterearen bilbeak agerian uzteko; eta Ortegak haren perspektibismoa jasoko du (<a href="gaia-18.html#sec-66">§66</a>). Nietzscherekin, eta gainerako susmoaren filosofoekin (<a href="gaia-14.html#sec-55">§55</a>), bere punturik apalena jotzen du arrazoi garden eta subirano batekiko konfiantza modernoak, Kantenak eta utilitaristenak (<a href="gaia-12.html#sec-51">§51</a>, <a href="gaia-13.html#sec-53">§53</a>). Eta hemen, XX. mendearen atarian, ixten da XIX.a.</p>
+<p>Desitxuratzerik larriena, ordea, hil ondorengoa izan zen. Haren eromenaren ostean, <em>Elisabeth Förster-Nietzsche</em> arrebak (antisemita eta nazionalista alemanak) kudeatu zuen haren ondarea, argitaragabeko oharrak liburu batean bildu zituen (<em>Boterearen nahia</em>, Nietzschek halako gisa inoiz idatzi ez zuena), eta nazismoarekiko hurbiltasuna landu zuen, eta hark aitzindaritzat hartu zuen. Baina Nietzschek mespretxatu egin zituen antisemitismoa, nazionalismo alemana eta nazismoak haragitzen zuen «artaldearen» morala; Wagnerrekin berarekin ere hautsi zuen, miresten zuen arren, neurri batean horregatik. Komeni da, Marxekin bezala (<a href="../chapters-web-eu/gaia-15.html#sec-57">§57</a>-<a href="../chapters-web-eu/gaia-15.html#sec-58">§58</a>), obra ez nahastea ondorengoek harekin egin zutenarekin.</p>
+<p>Hala ere, haren indarrak bizirik dirau. Existentzialismoak (<a href="../chapters-web-eu/gaia-17.html#sec-62">§62</a>) haren «Jainkoa hil da» eta bermerik gabe balioak sortzeko zeregina jasotzen ditu oinordetzan; Foucaultek eta ondare posmodernoak (<a href="../chapters-web-eu/gaia-20.html#sec-75">§75</a>) genealogia metodo bihurtuko dute, jakintzaren eta boterearen bilbeak agerian uzteko; eta Ortegak haren perspektibismoa jasoko du (<a href="../chapters-web-eu/gaia-18.html#sec-66">§66</a>). Nietzscherekin, eta gainerako susmoaren filosofoekin (<a href="../chapters-web-eu/gaia-14.html#sec-55">§55</a>), bere punturik apalena jotzen du arrazoi garden eta subirano batekiko konfiantza modernoak, Kantenak eta utilitaristenak (<a href="../chapters-web-eu/gaia-12.html#sec-51">§51</a>, <a href="../chapters-web-eu/gaia-13.html#sec-53">§53</a>). Eta hemen, XX. mendearen atarian, ixten da XIX.a.</p>
 
 
 </section>
@@ -568,25 +580,137 @@ ul.task-list li input[type="checkbox"] {
 <ol>
 <li id="fn1"><p><em>Moralaren genealogia</em>ren (1887) hiru zatien haria da hori: «ona/txarra» eta «ona/gaiztoa» aurkakotzak, kontzientzia gaiztoaren eta erruaren jatorria, eta sufrimenduari zentzua ematen dion ideal aszetikoa. Nietzscherentzat, sufrimenduari zentzua emateak ez du arintzen: betikotu egiten du.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Esaldia egun-argi betean Jainkoa kriseilu batekin bilatzen duen «eroaren» ahotan ageri da (<em>Zientzia alaia</em>, § 125). Ez da ateo baten garaipen-oihua, hondamendi kultural baten iragarpena baizik, zeinaren ondorioak ia inork ez baititu oraindik neurtu.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Hilondoko ohar bateko formulazioa da, argitaratutako obretan defendatzen duenarekin koherentea, batez ere <em>Moralaren genealogia</em>n (III, <a href="gaia-03.html#sec-12">§12</a>): ez dago perspektibarik gabeko «berbaitango ezagutzerik»; zenbat eta begi desberdin gehiago jartzen jakin gauza baten gainean, orduan eta osoagoa izango da gure «objektibotasuna», beti baita perspektiben batura, inoiz ez haien ezabapena.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Hilondoko ohar bateko formulazioa da, argitaratutako obretan defendatzen duenarekin koherentea, batez ere <em>Moralaren genealogia</em>n (III, <a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>): ez dago perspektibarik gabeko «berbaitango ezagutzerik»; zenbat eta begi desberdin gehiago jartzen jakin gauza baten gainean, orduan eta osoagoa izango da gure «objektibotasuna», beti baita perspektiben batura, inoiz ez haien ezabapena.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Nietzschek betiereko itzuleraren bertsio <em>kosmologiko</em> batekin ere jokatu zuen (hipotesi fisiko gisa: unibertso finitu bat denbora infinituan), baina hori da haren alderik ahulena eta eztabaidatuena; erabakigarria bertsio existentziala da, betiereko itzulera biziaren baieztapenaren irizpide gisa.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -665,7 +789,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -674,8 +799,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -689,6 +875,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -851,44 +1038,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -987,7 +1184,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-15.html" class="pagination-link" aria-label="15. gaia · Marx">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">15. gaia · Marx</span></span>

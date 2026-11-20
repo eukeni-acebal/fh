@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-09.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-10.html"><span class="chapter-title">10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-10.html"><span class="chapter-title">10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -495,10 +507,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-10.html"><span class="chapter-title">10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-10.html"><span class="chapter-title">10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora</span></h1>
 </div>
@@ -519,15 +531,15 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="filosofia-politiko-modernoan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="filosofia-politiko-modernoan-sartzeko">Filosofia politiko modernoan sartzeko</h2>
-<p>Aurreko gaian, Hobbes utzi genuen unibertsoa (eta gizakia bera) higiduran dauden gorputzetara murrizten (<a href="gaia-09.html#sec-40">§40</a>). Begirada desengainatu hura ez zen metafisikan geratu: Hobbesek berak elkarbizitzara itzuli zuen, eta hortik atera zen modernitateko teoria politiko handienetako bat. Harekin irekitzen da gai hau: lur-eremuz aldatzen da (mundua nola ezagutzen dugun aztertzetik elkarbizitza nola antolatu behar dugun galdetzera), baina hondoko keinu modernoari eusten dio: ezer ez jotzea jakintzat, eta guztiari arrazoiak azter dezakeen oinarri bat bilatzea.</p>
-<p><strong>Gaiaren mapa.</strong> Orrialde hauek zeharkatzen dituen galdera filosofia bezain zaharra da, eta azken hauteskunde-kanpaina bezain gaurkoa: nondik dator botere politikoa, eta zergatik obeditu behar diogu? Hasteko, ikusiko dugu nola jasotzen duen Aro Modernoak Erdi Aroko erantzuna (boterea Jainkoarengandik jaitsarazten zuena) eta nola hausten duen harekin (<a href="gaia-10.html#sec-41">§41</a>). Gero, lehen haustura handian geldituko gara, Machiavellirenean: politika moraletik eta erlijiotik bereizten du, den bezala begiratzeko (<a href="gaia-10.html#sec-42">§42</a>). Gaiaren muina gizarte-kontratuaren teoriaren hiru bertsio handiak dira (<em>Thomas Hobbes</em>, <a href="gaia-10.html#sec-43">§43</a>; <em>John Locke</em>, <a href="gaia-10.html#sec-44">§44</a>; <em>Jean-Jacques Rousseau</em>, <a href="gaia-10.html#sec-45">§45</a>): gizakiak gizarte ororen aurretik imajinatzen dituzte, hortik ondorioztatzeko zer Estatu eraiki behar dugun eta zer mugaren barruan. Eta liberalismo politikoarekin itxiko dugu: Lockeren eta ekonomia berriaren eskutik, gizarte kapitalista dakar argitara (<a href="gaia-10.html#sec-46">§46</a>).</p>
+<p>Aurreko gaian, Hobbes utzi genuen unibertsoa (eta gizakia bera) higiduran dauden gorputzetara murrizten (<a href="../chapters-web-eu/gaia-09.html#sec-40">§40</a>). Begirada desengainatu hura ez zen metafisikan geratu: Hobbesek berak elkarbizitzara itzuli zuen, eta hortik atera zen modernitateko teoria politiko handienetako bat. Harekin irekitzen da gai hau: lur-eremuz aldatzen da (mundua nola ezagutzen dugun aztertzetik elkarbizitza nola antolatu behar dugun galdetzera), baina hondoko keinu modernoari eusten dio: ezer ez jotzea jakintzat, eta guztiari arrazoiak azter dezakeen oinarri bat bilatzea.</p>
+<p><strong>Gaiaren mapa.</strong> Orrialde hauek zeharkatzen dituen galdera filosofia bezain zaharra da, eta azken hauteskunde-kanpaina bezain gaurkoa: nondik dator botere politikoa, eta zergatik obeditu behar diogu? Hasteko, ikusiko dugu nola jasotzen duen Aro Modernoak Erdi Aroko erantzuna (boterea Jainkoarengandik jaitsarazten zuena) eta nola hausten duen harekin (<a href="../chapters-web-eu/gaia-10.html#sec-41">§41</a>). Gero, lehen haustura handian geldituko gara, Machiavellirenean: politika moraletik eta erlijiotik bereizten du, den bezala begiratzeko (<a href="../chapters-web-eu/gaia-10.html#sec-42">§42</a>). Gaiaren muina gizarte-kontratuaren teoriaren hiru bertsio handiak dira (<em>Thomas Hobbes</em>, <a href="../chapters-web-eu/gaia-10.html#sec-43">§43</a>; <em>John Locke</em>, <a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>; <em>Jean-Jacques Rousseau</em>, <a href="../chapters-web-eu/gaia-10.html#sec-45">§45</a>): gizakiak gizarte ororen aurretik imajinatzen dituzte, hortik ondorioztatzeko zer Estatu eraiki behar dugun eta zer mugaren barruan. Eta liberalismo politikoarekin itxiko dugu: Lockeren eta ekonomia berriaren eskutik, gizarte kapitalista dakar argitara (<a href="../chapters-web-eu/gaia-10.html#sec-46">§46</a>).</p>
 </section>
 <section id="sec-41" class="level2">
 <h2 class="anchored" data-anchor-id="sec-41">§41 · Erdi Aroko pentsamendu politikotik modernora</h2>
-<p><strong>Boterea Jainkoarengandik zetorren.</strong> Erdi Aro osoan zehar, botere politikoaren jatorriari buruzko galderak erantzun irmo bat zuen: boterea Jainkoarengandik dator. Hiponako Agustinek historia bi hiritan banatua zuen (lurrekoa, norbere buruarenganako maitasunaren gainean eraikia, eta Jainkoarena, Jainkoarenganako maitasunaren gainean; <a href="gaia-06.html#sec-26">§26</a>), eta, botere tenporalak bere lekua bazuen ere, haren azken zentzua ordena jainkotiar horren mende zegoen. Mendeak geroago, Akinoko Tomasek Aristotelesen politika esparru kristauan integratuko zuen (<a href="gaia-06.html#sec-27">§27</a>): agintea naturala eta beharrezkoa da, bai, baina hura gainditzen duen xede batera dago ordenatua, eta Jainkoaren betiereko legearen mende geratzen da. Era batera edo bestera, gobernatzea goitik jasotako botere bat administratzea zen, eta teologiak zuen azken hitza politikaren gainean. Erregeek eta enperadoreek beren agintea jainkozko eskuordetze gisa justifikatzen zuten, eta ideia hori «erregeen eskubide jainkotiarra» formulan kristalduko zen: haren bidez, absolutismoak Jainkoaren aurrean bakarrik zela erantzule aldarrikatzen zuen.</p>
-<p><strong>Gizatiar bihurtzen den galdera.</strong> Aro Modernoak ez du asmatzen botereari buruzko galdera, baina errotik aldatzen du: haren oinarria zeruan bilatzeari uzten dio, eta gizakiengan beraiengan bilatzen du. Botere politikoa gizonengandik abiatuta azaldu beharreko zerbait bihurtzen da (haien beharrizanetatik, beldurretatik, itunetatik, interesetatik), eta ez Jainkoaren borondatetik. Modernitate osoa zeharkatzen duen keinu sekularizatzaile bera da: zientzia berriak natura kausa naturaz gaindikoetara jo gabe azaltzea hartu zuen xede bezala (<a href="gaia-07.html#sec-33">§33</a>), politika berriak Estatua erlijioan bermatu gabe azaltzea hartzen du bere gain. Ez da pentsalari hauek guztiak sinesgabeak direnik (Locke kristau zintzoa da), baizik eta boterearen legitimitatea ez dela jada Jainkoarengandik jaitsarazten: behean bilatzen da, gobernatuen adostasunean, kontratuan edo kalkuluan. Politikaren grabitate-zentroa zerutik lurrera lekualdatu da.</p>
-<p><strong>Aurrekari zahar bat.</strong> Komeni da gogoratzea ideia honek, Erdi Aroko munduaren aldean hain berria izanik, oso aurrekari urruna zuela. Jada o.a.a. V. mendeko Grezian, sofistek eutsia zioten legeak ez direla jainkoen obra, ez naturarena, giza <em>konbentzioa</em> baizik: gizonek ezartzen duten eta alda dezaketen akordio bat (<em>nomos</em>), naturaz denaren (<em>physis</em>) aurrez aurre (<a href="gaia-02.html#sec-05">§05</a>). Protagorasek, bereziki, itunaren eta komunitatearen borondatearen emaitza ikusten zuen legean, ez agindu sakratu eta ukiezin bat. Intuizio hura, mendeetan zehar pentsamendu kristauaren azpian ehortzia, indar berri batez berragertzen da Aro Modernoan: ordena politikoa giza kontua bada, orduan gizakiok galde diezaiokegu geure buruari (eta galdetu behar diogu) nolakoa izan beharko lukeen.</p>
-<p><strong>Ordena naturaletik artifiziora: kontratuaren pentsamendu-esperimentua.</strong> Nola erantzuten dio modernitateak boterearen jatorriari buruzko galderari? Batez ere emankortasun izugarriko pentsamendu-tresna batekin: gizarte-kontratuarekin. Aristotelesentzat, gizakia «animalia politikoa» zen berez, eta hiria, animalia hori burutzen den ingurunea (<a href="gaia-04.html#sec-19">§19</a>); gizartea ez da aukeratzen, geure berezko elementu gisa aitortzen da, ura arrainarena den bezalaxe. Modernoek planteamendua irauli egiten dute: gizartea ez da naturaren datu bat, <em>artifizio</em> bat baizik, gizakiok eraikitzen dugun zerbait. Eta hori erakusteko, imajinatzen dute nolakoak izango ginatekeen gizarte orotatik at, <em>natura-egoera</em> deitzen dioten kondizio batean<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Ez da hipotesi historiko bat (haietako inork ez du uste benetan izan zenik gizon batzuk itun bat sinatzera bildu ziren egunik), <em>pentsamendu-esperimentu</em> bat baizik: gizakiari elkarbizitzak erantsi dion guztia kentzen badiogu, zer geratzen da?, nola jokatuko genuke?, zerk bultzatuko gintuzke egoera hura uztera eta botere baten mende jartzera? Galdera horien erantzunetik ondorioztatzen du filosofo bakoitzak zer-nolako Estatua eraiki behar dugun eta zer mugaren barruan. Gizarte-kontratua, azken batean, gizartearen eta boterearen jatorriari eta oinarriari buruzko auzi zaharra planteatzeko modu modernoa da.</p>
+<p><strong>Boterea Jainkoarengandik zetorren.</strong> Erdi Aro osoan zehar, botere politikoaren jatorriari buruzko galderak erantzun irmo bat zuen: boterea Jainkoarengandik dator. Hiponako Agustinek historia bi hiritan banatua zuen (lurrekoa, norbere buruarenganako maitasunaren gainean eraikia, eta Jainkoarena, Jainkoarenganako maitasunaren gainean; <a href="../chapters-web-eu/gaia-06.html#sec-26">§26</a>), eta, botere tenporalak bere lekua bazuen ere, haren azken zentzua ordena jainkotiar horren mende zegoen. Mendeak geroago, Akinoko Tomasek Aristotelesen politika esparru kristauan integratuko zuen (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>): agintea naturala eta beharrezkoa da, bai, baina hura gainditzen duen xede batera dago ordenatua, eta Jainkoaren betiereko legearen mende geratzen da. Era batera edo bestera, gobernatzea goitik jasotako botere bat administratzea zen, eta teologiak zuen azken hitza politikaren gainean. Erregeek eta enperadoreek beren agintea jainkozko eskuordetze gisa justifikatzen zuten, eta ideia hori «erregeen eskubide jainkotiarra» formulan kristalduko zen: haren bidez, absolutismoak Jainkoaren aurrean bakarrik zela erantzule aldarrikatzen zuen.</p>
+<p><strong>Gizatiar bihurtzen den galdera.</strong> Aro Modernoak ez du asmatzen botereari buruzko galdera, baina errotik aldatzen du: haren oinarria zeruan bilatzeari uzten dio, eta gizakiengan beraiengan bilatzen du. Botere politikoa gizonengandik abiatuta azaldu beharreko zerbait bihurtzen da (haien beharrizanetatik, beldurretatik, itunetatik, interesetatik), eta ez Jainkoaren borondatetik. Modernitate osoa zeharkatzen duen keinu sekularizatzaile bera da: zientzia berriak natura kausa naturaz gaindikoetara jo gabe azaltzea hartu zuen xede bezala (<a href="../chapters-web-eu/gaia-07.html#sec-33">§33</a>), politika berriak Estatua erlijioan bermatu gabe azaltzea hartzen du bere gain. Ez da pentsalari hauek guztiak sinesgabeak direnik (Locke kristau zintzoa da), baizik eta boterearen legitimitatea ez dela jada Jainkoarengandik jaitsarazten: behean bilatzen da, gobernatuen adostasunean, kontratuan edo kalkuluan. Politikaren grabitate-zentroa zerutik lurrera lekualdatu da.</p>
+<p><strong>Aurrekari zahar bat.</strong> Komeni da gogoratzea ideia honek, Erdi Aroko munduaren aldean hain berria izanik, oso aurrekari urruna zuela. Jada o.a.a. V. mendeko Grezian, sofistek eutsia zioten legeak ez direla jainkoen obra, ez naturarena, giza <em>konbentzioa</em> baizik: gizonek ezartzen duten eta alda dezaketen akordio bat (<em>nomos</em>), naturaz denaren (<em>physis</em>) aurrez aurre (<a href="../chapters-web-eu/gaia-02.html#sec-05">§05</a>). Protagorasek, bereziki, itunaren eta komunitatearen borondatearen emaitza ikusten zuen legean, ez agindu sakratu eta ukiezin bat. Intuizio hura, mendeetan zehar pentsamendu kristauaren azpian ehortzia, indar berri batez berragertzen da Aro Modernoan: ordena politikoa giza kontua bada, orduan gizakiok galde diezaiokegu geure buruari (eta galdetu behar diogu) nolakoa izan beharko lukeen.</p>
+<p><strong>Ordena naturaletik artifiziora: kontratuaren pentsamendu-esperimentua.</strong> Nola erantzuten dio modernitateak boterearen jatorriari buruzko galderari? Batez ere emankortasun izugarriko pentsamendu-tresna batekin: gizarte-kontratuarekin. Aristotelesentzat, gizakia «animalia politikoa» zen berez, eta hiria, animalia hori burutzen den ingurunea (<a href="../chapters-web-eu/gaia-04.html#sec-19">§19</a>); gizartea ez da aukeratzen, geure berezko elementu gisa aitortzen da, ura arrainarena den bezalaxe. Modernoek planteamendua irauli egiten dute: gizartea ez da naturaren datu bat, <em>artifizio</em> bat baizik, gizakiok eraikitzen dugun zerbait. Eta hori erakusteko, imajinatzen dute nolakoak izango ginatekeen gizarte orotatik at, <em>natura-egoera</em> deitzen dioten kondizio batean<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Ez da hipotesi historiko bat (haietako inork ez du uste benetan izan zenik gizon batzuk itun bat sinatzera bildu ziren egunik), <em>pentsamendu-esperimentu</em> bat baizik: gizakiari elkarbizitzak erantsi dion guztia kentzen badiogu, zer geratzen da?, nola jokatuko genuke?, zerk bultzatuko gintuzke egoera hura uztera eta botere baten mende jartzera? Galdera horien erantzunetik ondorioztatzen du filosofo bakoitzak zer-nolako Estatua eraiki behar dugun eta zer mugaren barruan. Gizarte-kontratua, azken batean, gizartearen eta boterearen jatorriari eta oinarriari buruzko auzi zaharra planteatzeko modu modernoa da.</p>
 <p><strong>Bi bide politiko modernorantz.</strong> Tradizio handi hori zeharkatu aurretik, pentsalari batengan gelditu behar dugu: beste bide batetik ireki zuen aurretiaz bidea. Kontraktualistek galdetzen duten bitartean boterea nola <em>oinarritu beharko litzatekeen</em> legitimoa izateko, XVI. mende hasierako florentziar batek galdera deserosoago eta lurtarrago bat egina zion bere buruari: nola <em>konkistatzen</em> eta <em>kontserbatzen</em> den boterea izatez, nolakoa izan beharko lukeen gorabehera. Harekin, politika moraletik eta erlijiotik askatzen da, eta lehen aldiz bere arau propioak aldarrikatzen ditu. Bira horri (eta haren egileari, Machiavelliri) eskaintzen diogu hurrengo atala.</p>
 </section>
 <section id="sec-42" class="level2">
@@ -539,17 +551,17 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Niccolò Machiavelliren erretratua, errealismo politikoaren sortzailearena, Santi di Titok egina. || Egiletza: Santi di Tito, jabari publikoa / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Politikoaren autonomia.</strong> Hor datza haren haustura. Tradizio klasikoak eta Erdi Arokoak beti galdetu izan zuten nola gobernatu <em>behar duen</em> gobernari onak: politika etikaren eta teologiaren kapitulu bat zen, eta «de regimine principum» tratatuek erregeari irakasten zioten justua, zuhurra eta jainkozalea izaten (<a href="gaia-10.html#sec-41">§41</a>). Machiavellik galdera irauli egiten du. Ez zaio interesatzen boterea nolakoa izan beharko litzatekeen bertutetsua izateko, baizik eta nola <em>konkistatzen</em> eta <em>kontserbatzen</em> den izatez; eta adierazten du «gauzaren egia efektiboari» lotuko zaiola, eta ez errepublika imajinarioei, «inoiz ikusi ez direnei eta existitu direnik jakin ez denei». Keinu horrekin politika moraletik eta erlijiotik bereizten da, eta logika propio batek gidatzen du aurrerantzean: boterearen iraupenarenak. Ez da Machiavellik morala ukatzen duenik (ederki bereizten ditu ongia eta gaizkia), baizik eta eusten diola Estatua kontserbatu nahi duen gobernaria ezin dela beti hari lotuta egon, zeren «gauza guztietan on izatea ofizio duen gizonak porrot egingo baitu on ez diren hainbesteren artean». <em>Politikoaren autonomia</em> hori da haren ekarpen iraunkorra, eta errealismo politikoaren sortzaile bihurtzen du.</p>
+<p><strong>Politikoaren autonomia.</strong> Hor datza haren haustura. Tradizio klasikoak eta Erdi Arokoak beti galdetu izan zuten nola gobernatu <em>behar duen</em> gobernari onak: politika etikaren eta teologiaren kapitulu bat zen, eta «de regimine principum» tratatuek erregeari irakasten zioten justua, zuhurra eta jainkozalea izaten (<a href="../chapters-web-eu/gaia-10.html#sec-41">§41</a>). Machiavellik galdera irauli egiten du. Ez zaio interesatzen boterea nolakoa izan beharko litzatekeen bertutetsua izateko, baizik eta nola <em>konkistatzen</em> eta <em>kontserbatzen</em> den izatez; eta adierazten du «gauzaren egia efektiboari» lotuko zaiola, eta ez errepublika imajinarioei, «inoiz ikusi ez direnei eta existitu direnik jakin ez denei». Keinu horrekin politika moraletik eta erlijiotik bereizten da, eta logika propio batek gidatzen du aurrerantzean: boterearen iraupenarenak. Ez da Machiavellik morala ukatzen duenik (ederki bereizten ditu ongia eta gaizkia), baizik eta eusten diola Estatua kontserbatu nahi duen gobernaria ezin dela beti hari lotuta egon, zeren «gauza guztietan on izatea ofizio duen gizonak porrot egingo baitu on ez diren hainbesteren artean». <em>Politikoaren autonomia</em> hori da haren ekarpen iraunkorra, eta errealismo politikoaren sortzaile bihurtzen du.</p>
 <p><strong>Virtù eta fortuna.</strong> Bi kontzeptuk artikulatzen dute analisi hori. Lehena <em>virtù</em> da<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>: Machiavellirengan ez du esan nahi bertute morala, gobernariaren energia, trebezia eta ausardia baizik: erabakitzeko, egokiera aprobetxatzeko eta zirkunstantziei bere borondatea inposatzeko gaitasuna. Bigarrena <em>fortuna</em> da: zoria, aurreikusi ezin dena, gure esku ez dagoen guztia. Politika bien arteko norgehiagoka da. <em>Fortuna</em>, idazten du irudi ospetsu batean, dena arrasatzen duen ibai hazi baten antzekoa da; baina haren uholdeen aurka dikeak eta babesak eraiki daitezke urak bare daudenean; hala, <em>virtù</em>dun gizonak zori hutsaren esku zirudienaren zati handi bat mendera dezake. Machiavelliren kalkuluetan, <em>fortuna</em>k gure egintzen erdia gobernatzen du beharbada, eta beste erdia, edo ia, gure erabakiaren esku uzten du. Gobernari trebea unea irakurtzen eta hartara egokitzen dakiena da.</p>
 <p><strong>Lehoia eta azeria.</strong> Hortik dator haren aholkurik eskandalagarriena. Printzeak «on ez izaten ikasi» behar du, eta gaitasun hori beharraren arabera erabiltzen: <em>lehoiaren</em> indarra, otsoak uxatzen dituena, <em>azeriaren</em> maltzurkeriarekin konbinatu behar du, tranpak saihesten dituenarekin. Ezin bada aldi berean maitatua eta beldurgarria izan, hobe du beldurgarria izatea (beldurra eskertza baino fidagarriagoa da), baina beti zainduz <em>gorrotatua</em> ez izatea, herriaren gorrotoa baita gobernariak benetan eraisten dituena. Eta erlijioak eta moralak, boteretik begiratuta, kohesio-tresna gisa balio dute batez ere: garrantzitsua ez da printzea jainkozalea izatea, hala ematea baizik. Logika horretan laburbiltzen da ondorengoek egotzi zioten esaldia («helburuak bitartekoak justifikatzen ditu»): Machiavellik ez zuen hitz horiekin idatzi, baina ondo kondentsatzen du haren ideia, alegia, politikan egintzak beren emaitzengatik epaitzen direla<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <p><strong>«Makiavelikoa»: ospe eztabaidatua.</strong> Adjektibo gutxi izan dira beren egilearekin <em>makiavelikoa</em> bezain bidegabeak: bihurriaren eta eskrupulurik gabekoaren sinonimoa. Komeni da ñabartzea. Machiavelli, ezer baino lehen, errepublikazale konbentzitua izan zen: <em>Diskurtsoetan</em> antzinako Erromaren askatasuna miresten du eta tiranoez mesfidatzen da, eta irakurle askok <em>Printzean</em> ez dute despoten eskuliburu bat ikusi, baizik eta gaixotasuna deskribatzen duenaren diagnostiko hotza, gaitza antzeman ahal izateko. Benetan inauguratzen duena ez da gaiztakeria politikan (politika bera bezain zaharra), baizik eta hari <em>aurrez aurre begiratzeko</em> eta estali ohi zuen belo errukitsurik gabe deskribatzeko ausardia. Horregatik irekitzen du haren figurak pentsamendu politikoaren aro modernoa.</p>
-<p><strong>Machiavellik erantzun gabe uzten duena.</strong> Hala ere, haren errealismoa planteatzera iristen ez den galdera batean gelditzen da. Machiavellik azaltzen du boterea nola irabazten eta kontserbatzen den, baina ez zergatik <em>obeditu behar diogun</em>: politikaren mekanika deskribatzen du, ez haren oinarri legitimoa. Beste galdera hori (nondik sortzen da agintea, eta zerk behartzen gaitu haren mende jartzera?) irekita geratzen zen, eta huraxe helduko dio gaiaren gainerakoa betetzen duen tradizio handiak. Erantzuten lehena, giza naturari buruzko begirada florentziarrarena bezain desengainatuarekin, Thomas Hobbes izango da (<a href="gaia-10.html#sec-43">§43</a>).</p>
+<p><strong>Machiavellik erantzun gabe uzten duena.</strong> Hala ere, haren errealismoa planteatzera iristen ez den galdera batean gelditzen da. Machiavellik azaltzen du boterea nola irabazten eta kontserbatzen den, baina ez zergatik <em>obeditu behar diogun</em>: politikaren mekanika deskribatzen du, ez haren oinarri legitimoa. Beste galdera hori (nondik sortzen da agintea, eta zerk behartzen gaitu haren mende jartzera?) irekita geratzen zen, eta huraxe helduko dio gaiaren gainerakoa betetzen duen tradizio handiak. Erantzuten lehena, giza naturari buruzko begirada florentziarrarena bezain desengainatuarekin, Thomas Hobbes izango da (<a href="../chapters-web-eu/gaia-10.html#sec-43">§43</a>).</p>
 </section>
 <section id="sec-43" class="level2">
 <h2 class="anchored" data-anchor-id="sec-43">§43 · Gizarte-kontratuaren teoria: Thomas Hobbes</h2>
-<p><strong>Higiduran dagoen gorputzetik elkarbizitzara.</strong> Ezagutzen duzu jada <em>Thomas Hobbes</em> (1588-1679), bere materialismoagatik: unibertso osoa (eta gizakia bera) higiduran dauden gorputzetara murrizten zuena zen, eta gogamena, garunaren barne-higiduretara (<a href="gaia-09.html#sec-40">§40</a>). Begirada mekaniko eta desengainatu bera da orain politikara itzultzen dena, haren obra nagusian: <em>Leviatan</em> (1651). Gizona desirak eta higuinak mugitutako makina bat bada, elkarbizitza ere lege berberekin azaldu beharko da, ordena natural batera edo asmo jainkotiar batera jo gabe. Hobbesek, gainera, Ingalaterrako gerra zibilaren inpaktupean idazten du: gerra hark erregea eta parlamentua jarri zituen aurrez aurre, eta hondoko uste bat utzi zion: ez dago ezer botere irmo baten falta baino okerragorik. Haren filosofia politikoa, neurri handi batean, hausnarketa luze bat da gizartea kaosean berriro eror ez dadin.</p>
+<p><strong>Higiduran dagoen gorputzetik elkarbizitzara.</strong> Ezagutzen duzu jada <em>Thomas Hobbes</em> (1588-1679), bere materialismoagatik: unibertso osoa (eta gizakia bera) higiduran dauden gorputzetara murrizten zuena zen, eta gogamena, garunaren barne-higiduretara (<a href="../chapters-web-eu/gaia-09.html#sec-40">§40</a>). Begirada mekaniko eta desengainatu bera da orain politikara itzultzen dena, haren obra nagusian: <em>Leviatan</em> (1651). Gizona desirak eta higuinak mugitutako makina bat bada, elkarbizitza ere lege berberekin azaldu beharko da, ordena natural batera edo asmo jainkotiar batera jo gabe. Hobbesek, gainera, Ingalaterrako gerra zibilaren inpaktupean idazten du: gerra hark erregea eta parlamentua jarri zituen aurrez aurre, eta hondoko uste bat utzi zion: ez dago ezer botere irmo baten falta baino okerragorik. Haren filosofia politikoa, neurri handi batean, hausnarketa luze bat da gizartea kaosean berriro eror ez dadin.</p>
 <p><strong>Giza natura.</strong> Hobbes antropologia ilun batetik abiatzen da. Gizakiok, berez, biziraun nahiak eta norbere interesaren bilaketak mugitutako indibiduoak gara: plazeraren atzetik gabiltza eta oinazetik ihesi, eta nork bereari begiratzen dio. Gainera, funtsean berdinak gara, baina zentzu kezkagarri batean: ez balio bera dugulako, baizik eta ahulenak ere indar aski duelako indartsuena hiltzeko (maltzurkeriaz, aliantza batez edo haren loa aprobetxatuz). <em>Zaurgarritasunean dugun berdintasun</em> horretatik sortzen da segurtasunik eza. Guztiok elkar kaltetu badezakegu, guztiok antzeko gauzak desiratzen baditugu eta baliabideak urriak badira, elkarrekiko mesfidantza saihestezin bihurtzen da: komeni zait ni jo baino lehen nik jotzea.</p>
-<p><strong>Natura-egoera: guztien arteko gerra.</strong> Imajina ditzagun orain indibiduo horiek, gobernatuko dituen botere komunik gabe. Emaitza, Hobbesen arabera, ez da paradisu inozente bat, <em>guztien arteko gerra</em> bat baizik (<em>bellum omnium contra omnes</em>): ez etengabeko bataila bat, baina bai mehatxu iraunkor bat, non inor ez baitago seguru eta bakoitza baita bakoitzaren etsai posible. «Gizona otso da gizonarentzat» esaera zaharrak (<em>homo homini lupus</em>) laburbiltzen duen egoera da<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Egoera horretan ez da aurrerabiderik posible, inork ez baitu ereiten agian bildu ezingo duena: ez dago industriarik, ez nekazaritzarik, ez arterik, ez letrarik, ez gizarterik; beldurra eta heriotza bortitzaren arriskua baino ez. Gizonaren bizitza, idazten du bere esaldirik ospetsuenean, «bakartia, pobrea, ezatsegina, basatia eta laburra» litzateke orduan<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Komeni da Aristotelesekiko kontrastea neurtzea: greziarrak komunitate politikoan gizakia burutzen den ingurune naturala ikusten zuen lekuan (<a href="gaia-04.html#sec-19">§19</a>), Hobbesek tranpa hilgarri bat ikusten du gizarte aurreko egoeran, nolanahi ere ihes egin beharrekoa.</p>
+<p><strong>Natura-egoera: guztien arteko gerra.</strong> Imajina ditzagun orain indibiduo horiek, gobernatuko dituen botere komunik gabe. Emaitza, Hobbesen arabera, ez da paradisu inozente bat, <em>guztien arteko gerra</em> bat baizik (<em>bellum omnium contra omnes</em>): ez etengabeko bataila bat, baina bai mehatxu iraunkor bat, non inor ez baitago seguru eta bakoitza baita bakoitzaren etsai posible. «Gizona otso da gizonarentzat» esaera zaharrak (<em>homo homini lupus</em>) laburbiltzen duen egoera da<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Egoera horretan ez da aurrerabiderik posible, inork ez baitu ereiten agian bildu ezingo duena: ez dago industriarik, ez nekazaritzarik, ez arterik, ez letrarik, ez gizarterik; beldurra eta heriotza bortitzaren arriskua baino ez. Gizonaren bizitza, idazten du bere esaldirik ospetsuenean, «bakartia, pobrea, ezatsegina, basatia eta laburra» litzateke orduan<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Komeni da Aristotelesekiko kontrastea neurtzea: greziarrak komunitate politikoan gizakia burutzen den ingurune naturala ikusten zuen lekuan (<a href="../chapters-web-eu/gaia-04.html#sec-19">§19</a>), Hobbesek tranpa hilgarri bat ikusten du gizarte aurreko egoeran, nolanahi ere ihes egin beharrekoa.</p>
 <p><strong>Kontratua eta Leviatan.</strong> Nola irteten da hortik? Taldekatzea ez da aski: neure burua defendatzeko gutxi batzuekin aliatzen banaiz, besteek gauza bera egingo dute, eta indibiduoen arteko gerra bandoen arteko gerra bihurtuko da. Irtenbide egonkor bakarra da guztiek, aldi berean eta elkarrekiko, justizia beren kabuz hartzeko eskubideari uko egitea, eta hirugarren bati transferitzea (gizon bati edo biltzar bati), botere guztia bil dezan eta bakeari eusteko erabil dezan. Bakoitzak beste guztiekin egindako itun horrek Estatua sorrarazten du; Hobbesek <em>Leviatan</em> izen biblikoa ematen dio, itsas munstro handiarena: «jainko hilkor» bat, zeinari zor baitizkiogu, Jainko hilezkorraren azpian, gure bakea eta gure defentsa. Obedientziaren truke, segurtasuna jasotzen dugu. Eta bada xehetasun erabakigarri bat: subiranoa <em>ez da kontratuko alderdi</em> (ez du ezertarako konpromisorik hartzen mendekoen aurrean), haren emaitza baizik; horregatik, haiek ezin dute haren boterea mugatu, ez errebokatu, kaosari ateak berriro ireki gabe.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -557,7 +569,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption><em>Leviatan</em>en frontispizioa (1651): subiranoaren gorputza beren itunaz hura eratu duten mendekoen jendetzak osatzen du (Estatua, hitzez hitz, osatzen dutenen batura da). Abraham Bosseren grabatua. || Egiletza: Abraham Bosse, jabari publikoa / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Botere absolutua.</strong> Hortik dator ondoriorik polemikoena: subiranoaren botereak <em>absolutua</em> izan behar du. Kontrapisurik gabeko botere batek bakarrik, legea, ezpata eta epaia monopolizatzen dituenak, eragotz dezake gerrarako itzulera. Botere hori banatzea (erregearen eta parlamentuaren artean, adibidez) hurrengo gerra zibilaren hazia ereitea litzateke, Hobbesen begietara. Hemen azaleratzen da pertsonaiaren paradoxa. Bazirudien kontraktualistak monarkia absolutuak eraistera zetozela, eta haietako lehenak sendotu egiten ditu; baina zimendu erabat berri baten gainean sendotzen ditu, Leviatanen boterea ez baita jada Jainkoarengandik jaisten (<a href="gaia-10.html#sec-41">§41</a>), mendekoen beraien akordiotik sortzen baizik. Eta, boterea giza itun batean oinarritu ondoren, irekita geratzen da haren forma eta mugak eztabaidatzeko atea. Ate hori Lockek eta Rousseauk zeharkatuko dute.</p>
+<p><strong>Botere absolutua.</strong> Hortik dator ondoriorik polemikoena: subiranoaren botereak <em>absolutua</em> izan behar du. Kontrapisurik gabeko botere batek bakarrik, legea, ezpata eta epaia monopolizatzen dituenak, eragotz dezake gerrarako itzulera. Botere hori banatzea (erregearen eta parlamentuaren artean, adibidez) hurrengo gerra zibilaren hazia ereitea litzateke, Hobbesen begietara. Hemen azaleratzen da pertsonaiaren paradoxa. Bazirudien kontraktualistak monarkia absolutuak eraistera zetozela, eta haietako lehenak sendotu egiten ditu; baina zimendu erabat berri baten gainean sendotzen ditu, Leviatanen boterea ez baita jada Jainkoarengandik jaisten (<a href="../chapters-web-eu/gaia-10.html#sec-41">§41</a>), mendekoen beraien akordiotik sortzen baizik. Eta, boterea giza itun batean oinarritu ondoren, irekita geratzen da haren forma eta mugak eztabaidatzeko atea. Ate hori Lockek eta Rousseauk zeharkatuko dute.</p>
 <p><strong>Askatasunak, desberdintasuna eta kontratuaren muga.</strong> Botere horren pean, mendekoen askatasunak subiranoaren mende daude neurri handi batean, eta urriak dira gaur egun ziurtzat jotzen ditugunen aldean. Hobbesek ez du tirania apetatsua defendatzen (subirano on batek bakerako gobernatuko duela espero du), baina ordena ia guztiaren gainetik jartzen du, eta gizarte-desberdintasunak naturaltzat eta gorputz politikoarentzat baliagarritzat jotzen ditu. Bada, hori bai, kontratuak berak ere zeharka ezin dezakeen muga bat: hartan hain zuzen <em>geure bizitza babesteko</em> sartzen garenez, inor ezin da behartuta geratu bere burua hiltzen uztera. Horregatik, heriotzara kondenatua, epaia justua izanda ere, itunetik aske geratzen da, eta aurre egiteko edo ihes egiteko eskubideari eusten dio, praktikan gutxirako balio badio ere. Zirrikitu txiki horrek axola du: sistemarik autoritarioenean ere, norbere bizitzaren kontserbazioak markatzen du Estatuak zeharkatu ezin duen muga.</p>
 <p><strong>Kritika.</strong> Hobbesen planteamenduak pisuzko objekzioak jaso ditu, eta komeni da eskura izatea.</p>
 <ol type="1">
@@ -566,21 +578,21 @@ ul.task-list li input[type="checkbox"] {
 <li><em>Espekulazioa</em>. Natura-egoera erabat imajinarioa da, eta susma daiteke Hobbesek bere ondorio monarkikoak barruan zituela marraztu zuela jada.</li>
 <li><em>Totalitarismoa</em>. Hain botere itzel eta kontrolik gabea erraz endeka daiteke Estatu batean, babestuko zituela zioen indibiduo berberak zapaltzen dituena.</li>
 </ol>
-<p>Hala ere, Hobbesek zerbait erabakigarria lortua zuen (botere politikoa gizakien arteko itun batean oinarritzea, eta ez zeruan), eta abiapuntu horren gainean eraikiko du bere erantzun ia kontrakoa lehen enpirista handia ere izan zenak: John Lockek (<a href="gaia-10.html#sec-44">§44</a>).</p>
+<p>Hala ere, Hobbesek zerbait erabakigarria lortua zuen (botere politikoa gizakien arteko itun batean oinarritzea, eta ez zeruan), eta abiapuntu horren gainean eraikiko du bere erantzun ia kontrakoa lehen enpirista handia ere izan zenak: John Lockek (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>).</p>
 </section>
 <section id="sec-44" class="level2">
 <h2 class="anchored" data-anchor-id="sec-44">§44 · Gizarte-kontratuaren teoria: John Locke</h2>
-<p><strong>Enpirista, orain politikan.</strong> Ezagutzen duzu jada <em>John Locke</em> ere (1632-1704): lehen enpirista handia izan zen, gogamena orri zuri bat bezala jaiotzen dela eta gure ezagutza guztia esperientziatik datorrela defendatu zuena (<a href="gaia-09.html#sec-38">§38</a>). Locke bera pentsamendu politiko modernoaren funtsezko figura da. Bere <em>Gobernu zibilari buruzko bi tratatu</em>etan (1690), Ingalaterran erregearen boterea mugatu berri zuen iraultzaren giroan idatziak, kontratuaren arazoari Hobbesenaren ia kontrako erantzuna ematen dio, eskema beretik abiatuta ere: natura-egoera bat, itun bat eta hartatik sortzen den Estatu bat.</p>
-<p><strong>Berezko eskubideak.</strong> Aldea antropologian hasten da. Indibiduo hobbestarraren aurrean (berekoikeria eta beldur hutsa), Lockek defendatzen du gizakiok berez ditugula zenbait <em>berezko eskubide</em>, gizarte ororen aurrekoak eta Jainkoak emanak; horregatik dira <em>besterenezinak</em>: inork ezin dizkigu kendu, eta guk ere ezin ditugu erabat laga. Nagusiak <em>bizitza</em>, <em>askatasuna</em> eta <em>jabetza</em> dira. Jainkozko oinarri horrek, gainera, ondorio berdintzaile bat dakar, eta komeni da ohartzea: talentuz eta fortunaz berdinak ez bagara ere, guztiok izan gara eskubide berberez hornituak, eta, beraz, <em>legearen aurrean berdinak</em> gara; oso bestelako gauza da denean berdinak izatea (<a href="gaia-10.html#sec-41">§41</a>).</p>
+<p><strong>Enpirista, orain politikan.</strong> Ezagutzen duzu jada <em>John Locke</em> ere (1632-1704): lehen enpirista handia izan zen, gogamena orri zuri bat bezala jaiotzen dela eta gure ezagutza guztia esperientziatik datorrela defendatu zuena (<a href="../chapters-web-eu/gaia-09.html#sec-38">§38</a>). Locke bera pentsamendu politiko modernoaren funtsezko figura da. Bere <em>Gobernu zibilari buruzko bi tratatu</em>etan (1690), Ingalaterran erregearen boterea mugatu berri zuen iraultzaren giroan idatziak, kontratuaren arazoari Hobbesenaren ia kontrako erantzuna ematen dio, eskema beretik abiatuta ere: natura-egoera bat, itun bat eta hartatik sortzen den Estatu bat.</p>
+<p><strong>Berezko eskubideak.</strong> Aldea antropologian hasten da. Indibiduo hobbestarraren aurrean (berekoikeria eta beldur hutsa), Lockek defendatzen du gizakiok berez ditugula zenbait <em>berezko eskubide</em>, gizarte ororen aurrekoak eta Jainkoak emanak; horregatik dira <em>besterenezinak</em>: inork ezin dizkigu kendu, eta guk ere ezin ditugu erabat laga. Nagusiak <em>bizitza</em>, <em>askatasuna</em> eta <em>jabetza</em> dira. Jainkozko oinarri horrek, gainera, ondorio berdintzaile bat dakar, eta komeni da ohartzea: talentuz eta fortunaz berdinak ez bagara ere, guztiok izan gara eskubide berberez hornituak, eta, beraz, <em>legearen aurrean berdinak</em> gara; oso bestelako gauza da denean berdinak izatea (<a href="../chapters-web-eu/gaia-10.html#sec-41">§41</a>).</p>
 <p><strong>Natura-egoera bizigarri bat.</strong> Horregatik, Lockeren natura-egoera ez da Hobbesen amesgaiztoa. Indibiduoak ez dira guztien arteko gerran bizi, arrazoiak ezagut dezakeen <em>lege natural</em> baten pean baizik; lege horrek agintzen du besteari kalterik ez egitea bere bizitzan, bere askatasunean eta bere ondasunetan. Badira, hori bai, eragozpenak: gatazka bat sortzen denean, nor bere auziaren epaile da, eta ura bere errotara eramateko joera du; hala, liskarrak gaiztotu egiten dira, eta eskubideen defentsa ziurgabe bihurtzen da. Ez da infernu bat, baina bai egoera deseroso eta prekario bat.</p>
 <p><strong>Kontratua: arbitro inpartzial bat.</strong> Zergatik utzi, orduan, egoera hori? Ez hiltzeko beldurrez, Hobbesengan bezala, <em>komenentziaz</em> baizik, hobeto bizitzeko. Mesede egiten digu arbitro neutral batek, liskarrak ebatzi eta guztion eskubideak <em>legearen nagusitasunaren</em> bidez bermatuko dituenak (bereziki jabetzarena); eta gizarteko bizitzak, gainera, elkarlanean aritzea eta bakarka lortuko ez genituzkeen xedeei ekitea ahalbidetzen digu. Horregatik egiten dugu ituna. Baina (eta hemen dago gakoa) eskubideak besterenezinak direnez, kontratuan sartzean <em>ez ditugu lagatzen</em>: gorde egiten ditugu, eta Estatua, hain zuzen, haiek hobeto babesteko jaiotzen da. Ematen dugun boterea mugatua eta baldintzapekoa da, ez absolutua.</p>
 <p><strong>Gobernu mugatua.</strong> Abiapuntu honetatik Hobbesenaren kontrako arkitektura instituzional bat sortzen da. Gobernu onena ez da subirano ahalguztidun bat, gobernu <em>mugatu</em> bat baizik (monarkia konstituzional bat edo ordezkaritza-erregimen bat), berezko eskubideak bermatuko dituena eta aniztasuna eta tolerantzia errespetatuko dituena, baita erlijiosoa ere. Boterea kontzentratu eta gehiegikerian eror ez dadin, haren <em>banaketa</em> defendatzen du Lockek: legeak egiteko ahalmenak (botere legegileak) haiek aplikatzekoarengandik (betearazlearengandik) bereizita egon behar du, gobernatzen duena ere legearen mende gera dadin<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Eta gobernuaren legitimitatea oso-osorik gobernatuen <em>adostasunean</em> datza: botereak bere eginkizuna traizionatzen badu eta tiraniko bihurtzen bada, herriak <em>erresistentzia-eskubideari</em> eusten dio, matxinatzeko eta hura ordezteko eskubideari. Hobbesekiko kontrastea ezin handiagoa da: Leviatan errebokaezina zen lekuan, Lockeren gobernua errebokagarria da bere izaeraz beraz.</p>
-<p><strong>Jabetza eta desberdintasuna.</strong> Locke jabetza pribatuaren teoriko moderno handia ere bada, eta hemen haren pentsamendua arantzatsuago bihurtzen da. Nondik sortzen da edukitzeko eskubidea? Norberaren lanetik: bakoitza bere gorputzaren jabe denez, bere eskuen ahaleginarena ere bada, eta nire lana naturako zerbaitekin nahasten dudanean (soro bat landu, fruitu bat bildu), neure egiten dut. Hortik ondorioztatzen du desberdintasun ekonomikoak legitimoak direla: lan egiten badut eta asko ekoizten badut, aberasteko eskubidea dut; ahalegintzen ez denak ez du eskubiderik oparotasun bererako. Lockek ez du defendatzen guztiok ondasunetan berdinak izatea, eskubideetan eta legearen aurrean baizik. <em>Askatasunaren</em> eta <em>jabetzaren</em> aldeko defentsa bateratu horrek eragin erabakigarri bihurtu zuen Estatu Batuetako Konstituzioan eta geroko pentsamendu liberal osoan (<a href="gaia-10.html#sec-46">§46</a>); ziur asko antzemango diozu haren oihartzuna gaurko diskurtso politiko batean baino gehiagotan.</p>
+<p><strong>Jabetza eta desberdintasuna.</strong> Locke jabetza pribatuaren teoriko moderno handia ere bada, eta hemen haren pentsamendua arantzatsuago bihurtzen da. Nondik sortzen da edukitzeko eskubidea? Norberaren lanetik: bakoitza bere gorputzaren jabe denez, bere eskuen ahaleginarena ere bada, eta nire lana naturako zerbaitekin nahasten dudanean (soro bat landu, fruitu bat bildu), neure egiten dut. Hortik ondorioztatzen du desberdintasun ekonomikoak legitimoak direla: lan egiten badut eta asko ekoizten badut, aberasteko eskubidea dut; ahalegintzen ez denak ez du eskubiderik oparotasun bererako. Lockek ez du defendatzen guztiok ondasunetan berdinak izatea, eskubideetan eta legearen aurrean baizik. <em>Askatasunaren</em> eta <em>jabetzaren</em> aldeko defentsa bateratu horrek eragin erabakigarri bihurtu zuen Estatu Batuetako Konstituzioan eta geroko pentsamendu liberal osoan (<a href="../chapters-web-eu/gaia-10.html#sec-46">§46</a>); ziur asko antzemango diozu haren oihartzuna gaurko diskurtso politiko batean baino gehiagotan.</p>
 <p><strong>Kritika.</strong> Hiru objekzio nagusi zuzendu zaizkio.</p>
 <p><em>Jainkoaren papera.</em> Lockeren berezko eskubideak Jainkoarengan bermatzen dira, eta, oinarri hori kenduta, haren natura-egoera Hobbesenaren antzekoagoa litzateke berak nahiko lukeena baino.</p>
 <p><em>Lege naturalari buruzko adostasunik eza.</em> Lockek uste du arrazoiak zailtasunik gabe aurkituko dituela berezko eskubideak, baina beste pentsalari batzuek, arrazoia erabiliz haiek ere, oso zerrenda desberdinak landu dituzte; berak aurresuposatzen duen adostasuna ez da existitzen.</p>
 <p><em>Klase-alborapena.</em> <em>Tratatua</em> gizarte zibilaren barrutik idazten denez jada, jabetza den bezalakoaren justifikazio gisa funtzionatzen bukatzen du (baita desberdinenarena ere); Locke bera iristen da esatera bere morroien lanaren fruitua berea dela. Guztion eskubideak babestea agintzen zuen teoriak, batez ere, jada zerbaiten jabe direnenak babesten ditu.</p>
-<p>Hala ere, haren eragina itzela izan zen, eta askatasunaren eta jabetzaren aldeko haren defentsatik jaioko da gaia ixten duen korrontea. Baina lehenago entzun behar diogu planteamendu honi buelta osoa eman zionari, konbentziturik gizarteak, gizakia babestu ordez, hondatu egin zuela: Jean-Jacques Rousseauri (<a href="gaia-10.html#sec-45">§45</a>).</p>
+<p>Hala ere, haren eragina itzela izan zen, eta askatasunaren eta jabetzaren aldeko haren defentsatik jaioko da gaia ixten duen korrontea. Baina lehenago entzun behar diogu planteamendu honi buelta osoa eman zionari, konbentziturik gizarteak, gizakia babestu ordez, hondatu egin zuela: Jean-Jacques Rousseauri (<a href="../chapters-web-eu/gaia-10.html#sec-45">§45</a>).</p>
 </section>
 <section id="sec-45" class="level2">
 <h2 class="anchored" data-anchor-id="sec-45">§45 · Gizarte-kontratuaren teoria: Jean-Jacques Rousseau</h2>
@@ -591,7 +603,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Jean-Jacques Rousseauren erretratua, Maurice Quentin de La Tourrek egina. || Egiletza: Maurice Quentin de La Tour, jabari publikoa / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Gizona ona da; gizarteak hondatzen du.</strong> Rousseauk Hobbesen antropologia irauli egiten du. Ingelesak otso bat ikusten zuen lekuan (<a href="gaia-10.html#sec-43">§43</a>), berak izaki naturalki <em>on</em> bat ikusten du, kontserbazio-senak eta lagun hurkoarenganako berezko gupida batek mugitua. Natura-egoeran gizakia ez da gaiztoa: <em>zibilizazioa</em> da (jabetza, desberdintasuna, banitatea, lehia) hura hondatu duena, bere <em>Desberdintasunaren jatorriari buruzko diskurtsoan</em> (1755) argudiatua zuenez. Baina Rousseau ez da basoetara itzultzea predikatzen duen inozo bat: badaki ez dagoela atzera-biderik, eta gizarteko bizitzak onura izugarriak dakartzala. Haren arazoa beste bat da, eta zailagoa.</p>
+<p><strong>Gizona ona da; gizarteak hondatzen du.</strong> Rousseauk Hobbesen antropologia irauli egiten du. Ingelesak otso bat ikusten zuen lekuan (<a href="../chapters-web-eu/gaia-10.html#sec-43">§43</a>), berak izaki naturalki <em>on</em> bat ikusten du, kontserbazio-senak eta lagun hurkoarenganako berezko gupida batek mugitua. Natura-egoeran gizakia ez da gaiztoa: <em>zibilizazioa</em> da (jabetza, desberdintasuna, banitatea, lehia) hura hondatu duena, bere <em>Desberdintasunaren jatorriari buruzko diskurtsoan</em> (1755) argudiatua zuenez. Baina Rousseau ez da basoetara itzultzea predikatzen duen inozo bat: badaki ez dagoela atzera-biderik, eta gizarteko bizitzak onura izugarriak dakartzala. Haren arazoa beste bat da, eta zailagoa.</p>
 <p><strong>Arazoa: gizartean bizitzea askatasuna galdu gabe.</strong> Rousseaurentzat, askatasuna ez da luxu bat, gizaki egiten gaituena baizik: hari uko egitea gizon izateari uztea litzateke. Hortik haren erronka. Hobbesek eta Lockek onartzen zuten, gizartean sartzean, gure askatasuna <em>murriztu</em> egiten dugula segurtasunaren edo babesaren truke. Rousseau ez da horrekin konformatzen: elkartzeko forma bat bilatzen du, non bakoitzak, guztiekin elkartuta ere, <em>bere buruari baino ez baitio obedituko</em>, eta lehen bezain aske izaten jarraituko baitu. Itxuraz ezinezko horren irtenbidea da haren ekarpen handia: <em>borondate orokorra</em>.</p>
 <p><strong>Borondate orokorra eta guztien borondatea.</strong> Ituna egitean, indibiduoak ez dira kanpoko subirano baten mende jartzen: <em>gorputz politiko</em> batean urtzen dira, «ni komun» batean, zeinaren borondatea <em>borondate orokorra</em> baita: <em>guztion onera</em> zuzentzen dena, komunitateari halakoa den aldetik komeni zaionera. Komeni da kontu handiz bereiztea <em>guztien borondatetik</em>, hau bakoitzaren desira partikularren batura hutsa baita. Adibide batek argitzen du: guztiek zerga gutxiago ordaindu <em>nahi izatea</em> guztien borondatea da; baina haiek jaisteak komunitatearen ongizateari kalte egiten badio, borondate orokorra haiei eustea da. Lehenengoak interes pribatuari begiratzen dio; bigarrenak, komunari. Eta lege legitimoa ez da borondate orokorraren adierazpena besterik.</p>
 <p><strong>Askatasun zibila.</strong> Hemen ebazten du Rousseauk bere erronka, paradoxa bat ukituz. Borondate orokorra obeditzen dudanean, ez diot beste bati obeditzen: guztion ona nahi duen nire zatiari obeditzen diot, eta, beraz, neure buruari. Horixe da <em>askatasun zibila</em>, gogoak ematen duena egiteko <em>askatasun natural</em> hutsa baino gorago dagoena: ez apetaren askatasuna, bere buruari legeak ematen dizkion hiritarrarena baizik. Prezioa altua da (sarritan nire desira partikularrak sakrifikatu beharko ditut interes orokorraren alde), baina trukean beste ordena bateko askatasun bat irabazten dut, berdinen artean bizi den gizaki bati dagokion bakarra.</p>
@@ -607,9 +619,9 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>Ardatza</th>
-<th>Hobbes (<a href="gaia-10.html#sec-43">§43</a>)</th>
-<th>Locke (<a href="gaia-10.html#sec-44">§44</a>)</th>
-<th>Rousseau (<a href="gaia-10.html#sec-45">§45</a>)</th>
+<th>Hobbes (<a href="../chapters-web-eu/gaia-10.html#sec-43">§43</a>)</th>
+<th>Locke (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>)</th>
+<th>Rousseau (<a href="../chapters-web-eu/gaia-10.html#sec-45">§45</a>)</th>
 </tr>
 </thead>
 <tbody>
@@ -672,11 +684,11 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-46" class="level2">
 <h2 class="anchored" data-anchor-id="sec-46">§46 · Liberalismo politikoa eta gizarte kapitalistaren jatorria</h2>
-<p><strong>Kontratutik askatasun indibidualera.</strong> Kontratuaren hiru bertsioetatik, Lockerena izan zen praktikan indarrik handienaz erroak bota zituena. Hartatik jaiotzen da <em>liberalismoa</em>, <em>indibiduoaren askatasuna</em> erdigunean jarri eta Estatuari hura errespetatzea eskatzen dion korronte politikoa. Haren ideiak ezagutzen dituzu jada: botereak baino lehenagoko berezko eskubideak, gobernu mugatu eta banatua, legearen nagusitasuna, tolerantzia eta adostasunean oinarritutako legitimitatea (<a href="gaia-10.html#sec-44">§44</a>). Liberalismoak irauli egiten du indibiduoaren eta Estatuaren arteko harreman zaharra: boterea ez da gehiago indibiduoak bere burua zor dion xede bat; hiritarren eskubideen zerbitzura dagoen tresna bat da aurrerantzean, eta zenbat eta gutxiago sartu haien bizitzetan, hobe. Eskubide horien artean, batek pisu erabakigarria hartuko du: <em>jabetzarenak</em>.</p>
-<p><strong>Jabetzatik merkatura: Adam Smith.</strong> Zeren liberalismoa ez baita boterearen teoria bat bakarrik; <em>ekonomiaren</em> teoria bat ere bada, eta batez ere hori. Bakoitza bere lanaren fruituaren jabe bada (<a href="gaia-10.html#sec-44">§44</a>) eta hartaz baliatzeko aske, koherenteena da pertsonei uztea beren interesaren arabera ekoizten, erosten eta saltzen, Estatuaren esku-sartze txikienarekin. Ideia horrek bere formulazio klasikoa <em>Adam Smith</em> eskoziarrarengan (1723-1790) aurkitzen du: haren <em>Nazioen aberastasuna</em> obra (1776) ekonomia modernoaren jaiotza-agiria da<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Smithek ikusten du ezen, indibiduo bakoitzak bere etekina merkatu aske batean bilatzen duenean, emaitza ez dela kaosa, multzoari mesede egiten dion ordena bat baizik, «esku ikusezin» batek berekoikeria partikularrak oparotasun orokorrerantz koordinatuko balitu bezala. Lan-banaketak aberastasuna biderkatzen du; lehiak, eta ez plangintzak, arautzen ditu prezioak eta ekoizpena. Estatuak, beraz, ez du esku hartu behar: jabetza eta kontratuak bermatu, eta egiten utzi (<em>laissez faire</em>).</p>
+<p><strong>Kontratutik askatasun indibidualera.</strong> Kontratuaren hiru bertsioetatik, Lockerena izan zen praktikan indarrik handienaz erroak bota zituena. Hartatik jaiotzen da <em>liberalismoa</em>, <em>indibiduoaren askatasuna</em> erdigunean jarri eta Estatuari hura errespetatzea eskatzen dion korronte politikoa. Haren ideiak ezagutzen dituzu jada: botereak baino lehenagoko berezko eskubideak, gobernu mugatu eta banatua, legearen nagusitasuna, tolerantzia eta adostasunean oinarritutako legitimitatea (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>). Liberalismoak irauli egiten du indibiduoaren eta Estatuaren arteko harreman zaharra: boterea ez da gehiago indibiduoak bere burua zor dion xede bat; hiritarren eskubideen zerbitzura dagoen tresna bat da aurrerantzean, eta zenbat eta gutxiago sartu haien bizitzetan, hobe. Eskubide horien artean, batek pisu erabakigarria hartuko du: <em>jabetzarenak</em>.</p>
+<p><strong>Jabetzatik merkatura: Adam Smith.</strong> Zeren liberalismoa ez baita boterearen teoria bat bakarrik; <em>ekonomiaren</em> teoria bat ere bada, eta batez ere hori. Bakoitza bere lanaren fruituaren jabe bada (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>) eta hartaz baliatzeko aske, koherenteena da pertsonei uztea beren interesaren arabera ekoizten, erosten eta saltzen, Estatuaren esku-sartze txikienarekin. Ideia horrek bere formulazio klasikoa <em>Adam Smith</em> eskoziarrarengan (1723-1790) aurkitzen du: haren <em>Nazioen aberastasuna</em> obra (1776) ekonomia modernoaren jaiotza-agiria da<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Smithek ikusten du ezen, indibiduo bakoitzak bere etekina merkatu aske batean bilatzen duenean, emaitza ez dela kaosa, multzoari mesede egiten dion ordena bat baizik, «esku ikusezin» batek berekoikeria partikularrak oparotasun orokorrerantz koordinatuko balitu bezala. Lan-banaketak aberastasuna biderkatzen du; lehiak, eta ez plangintzak, arautzen ditu prezioak eta ekoizpena. Estatuak, beraz, ez du esku hartu behar: jabetza eta kontratuak bermatu, eta egiten utzi (<em>laissez faire</em>).</p>
 <p><strong>Lehia eta lankidetza.</strong> Komeni da irudi honen aurpegi bikoitzari erreparatzea, curriculumak berak azpimarratzen baitu. Liberalismo ekonomikoak <em>lehia</em> goresten du (bakoitzak besteekin norgehiagoka dihardu bere posizioa hobetzeko), eta, hala ere, uste du norgehiagoka horretatik bilatu gabeko <em>lankidetza</em> bat sortzen dela: espezializatzean eta trukatzean, indibiduoak elkarren mende geratzen dira azkenean, eta elkarri zerbitzatzen diote nahi gabe ere. Ez dugu gure afaria harakinaren, garagardogilearen eta okinaren onberatasunetik espero (idazten du Smithek bere esaldirik aipatuenean), bakoitzak bere interesari jartzen dion arduratik baizik; eta, interes horri esker, afaltzen dugu. Merkatu-gizartea, hala, interes pribatuzko hariekin ehundutako lankidetza-sare zabal gisa aurkezten da.</p>
 <p><strong>Gizarte kapitalistaren jaiotza.</strong> Elementu hauen elkargunetik (jabetza pribatua, askatasun indibiduala, merkatu askea eta Estatu mugatua) sortzen da <em>gizarte kapitalistaren</em> esparru ideologikoa: XVIII. mendetik aurrera Mendebaldean nagusituko den antolaketa ekonomiko eta sozialaren forma. Haren protagonista gorabidean den klase bat da, <em>burgesia</em>: Erregimen Zaharraren pribilegioen aurrean, liberalismoak agintzen duen huraxe eskatzen du: ekiteko askatasuna, jabetzarentzako segurtasuna eta legearen aurreko berdintasuna. Ez da kasualitatea iraultza liberal handiek (Ipar Amerikakoak, Frantziakoak) aldi berean goratzea indibiduoaren eskubideak eta askatasun ekonomikoa. Liberalismo politikoa eta kapitalismoa elkarri lotuta jaiotzen dira.</p>
-<p><strong>Promesa eta ifrentzua.</strong> Alabaina, promesa horrek badu ifrentzu bat, laster seinalatuko dena. Liberalismoak bermatzen duen berdintasuna <em>formala</em> da (eskubideen eta legearen aurreko berdintasuna), ez <em>materiala</em>; eta, Lockeri egindako kritikak jada iradokitzen zuenez (<a href="gaia-10.html#sec-44">§44</a>), jabe askeen gizarte bat izan daiteke, aldi berean, gizarte sakonki desberdin bat, non ezer ez duenaren askatasunak oso gutxi balio baitu. Tentsio horren gainean (askatasun formalaren eta desberdintasun errealaren artekoa, lehiaren eta justiziaren artekoa) altxatuko da geroko pentsamenduaren zati handi bat: Bentham eta Mill liberalek beraiek erabilgarritasunaz eta zoriontasunaz egindako hausnarketa <em>etikoa</em>, bere lekuan ikusiko duguna (<a href="gaia-13.html#sec-53">§53</a>); Marxen kritika suntsitzailea, zeinarentzat ordena kapitalista ez baita naturala, ez betierekoa, etapa historiko bat gehiago baizik (<a href="gaia-15.html#sec-57">§57</a>); eta XX. mendeko saioak haren desberdintasunak zuzentzeko askatasunari uko egin gabe, Rawlsena eta ongizate-estatuarena kasu (<a href="gaia-19.html#sec-71">§71</a>). Baina hori guztia datozen kapituluetakoa da. Lehenago, ideia politiko hauei zoru komun gisa balio izan zien arrazoiarekiko eta aurrerabidearekiko konfiantzak gai bat eskatzen du beretzat: Ilustrazioak (11. gaia).</p>
+<p><strong>Promesa eta ifrentzua.</strong> Alabaina, promesa horrek badu ifrentzu bat, laster seinalatuko dena. Liberalismoak bermatzen duen berdintasuna <em>formala</em> da (eskubideen eta legearen aurreko berdintasuna), ez <em>materiala</em>; eta, Lockeri egindako kritikak jada iradokitzen zuenez (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>), jabe askeen gizarte bat izan daiteke, aldi berean, gizarte sakonki desberdin bat, non ezer ez duenaren askatasunak oso gutxi balio baitu. Tentsio horren gainean (askatasun formalaren eta desberdintasun errealaren artekoa, lehiaren eta justiziaren artekoa) altxatuko da geroko pentsamenduaren zati handi bat: Bentham eta Mill liberalek beraiek erabilgarritasunaz eta zoriontasunaz egindako hausnarketa <em>etikoa</em>, bere lekuan ikusiko duguna (<a href="../chapters-web-eu/gaia-13.html#sec-53">§53</a>); Marxen kritika suntsitzailea, zeinarentzat ordena kapitalista ez baita naturala, ez betierekoa, etapa historiko bat gehiago baizik (<a href="../chapters-web-eu/gaia-15.html#sec-57">§57</a>); eta XX. mendeko saioak haren desberdintasunak zuzentzeko askatasunari uko egin gabe, Rawlsena eta ongizate-estatuarena kasu (<a href="../chapters-web-eu/gaia-19.html#sec-71">§71</a>). Baina hori guztia datozen kapituluetakoa da. Lehenago, ideia politiko hauei zoru komun gisa balio izan zien arrazoiarekiko eta aurrerabidearekiko konfiantzak gai bat eskatzen du beretzat: Ilustrazioak (11. gaia).</p>
 
 
 </section>
@@ -695,19 +707,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -786,7 +910,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -795,8 +920,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -810,6 +996,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -972,44 +1159,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1108,7 +1305,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-09.html" class="pagination-link" aria-label="9. gaia · Enpirismoa eta materialismoa: Hume">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">9. gaia · Enpirismoa eta materialismoa: Hume</span></span>

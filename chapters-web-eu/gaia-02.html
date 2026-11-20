@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-01.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-02.html"><span class="chapter-title">2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-02.html"><span class="chapter-title">2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -493,10 +505,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-02.html"><span class="chapter-title">2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-02.html"><span class="chapter-title">2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates</span></h1>
 </div>
@@ -517,22 +529,22 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="sec-04" class="level2">
 <h2 class="anchored" data-anchor-id="sec-04">§04 · Greziar Ilustrazioa: filosofia eta hiritartasuna</h2>
-<p>Zertarako balio dizu mundua zerez egina dagoen jakiteak, ez badakizu nola bizi behar duzun hartan? o.a.a. V. mendearen erdialdera, pentsalari greziarren belaunaldi berri batek galdera hori egin zion bere buruari, eta, harekin, filosofiaren begirada jiraarazi zuen. Lehen filosofoek —<a href="gaia-01.html#sec-03">§03</a>n ikusi zenuen— <em>physis</em>a, natura, hartua zuten galdegai: <em>arkhé</em>a bilatzen zuten, kosmos ordenatu baten printzipioa. Orain, fokua astroetatik gizakietara lekualdatzen da, mundutik <em>polis</em>era. Lekualdatze horri <em>bira antropologikoa</em> deitzen diogu: filosofiak denboraldi batez alde batera uzten du errealitatearen arazoa, gizakiaz, gizarteaz, legeaz eta justua denaz galdetzeko. Historialari batzuek <em>Greziar Ilustrazioa</em> deitu diote aldi honi, arrazoi kritikoan zuen konfiantzagatik eta jasotako sinesmenak azterketara meneratzeko zuen grinagatik; izena aski zaigu, paraleloa behartu gabe, benetan axola duena azpian taupaka dagoen bira baita.</p>
-<p>Zizeronek irudi zorioneko batez laburbilduko zuen geroago bira hura: Sokrates izan zen lehena filosofia «zerutik lurrera jaitsarazten», hirietan eta gizakien etxeetan kokatuz<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Sokrates ohoratzen du esaldiak —garaiaren protagonista handia, <a href="gaia-02.html#sec-06">§06</a> eskaintzen dioguna—, baina garai oso bat deskribatzen du: agoraren, batzarraren eta auzitegiaren garaia, non auzitan zegoena ez baitzen unibertsoaren jatorria, elkarrekin bizitzeko modua baizik.</p>
-<p><strong>Agertokia Atenas da.</strong> Filosofia koloni joniarretan jaio bazen (<a href="gaia-01.html#sec-02">§02</a>), haren bigarren etapa handiak hiriburua du: o.a.a. V. mendeko Atenas, bere distiraren gailurrean. Periklesen (o.a.a. 495 inguru - o.a.a. 429) gidaritzapean, hiriak <em>demokrazia</em> zuzen bat eman zion bere buruari —<em>dêmos</em>, «herria», eta <em>krátos</em>, «boterea»—, antzinako munduan parekorik ez zuena. Ez zen gurea bezalakoa, gurea ordezkaritzazkoa baita: hiritarrek ez zituzten hautatzen haien ordez erabakiko zutenak; beraiek erabakitzen zuten zuzenean. Batzarrean legeak eta gerra bozkatzen ziren; auzitegietan, zozketaz hautatutako ehunka hiritarrez osatuetan, auziak abokatu profesionalik gabe epaitzen ziren, eta nork bere hitzez defendatzen zuen bere burua<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Atenas oparo eta ireki hartara, jakintzen iman hartara, mundu greziarreko bazter guztietatik etorriko ziren hitzaren arte berria irakatsiko zuten maisuak.</p>
+<p>Zertarako balio dizu mundua zerez egina dagoen jakiteak, ez badakizu nola bizi behar duzun hartan? o.a.a. V. mendearen erdialdera, pentsalari greziarren belaunaldi berri batek galdera hori egin zion bere buruari, eta, harekin, filosofiaren begirada jiraarazi zuen. Lehen filosofoek —<a href="../chapters-web-eu/gaia-01.html#sec-03">§03</a>n ikusi zenuen— <em>physis</em>a, natura, hartua zuten galdegai: <em>arkhé</em>a bilatzen zuten, kosmos ordenatu baten printzipioa. Orain, fokua astroetatik gizakietara lekualdatzen da, mundutik <em>polis</em>era. Lekualdatze horri <em>bira antropologikoa</em> deitzen diogu: filosofiak denboraldi batez alde batera uzten du errealitatearen arazoa, gizakiaz, gizarteaz, legeaz eta justua denaz galdetzeko. Historialari batzuek <em>Greziar Ilustrazioa</em> deitu diote aldi honi, arrazoi kritikoan zuen konfiantzagatik eta jasotako sinesmenak azterketara meneratzeko zuen grinagatik; izena aski zaigu, paraleloa behartu gabe, benetan axola duena azpian taupaka dagoen bira baita.</p>
+<p>Zizeronek irudi zorioneko batez laburbilduko zuen geroago bira hura: Sokrates izan zen lehena filosofia «zerutik lurrera jaitsarazten», hirietan eta gizakien etxeetan kokatuz<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Sokrates ohoratzen du esaldiak —garaiaren protagonista handia, <a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a> eskaintzen dioguna—, baina garai oso bat deskribatzen du: agoraren, batzarraren eta auzitegiaren garaia, non auzitan zegoena ez baitzen unibertsoaren jatorria, elkarrekin bizitzeko modua baizik.</p>
+<p><strong>Agertokia Atenas da.</strong> Filosofia koloni joniarretan jaio bazen (<a href="../chapters-web-eu/gaia-01.html#sec-02">§02</a>), haren bigarren etapa handiak hiriburua du: o.a.a. V. mendeko Atenas, bere distiraren gailurrean. Periklesen (o.a.a. 495 inguru - o.a.a. 429) gidaritzapean, hiriak <em>demokrazia</em> zuzen bat eman zion bere buruari —<em>dêmos</em>, «herria», eta <em>krátos</em>, «boterea»—, antzinako munduan parekorik ez zuena. Ez zen gurea bezalakoa, gurea ordezkaritzazkoa baita: hiritarrek ez zituzten hautatzen haien ordez erabakiko zutenak; beraiek erabakitzen zuten zuzenean. Batzarrean legeak eta gerra bozkatzen ziren; auzitegietan, zozketaz hautatutako ehunka hiritarrez osatuetan, auziak abokatu profesionalik gabe epaitzen ziren, eta nork bere hitzez defendatzen zuen bere burua<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Atenas oparo eta ireki hartara, jakintzen iman hartara, mundu greziarreko bazter guztietatik etorriko ziren hitzaren arte berria irakatsiko zuten maisuak.</p>
 <p><strong>Horrelako demokrazia batean, hitza boterea da.</strong> Inongo autoritatek egia goitik ezartzen ez duenean —ez erregek, ez apaizek, ez liburu sakratuk—, proposamen bat lege izatera iristen da soilik besteak <em>konbentzitzea</em> lortzen badu. Gai publikoetan eragin nahi duenak jakin behar du batzarraren aurrean argudiatzen eta auzitegiaren aurrean bere burua defendatzen. Bat-batean, ordura arte bigarren mailakoa zen trebetasun bat —diskurtsoa menderatzea— arrakasta sozial eta politikoaren giltza bihurtzen da. Hitz egiten jakitea ez zen jada berezko dohaintzat ikusten, ikas zitekeen zerbait gisa baizik —eta, beraz, irakats zitekeen zerbait gisa—. Eta eskari bat agertzen den lekuan, laster agertzen da hura asetzen duena.</p>
-<p><strong>Hezkuntza berri bat hiri berri batentzat.</strong> Aristokrata gaztearen ohiko prestakuntza —gimnasia gorputzarentzat, musika eta poesia espirituarentzat, lehen letrak— jada ez zen aski bizitza publikoan arrakasta izateko. Orain beste zerbait eskatzen zen: hitz egiten, limurtzen, hirian asmatuz jokatzen ikastea. Hitz batean, <em>aretē</em> bilatzen zen: «bikaintasuna» edo «bertutea», ez santutasun moral gisa ulertua, baizik eta nabarmentzeko eta norberaren gaiak nahiz <em>polis</em>arenak ondo gobernatzeko gaitasun gisa. Ordura arte, <em>aretē</em> leinu-kontutzat jotzen zen: noble jaiotzen zinen, ala ez zinen jaiotzen. Berrikuntza —lehergarria— hau defendatzea izan zen: <em>ikasi</em> ere egiten dela. Eta hemen agertzen da gai osoa egituratzen duen galdera: <em>irakats</em> al daiteke <em>aretē</em>? Sehaskarekin batera jasotzen den dohaina da, ala maisu egokiarekin edonork eskura dezakeen teknika bat? Galdera horri erantzungo diote, elkarren kontrako eran, sofistek (<a href="gaia-02.html#sec-05">§05</a>) eta Sokratesek (<a href="gaia-02.html#sec-06">§06</a>).</p>
-<p><strong>Natura ala konbentzioa: hautabide handia.</strong> Bira antropologikoak mahai gainean jarri zuen filosofia moral eta politiko osoa zeharkatzen duen bereizketa bat, oraindanik ondo finkatzea komeni zaizuna. Alde batetik, <em>physis</em>, <em>natura</em>: gauzak berez direna, leku guztietan berdina eta gizakiek erabakitzen dutena gorabehera. Bestetik, <em>nomos</em>, <em>legea</em> edo <em>konbentzioa</em>: akordioz, ohituraz edo dekretuz ezarritakoa, eta, horrexegatik, herri batetik bestera aldatzen dena. Beste kultura batzuekiko harremanak —bidaiatu eta merkataritzan aritzen diren greziar horiek (<a href="gaia-01.html#sec-02">§02</a>)— agerian utzia zuen legeak, ohiturak eta justuari buruzko ideiak berak ere <em>polis</em> batetik bestera aldatzen direla. Horrek esan nahi al du justua <em>nomos</em> hutsa dela, giza konbentzioa, leku bakoitzean desberdina? Ala bada ordena <em>natural</em> bat, guztiontzat baliozkoa den justizia bat, legeek islatzen saiatu besterik egiten ez dutena? Galdera zabalik geratzen da. <a href="gaia-02.html#sec-05">§05</a>n ikusiko duzu sofistak <em>nomos</em>aren aldera makurtu zirela, garaikideak eskandalizatu zituzten ondorio erlatibistekin; eta <a href="gaia-02.html#sec-06">§06</a>n eta <a href="gaia-02.html#sec-07">§07</a>n, Sokratesek nola egin zion aurre deriba horri, guztiontzat baliozko definizioen bila <a href="gaia-02.html#tbl-sofistak-eta-sokrates">Taula 1</a>.</p>
+<p><strong>Hezkuntza berri bat hiri berri batentzat.</strong> Aristokrata gaztearen ohiko prestakuntza —gimnasia gorputzarentzat, musika eta poesia espirituarentzat, lehen letrak— jada ez zen aski bizitza publikoan arrakasta izateko. Orain beste zerbait eskatzen zen: hitz egiten, limurtzen, hirian asmatuz jokatzen ikastea. Hitz batean, <em>aretē</em> bilatzen zen: «bikaintasuna» edo «bertutea», ez santutasun moral gisa ulertua, baizik eta nabarmentzeko eta norberaren gaiak nahiz <em>polis</em>arenak ondo gobernatzeko gaitasun gisa. Ordura arte, <em>aretē</em> leinu-kontutzat jotzen zen: noble jaiotzen zinen, ala ez zinen jaiotzen. Berrikuntza —lehergarria— hau defendatzea izan zen: <em>ikasi</em> ere egiten dela. Eta hemen agertzen da gai osoa egituratzen duen galdera: <em>irakats</em> al daiteke <em>aretē</em>? Sehaskarekin batera jasotzen den dohaina da, ala maisu egokiarekin edonork eskura dezakeen teknika bat? Galdera horri erantzungo diote, elkarren kontrako eran, sofistek (<a href="../chapters-web-eu/gaia-02.html#sec-05">§05</a>) eta Sokratesek (<a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a>).</p>
+<p><strong>Natura ala konbentzioa: hautabide handia.</strong> Bira antropologikoak mahai gainean jarri zuen filosofia moral eta politiko osoa zeharkatzen duen bereizketa bat, oraindanik ondo finkatzea komeni zaizuna. Alde batetik, <em>physis</em>, <em>natura</em>: gauzak berez direna, leku guztietan berdina eta gizakiek erabakitzen dutena gorabehera. Bestetik, <em>nomos</em>, <em>legea</em> edo <em>konbentzioa</em>: akordioz, ohituraz edo dekretuz ezarritakoa, eta, horrexegatik, herri batetik bestera aldatzen dena. Beste kultura batzuekiko harremanak —bidaiatu eta merkataritzan aritzen diren greziar horiek (<a href="../chapters-web-eu/gaia-01.html#sec-02">§02</a>)— agerian utzia zuen legeak, ohiturak eta justuari buruzko ideiak berak ere <em>polis</em> batetik bestera aldatzen direla. Horrek esan nahi al du justua <em>nomos</em> hutsa dela, giza konbentzioa, leku bakoitzean desberdina? Ala bada ordena <em>natural</em> bat, guztiontzat baliozkoa den justizia bat, legeek islatzen saiatu besterik egiten ez dutena? Galdera zabalik geratzen da. <a href="../chapters-web-eu/gaia-02.html#sec-05">§05</a>n ikusiko duzu sofistak <em>nomos</em>aren aldera makurtu zirela, garaikideak eskandalizatu zituzten ondorio erlatibistekin; eta <a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a>n eta <a href="../chapters-web-eu/gaia-02.html#sec-07">§07</a>n, Sokratesek nola egin zion aurre deriba horri, guztiontzat baliozko definizioen bila <a href="../chapters-web-eu/gaia-02.html#tbl-sofistak-eta-sokrates">Taula 1</a>.</p>
 <p>Laburbil dezagun zapaltzen dugun lurra. Filosofiak objektuz aldatu du: <em>kosmos</em>etik gizakira eta hirira igaro da. Agertokiz aldatu du: Joniako kostaldeetatik Atenas demokratikora. Eta arazoz aldatu du: jada ez du galdetzen «zerez egina dago errealitatea?», baizik eta «nola bizi behar dugu elkarrekin?, justua naturala da ala konbentziozkoa?». Lur horren gainean hazten dira gaiaren bi figura handiak. Hezkuntza berria ofizio eta hitza arte bihurtu zituztenekin hasiko gara: sofistekin.</p>
 </section>
 <section id="sec-05" class="level2">
 <h2 class="anchored" data-anchor-id="sec-05">§05 · Sofistak</h2>
-<p>Itzul zaitez <a href="gaia-02.html#sec-04">§04</a>ko Atenas hartara. Bizitza publikoan aurrera egin nahi duzu: zure auzia auzitegian defendatu, zure proposamena biltzarrean garaile aterarazi, hiritarren artean nabarmendu. Nork irakatsiko dizu hori egiten? o.a.a. V. mendearen erdialdera, horixe bera eskaintzen zuen norbait agertu zen Grezian: <em>sofista</em>.</p>
-<p><strong>Zer zen sofista bat.</strong> <em>Sophistēs</em> hitzak, hasieran, «jakintsua» edo «aditua» esan nahi zuen besterik gabe, eta ez zuen irain-kutsurik batere; kutsu gutxiesgarria geroago etorri zen, eta ibilbidearen amaieran itzuliko gara horretara. Sofistak intelektual mota berri bat izan ziren: maisu profesional ibiltariak, <em>polis</em>etik <em>polis</em>era zebiltzanak eta, askorentzat eskandalagarria zen berrikuntza, irakasteagatik <em>kobratu</em> egiten zutenak. Ez zuten eskolarik osatu, ez doktrina bera partekatu; puntu askotan ez zetozen bat elkarrekin. Batzen dituena ez da sistema bat, ofizio bat eta garai-giro bat baizik: <em>Greziar Ilustrazioa</em>rena (<a href="gaia-02.html#sec-04">§04</a>), arrazoiarekiko konfiantzarekin eta jasotako sinesteak aztertzeko borondatearekin.</p>
-<p><strong>Zer irakasten zuten: <em>areté</em> eta diskurtsoaren artea.</strong> Gogoratuko duzu <a href="gaia-02.html#sec-04">§04</a>n irekita utzi genuen galdera: irakats ote daiteke <em>areté</em>, <em>polis</em>ean arrakasta izateko bikaintasuna? Sofistek baietz erantzun zuten, eta diruaren truke irakasteko prest agertu ziren. Haien irakasgai izarra diskurtsoaren <em>technē</em> zen: ondo hitz egiteko eta, batez ere, <em>limurtzeko</em> «teknika» edo «artea». Hitza botere den demokrazia batean (<a href="gaia-02.html#sec-04">§04</a>), edozein tesiren alde eta kontra argudiatzen jakitea zen tresnarik gutiziatuena. Sofistak hiritar eraginkorra prestatzea agintzen zuen: bere jarrera edozein entzuleriaren aurrean defendatzeko eta eztabaida irabazteko gai den norbait.</p>
+<p>Itzul zaitez <a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>ko Atenas hartara. Bizitza publikoan aurrera egin nahi duzu: zure auzia auzitegian defendatu, zure proposamena biltzarrean garaile aterarazi, hiritarren artean nabarmendu. Nork irakatsiko dizu hori egiten? o.a.a. V. mendearen erdialdera, horixe bera eskaintzen zuen norbait agertu zen Grezian: <em>sofista</em>.</p>
+<p><strong>Zer zen sofista bat.</strong> <em>Sophistēs</em> hitzak, hasieran, «jakintsua» edo «aditua» esan nahi zuen besterik gabe, eta ez zuen irain-kutsurik batere; kutsu gutxiesgarria geroago etorri zen, eta ibilbidearen amaieran itzuliko gara horretara. Sofistak intelektual mota berri bat izan ziren: maisu profesional ibiltariak, <em>polis</em>etik <em>polis</em>era zebiltzanak eta, askorentzat eskandalagarria zen berrikuntza, irakasteagatik <em>kobratu</em> egiten zutenak. Ez zuten eskolarik osatu, ez doktrina bera partekatu; puntu askotan ez zetozen bat elkarrekin. Batzen dituena ez da sistema bat, ofizio bat eta garai-giro bat baizik: <em>Greziar Ilustrazioa</em>rena (<a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>), arrazoiarekiko konfiantzarekin eta jasotako sinesteak aztertzeko borondatearekin.</p>
+<p><strong>Zer irakasten zuten: <em>areté</em> eta diskurtsoaren artea.</strong> Gogoratuko duzu <a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>n irekita utzi genuen galdera: irakats ote daiteke <em>areté</em>, <em>polis</em>ean arrakasta izateko bikaintasuna? Sofistek baietz erantzun zuten, eta diruaren truke irakasteko prest agertu ziren. Haien irakasgai izarra diskurtsoaren <em>technē</em> zen: ondo hitz egiteko eta, batez ere, <em>limurtzeko</em> «teknika» edo «artea». Hitza botere den demokrazia batean (<a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>), edozein tesiren alde eta kontra argudiatzen jakitea zen tresnarik gutiziatuena. Sofistak hiritar eraginkorra prestatzea agintzen zuen: bere jarrera edozein entzuleriaren aurrean defendatzeko eta eztabaida irabazteko gai den norbait.</p>
 <p><strong>Protagoras: gizakia, gauza guztien neurri.</strong> Ospetsuena Abderako Protagoras izan zen (o.a.a. 490 inguru - o.a.a. 420 inguru), bere buruari sofista deitu eta ikasgaiengatik kobratu zuen lehena. Berea da sofistika osoko formularik ospetsuena —eta eztabaidatuena—, <em>homo mensura</em> printzipioa deritzona: «Gizakia da gauza guztien neurria: direnena, diren aldetik, eta ez direnena, ez diren aldetik»<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Irakur ezazu arretaz, ia pentsamendu sofistiko osoa kabitzen baita hor. Esan nahi du ez dagoela irizpide absoluturik, gizakien gainetik, zer den egiazko ala faltsu, justu ala injustu, eder ala itsusi erabakitzeko: gauza guztien neurria gizakia bera da. Zuri hotza iruditzen zaizuna hotza da <em>zuretzat</em>, beste bati epela iruditu arren. Horri <em>erlatibismoa</em> deitzen diogu: guztiontzat baliozko den egiarik ez dagoela dioen tesia; egiak erlatiboak dira eusten dienarekiko, dela norbanako bakoitza, dela komunitate bakoitza.</p>
-<p><strong>Erlatibismotik konbentzionalismora.</strong> Moralari eta politikari aplikatuta, ideia horrek <em>konbentzionalismora</em> darama, eta hemen berragertzen da <a href="gaia-02.html#sec-04">§04</a>n finkatu zenuen bikotea. Justizia <em>naturalik</em> ez badago, <em>physis</em>ean idatzia eta leku guztietan berdina, orduan justua eta injustua <em>nomos</em> dira: giza konbentzioa, akordioaren, ohituraren eta hezkuntzaren fruitua, eta horrexegatik <em>polis</em> batetik bestera desberdina. Legeak ez datoz jainkoengandik, ez naturatik: gizakiek egiten dituzte, eta gizakiek eztabaidatu eta alda ditzakete. Sofistentzat, horrek ez zuen legea apaltzen; dagokion lekuan jartzen zuen: deliberatzen duen komunitatearen eskuetan. Protagorasek metodoaren eremura eraman zuen bere <em>Antilogiak</em> obran, non baitio «auzi ororen gainean badira bi diskurtso, elkarren aurkakoak». Handik haren promesarik probokatzaileenera urrats bakarra zegoen: «argudio ahulena indartsuago egiten» irakastea egotzi zitzaion —eta aurpegiratu—, hau da, edozein eztabaida irabazten irakastea, arrazoia izan zein ez<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p><strong>Gorgias: hitzaren boterea eta ezagutzearen mugak.</strong> Erretorika hutsari emanago bizi izan zen Leontinoiko Gorgias (o.a.a. 485 inguru - o.a.a. 380 inguru), <em>logos</em>ari, diskurtsoari, egozten zion ia botere magikoagatik ospetsua: hitzak arimak mugi ditzake, farmako batek gorputzean eragiten duen bezala. Baina Gorgiasi zor diogu, halaber, <em>eszeptizismo sofistiko</em>aren formulaziorik muturrekoena. <em>Ez-izateaz</em> obran, nahitako eskalada batean, hiru tesi defendatzen zituen: lehena, ezer ez dela existitzen; bigarrena, zerbait existituko balitz, ezin izango genukeela ezagutu; eta hirugarrena, ezagutu ahal izango bagenu, ezin izango geniokeela inori komunikatu. Har ezazu ziurrenik zena zen gisa —ariketa dialektiko bat, birtuosismo-erakustaldi bat, tesi bat bezainbat—, baina errepara iezaiozu haren irismenari: zalantzan jartzen du hizkuntza errealitatera iristen denik. Eszeptizismo hau ez da nahastu behar eszeptiko helenistikoenarekin (<a href="gaia-05.html#sec-23">§23</a>): haiek iritzia etetea bide sistematiko bihurtuko dute asaldurarik gabe bizitzeko; sofistena, aldiz, kritikoa eta borrokalaria da batik bat, limurtzeko ahalmenean zuten konfiantzari lotua.</p>
+<p><strong>Erlatibismotik konbentzionalismora.</strong> Moralari eta politikari aplikatuta, ideia horrek <em>konbentzionalismora</em> darama, eta hemen berragertzen da <a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>n finkatu zenuen bikotea. Justizia <em>naturalik</em> ez badago, <em>physis</em>ean idatzia eta leku guztietan berdina, orduan justua eta injustua <em>nomos</em> dira: giza konbentzioa, akordioaren, ohituraren eta hezkuntzaren fruitua, eta horrexegatik <em>polis</em> batetik bestera desberdina. Legeak ez datoz jainkoengandik, ez naturatik: gizakiek egiten dituzte, eta gizakiek eztabaidatu eta alda ditzakete. Sofistentzat, horrek ez zuen legea apaltzen; dagokion lekuan jartzen zuen: deliberatzen duen komunitatearen eskuetan. Protagorasek metodoaren eremura eraman zuen bere <em>Antilogiak</em> obran, non baitio «auzi ororen gainean badira bi diskurtso, elkarren aurkakoak». Handik haren promesarik probokatzaileenera urrats bakarra zegoen: «argudio ahulena indartsuago egiten» irakastea egotzi zitzaion —eta aurpegiratu—, hau da, edozein eztabaida irabazten irakastea, arrazoia izan zein ez<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p><strong>Gorgias: hitzaren boterea eta ezagutzearen mugak.</strong> Erretorika hutsari emanago bizi izan zen Leontinoiko Gorgias (o.a.a. 485 inguru - o.a.a. 380 inguru), <em>logos</em>ari, diskurtsoari, egozten zion ia botere magikoagatik ospetsua: hitzak arimak mugi ditzake, farmako batek gorputzean eragiten duen bezala. Baina Gorgiasi zor diogu, halaber, <em>eszeptizismo sofistiko</em>aren formulaziorik muturrekoena. <em>Ez-izateaz</em> obran, nahitako eskalada batean, hiru tesi defendatzen zituen: lehena, ezer ez dela existitzen; bigarrena, zerbait existituko balitz, ezin izango genukeela ezagutu; eta hirugarrena, ezagutu ahal izango bagenu, ezin izango geniokeela inori komunikatu. Har ezazu ziurrenik zena zen gisa —ariketa dialektiko bat, birtuosismo-erakustaldi bat, tesi bat bezainbat—, baina errepara iezaiozu haren irismenari: zalantzan jartzen du hizkuntza errealitatera iristen denik. Eszeptizismo hau ez da nahastu behar eszeptiko helenistikoenarekin (<a href="../chapters-web-eu/gaia-05.html#sec-23">§23</a>): haiek iritzia etetea bide sistematiko bihurtuko dute asaldurarik gabe bizitzeko; sofistena, aldiz, kritikoa eta borrokalaria da batik bat, limurtzeko ahalmenean zuten konfiantzari lotua.</p>
 <p><strong>Sofisten «prentsa txarra».</strong> Gaur egun norbaiti «sofista» deitzea iraina bada, eta «sofisma» bat baliozko itxurako arrazoibide faltsu bat bada, horrek bere historia du. Irudi negatibo horren zati handi bat haien aurkari handiengandik dator: Platonengandik eta Aristotelesengandik. <em>Sofistaren</em> aurrean —kobratzen duena, garaitzen irakasten duena eta egiaren bila ez dabilela dirudiena—, biek <em>filosofoaren</em> figura defendatu zuten: egia maite duena eta saltzen ez duena. Platonen elkarrizketa batzuek —<em>Gorgias</em>ek, <em>Protagoras</em>ek edo <em>Sofista</em>k— mendeetarako finkatu zuten karikatura hori. <em>Gorgias</em>en, esaterako, Platonek erretorika «losintxa» huts batera apaltzen du: itxurazko arte bat, jakin gabe limurtzen irakasten duena eta injustiziaren zerbitzura jar daitekeena. Eta, sofistez dakigun ia guztia haien aurka borrokatu zirenen bidez iristen zaigunez, erretratua deformatuta geratu zen. Berrirakurketa berandu iritsi zen: XIX. mendetik aurrera hasi ziren historialariak haiek berriro balioesten. Gaur egun demokraziaren lehen maisutzat aitortzen dira, erretorikaren eta hizkuntzari buruzko gogoetaren aitzindaritzat, eta ideia emankor baten egiletzat: legeak eta balioak giza lana direla, kritikari eta hobekuntzari irekia. Haien erlatibismoak, muturrera eramanda, kezkatzen jarraitzen du; baina haien galderak —ba al da justizia naturalik, ala dena da konbentzioa?— bizi-bizirik jarraitzen du.</p>
 <p>Galdera horri <em>Greziar Ilustrazio</em> beraren barrutik erantzun zion atenastar batek: gizakiarenganako bira partekatzen zuen, baina erlatibismoa erabat baztertzen. Sofisten aurka eutsi zion justuari eta onari buruzko jakite sendo bat badela, eta erdiets daitekeela. Sokrates du izena, eta hari eskaintzen diogu hurrengo atala.</p>
 </section>
@@ -545,7 +557,7 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Σωκράτης (o.a.a. 470 inguru - o.a.a. 399). Louvreko erromatar bustoa, greziar original baten kopia. || Egiletza: Sting (Eric Gaba), CC BY-SA 2.5 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong><em>Greziar Ilustrazioaren</em> seme bat, eta haren kritikoa.</strong> Sokratesek sofistekin (<a href="gaia-02.html#sec-05">§05</a>) partekatzen du gizakiarenganako bira (<a href="gaia-02.html#sec-04">§04</a>): ez zaizkio astroak interesatzen, baizik eta bertutea, justua dena eta ona dena. Baina funtsezkoenean hautsi egiten du haiekin. Ez du kobratzen. Ez du irakasten eztabaidan nola <em>garaitu</em>, egia nola <em>bilatu</em> baizik. Eta, batez ere, erlatibismoa arbuiatzen du: Protagorasen «gizakia da gauza guztien neurria» esaldiaren aurrean, Sokrates ziur dago badela onari eta justiziari buruzko jakite sendo bat, guztiontzat bera, eta filosofoaren zeregina huraxe erdiestea dela. Bazioen, gainera, barne-ahots bat entzuten zuela, <em>daimon</em> bat, gaizki jokatzera zihoanean geldiarazten zuena: harentzat kontzientzia moralak pisu erabakigarria duen seinale.</p>
+<p><strong><em>Greziar Ilustrazioaren</em> seme bat, eta haren kritikoa.</strong> Sokratesek sofistekin (<a href="../chapters-web-eu/gaia-02.html#sec-05">§05</a>) partekatzen du gizakiarenganako bira (<a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>): ez zaizkio astroak interesatzen, baizik eta bertutea, justua dena eta ona dena. Baina funtsezkoenean hautsi egiten du haiekin. Ez du kobratzen. Ez du irakasten eztabaidan nola <em>garaitu</em>, egia nola <em>bilatu</em> baizik. Eta, batez ere, erlatibismoa arbuiatzen du: Protagorasen «gizakia da gauza guztien neurria» esaldiaren aurrean, Sokrates ziur dago badela onari eta justiziari buruzko jakite sendo bat, guztiontzat bera, eta filosofoaren zeregina huraxe erdiestea dela. Bazioen, gainera, barne-ahots bat entzuten zuela, <em>daimon</em> bat, gaizki jokatzera zihoanean geldiarazten zuena: harentzat kontzientzia moralak pisu erabakigarria duen seinale.</p>
 <p><strong>Metodoa: ironia eta <em>elenchoa</em>.</strong> Nola bilatzen zuen jakite hori? Ez azalduz, <em>galdetuz</em> baizik. Bi une ditu haren metodoak. Lehena <em>ironia</em> da (<em>eirōneía</em>tik, «itxurakeria»): Sokratesek ezer ez dakielako plantak egiten ditu eta solaskideari eskatzen dio irakats diezaiola, lausenguka, hark konfiantza hartu eta bere ideiak azal ditzan. Bigarrena <em>elenchoa</em> edo errefutazioa da: besteak zerbait badakiela baieztatu duenean, Sokratesek urratsez urrats galdekatzen du, haren erantzunek elkarri kontra egiten diotela erakutsi arte. Argi ikusiko duzu <em>Eutifron</em>en. Eutifron, bere aita salatzear dagoela, harro dago pietatea zer den badakielakoan. Sokratesek orduan galdetzen dio: «zer da pietatezkoa?». Ez adibide bat: <em>definizioa</em>, ekintza pietatezko guztiek komunean dutena. Eutifronek hainbat erantzun saiatzen ditu, eta denek lur jotzen dute haren galderen pean, harik eta adituak, aho bete hortz, aitortzen duen arte ez zekiela zekiela uste zuena. Kale itsu horri <em>aporia</em> deitzen zioten greziarrek. Ez da porrot bat: lehen urratsa da, zeren ez dakiela aurkitu duena baino ez baitago bilatzen hasteko moduan.</p>
 <p><strong>Maieutika.</strong> Ironiak eta <em>elenchoak</em> sasi-ziurtasunetatik garbitzen badute lurra, une positiboa falta da. Sokratesek <em>maieutika</em> deitu zion, «erditzen laguntzeko artea». Emagin baten semea zen (Fenareta zuen ama), eta esaten zuen amak gorputzekin zerabilen ofizio bera zerabilela berak arimekin: ez du jakiterik inoren baitan ezartzen, baizik eta solaskideari laguntzen dio egia bere kabuz «erditzen», galderekin argitara ekarriz<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Ezagutza, hala, ez da kanpotik transmititzen: barrutik konkistatzen da.</p>
 <p><strong>«Ezagut ezazu zeure burua».</strong> Sokratesek bere egin zuen Delfosko Apoloren tenpluko inskripzio bat: <em>gnōthi seautón</em>, «ezagut ezazu zeure burua». Haren zentzua berak <em>Apologia</em>n kontatzen duen gertakari batek argitzen du. Lagun batek, Kerefontek, Delfosko orakuluari galdetu zion ea bazen inor Sokrates baino jakintsuagorik, eta apaizemeak ezetz erantzun zuen. Sokrates, bere burua ezjakintzat zeukanez, nahastuta geratu zen, eta orakulua gezurtatzea hartu zuen xede, bera baino jakintsuagoren bat bilatuz. Ospe handiko politikariak, poetak eta artisauak galdekatu zituen, eta guztiengan gauza bera aurkitu zuen: ez zekitena bazekitela uste zuten. Orduan ulertu zuen orakulua: gauza bakar batean zen bera jakintsuago, <em>ez zekiela jakitean</em>. Hortik dator haren jarrera laburbiltzeko erabiltzen dugun formula tradizionala: «ez dakidala baino ez dakit».</p>
@@ -593,19 +605,19 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-07" class="level2">
 <h2 class="anchored" data-anchor-id="sec-07">§07 · Intelektualismo sokratiko-platonikoa</h2>
-<p>Galdera batekin itxi genuen <a href="gaia-02.html#sec-06">§06</a>: norbera ezagutzea ez dakiela aitortzea bada, nola erdiesten da Sokratesek bilatzen zuen ongiari buruzko jakitea? Eta, batez ere, zertarako? Sokratesen erantzuna adierazten erraza bezain onartzen zaila da: bertutea ezagutza <em>da</em>. Ongia zer den jakitea eta ona izatea gauza bat eta bera dira harentzat. Tesi horri <em>intelektualismo morala</em> deitzen diogu: ongi jokatzea ez dela borondate-kontua, ez izaera-kontua, jakite-kontua baizik dioen uste sendoa. Zer den justua benetan ezagutzen duenak justu jokatzen du; ezagutzen ez duenak, ezin du.</p>
+<p>Galdera batekin itxi genuen <a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a>: norbera ezagutzea ez dakiela aitortzea bada, nola erdiesten da Sokratesek bilatzen zuen ongiari buruzko jakitea? Eta, batez ere, zertarako? Sokratesen erantzuna adierazten erraza bezain onartzen zaila da: bertutea ezagutza <em>da</em>. Ongia zer den jakitea eta ona izatea gauza bat eta bera dira harentzat. Tesi horri <em>intelektualismo morala</em> deitzen diogu: ongi jokatzea ez dela borondate-kontua, ez izaera-kontua, jakite-kontua baizik dioen uste sendoa. Zer den justua benetan ezagutzen duenak justu jokatzen du; ezagutzen ez duenak, ezin du.</p>
 <p><strong>«Inork ez du gaizki egiten jakinaren gainean».</strong> Hemendik korolario bat dator, tinta-ibaiak isurarazi dituena: bertutea ezagutza bada, bizioa ezjakintasuna da. Inork ez du gaizki egiten nahita, gaizki dagoela <em>jakinda</em>; gaizki jokatzen duenak oker dagoelako jokatzen du horrela, gaitz bat ongi batekin nahasten duelako. Gaiztoa ez da gaizkia begiak zabalik hautatzen duen makur bat, kalkuluetan huts egin duen norbait baizik. Ideia horren atzean premisa bat dago taupaka, Sokratesi begi-bistakoa iruditzen zaiona: denok desiratzen dugu geure ongia, denok nahi dugu ondo bizi. Zerbaitek kalte egiten dizula benetan bazeneki, ez zenuke hautatuko; beraz, kaltegarri zaizuna hautatzen duzunean, ontzat hartu duzu ona ez zen zerbait. Ondorioa deigarria da, eta oso gaurkoa: inor ez bada gaiztoa nahita, delitua egiten duena ez da munstro bat, ezjakin bat baizik, eta zigorrak zuzentzeko eta irakasteko balio beharko luke, ez mendeku hartzeko.</p>
-<p><strong>Objekzio handia: <em>akrasia</em>.</strong> Seguru asko protestaka ari zara honezkero, eta ondo egiten duzu: badirudi esperientziak urrats bakoitzean gezurtatzen duela Sokrates. Protesta horri izena jarri zioten greziarrek: <em>akrasia</em>, hitzez hitz «norbere buruaren gaineko aginte eza». Hor duzu berriro <em>demokrazian</em> (<a href="gaia-02.html#sec-04">§04</a>) ezagutu zenuen <em>krátos</em> hura —«boterea» edo «agintea»—, orain ezezkoan. Tradizioak «neurrigabekeria» edo «borondate-ahulezia» gisa itzuli zuen, eta hain fenomeno arrunta izendatzen du, non nekez sinets baitaiteke inork ukatzea: zer den zuzena <em>jakin</em> eta, hala ere, kontrakoa egitea. Badakizu gezurra esatea gaizki dagoela, eta, estutasun batetik libratzeko edo abantaila ateratzeko, gezurra esaten duzu. Badakizu diru hori edo objektu hori ez direla zureak, badakizu itzuli egin beharko zenituzkeela, eta zeuretzat gordetzen dituzu. Haserrealdi batean min egiten diozu maite duzun norbaiti, eta, egiten ari zaren bitartean, badakizu damutuko zarela. Ez da une horietan ongiaren ezagutza falta zaizunik: aurrez aurre daukazu, eta haren kontra jokatzen duzu. Eta hori gertatzen bada —eta etengabe gertatzen da—, orduan ongia ezagutzea <em>ez</em> da aski hura egiteko, eta intelektualismo sokratikoak behea jotzen du.</p>
+<p><strong>Objekzio handia: <em>akrasia</em>.</strong> Seguru asko protestaka ari zara honezkero, eta ondo egiten duzu: badirudi esperientziak urrats bakoitzean gezurtatzen duela Sokrates. Protesta horri izena jarri zioten greziarrek: <em>akrasia</em>, hitzez hitz «norbere buruaren gaineko aginte eza». Hor duzu berriro <em>demokrazian</em> (<a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>) ezagutu zenuen <em>krátos</em> hura —«boterea» edo «agintea»—, orain ezezkoan. Tradizioak «neurrigabekeria» edo «borondate-ahulezia» gisa itzuli zuen, eta hain fenomeno arrunta izendatzen du, non nekez sinets baitaiteke inork ukatzea: zer den zuzena <em>jakin</em> eta, hala ere, kontrakoa egitea. Badakizu gezurra esatea gaizki dagoela, eta, estutasun batetik libratzeko edo abantaila ateratzeko, gezurra esaten duzu. Badakizu diru hori edo objektu hori ez direla zureak, badakizu itzuli egin beharko zenituzkeela, eta zeuretzat gordetzen dituzu. Haserrealdi batean min egiten diozu maite duzun norbaiti, eta, egiten ari zaren bitartean, badakizu damutuko zarela. Ez da une horietan ongiaren ezagutza falta zaizunik: aurrez aurre daukazu, eta haren kontra jokatzen duzu. Eta hori gertatzen bada —eta etengabe gertatzen da—, orduan ongia ezagutzea <em>ez</em> da aski hura egiteko, eta intelektualismo sokratikoak behea jotzen du.</p>
 <p><strong>Sokratesen erantzuna.</strong> Amore eman beharrean, Sokratesek erronkari gogor eusten dio, eta zerbait harrigarria defendatzen du: <em>akrasia</em>, zentzu hertsian, ez dela existitzen. «Ahulezia» deitzen duguna, hurbiletik begiratuta, ezjakintasunaren beste forma bat da. Haren argudioak bi aho ditu. Lehena: jokatzeko unean, aurrean daukazun ongiaren atzetik zabiltza benetan —gezurraren bidez estutasunetik libratzea, desiratzen duzuna zeuretzat gordetzea—, eta haren atzetik zabiltza une horretan hobesgarri irizten diozulako. Ez da onena jakin eta okerrena hautatzen duzunik: gaizki neurtu duzu, pisu izugarria emanez berehalako onurari eta ia batere ez benetako ongiari, urrunagoa eta ez hain ikusgarria denari. Akrasia, orduan, ongiak «neurtzeko artean» egindako huts bat litzateke<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Bigarren ahoa are zorrotzagoa da: benetan <em>bazeneki</em> —jakite sendo batez, ez iritzi lauso batez— gezur horrek edo lapurreta horrek zer kalte dakarten, ezingo zenituzke nahi izan. Ongiaren benetako ezagutza hain da boteretsua Sokratesentzat, non ez baitago hura menderatzerik. Akrasikoarengan huts egiten duena ez da borondatea: haren «jakitea» ez zen halakoa, gaizki errotutako uste bat baizik. Objekzioak, tesia eraitsi beharrean, zorroztu egiten du: ongiaren ezagutza betea baino ez da bertute, eta ezagutza horrek, definizioz, ekitera bultzatzen du.</p>
-<p><strong>Bira platonikoa.</strong> Hemen sartzen da Platon, maisuaren ondarea jaso baina korapilatu egiten duena. <a href="gaia-03.html#sec-11">§11</a>n ikusiko duzunez, Platonek zatitan banatuta irudikatzen du arima —arrazoia, kemena eta apetitua—, eta intelektualismo hutsak aurreikusten ez zuen zerbait aitortzen du: zati horiek elkarren artean <em>gatazkan sar daitezkeela</em>, eta apetitua gauza dela arrazoia arrastaka eramateko, arrazoiak dakiena dakiela ere. Horrekin, Platonek lekua egiten dio arimaren barruan Sokratesek ukatzen zuen akrasiaren oso antzeko zerbaiti. Haren irtenbidea ez da intelektualismoa bertan behera uztea, zabaltzea baizik: bertuteak ongia ezagutzea eskatzen du oraindik ere (<a href="gaia-03.html#sec-09">§09</a>), baina, gainera, arima <em>ondo ordenatua</em> egotea eskatzen du, arrazoiak gainerako zatiak gobernatzen dituela. Jakitea ez da aski, barruko etxea nahaspilan badago. Horregatik, <a href="gaia-03.html#sec-12">§12</a>n Platonen bertuteak aztertzen dituzunean, arimaren ordena on gisa definituta aurkituko dituzu; eta horregatik igortzen du <a href="gaia-03.html#sec-12">§12</a>k hona: doktrina haren erro sokratikoa atal honetan dago.</p>
-<p>Hala ere, objekzioa ez da kitatuta geratzen. Benetan ezinezkoa al da jakitea zer egin behar den eta, hala ere, ez egitea? Aristotelesek ezetz erantzungo du: akrasia benetakoa dela, eta begi-bistakoa ukatu gabe azal daitekeela, zeren ezagutza «oro har» eduki baitaiteke eta «unean» aplikatu ez, desirak eta gaizki eratutako azturek menderatuta. Erantzun hori, intelektualismoak azaldu gabe uzten duenaren zati on bat konpontzen duena, <a href="gaia-04.html#sec-17">§17</a>n ikusiko duzu. Oraingoz, gorde ezazu arazoaren muina, gaur egungo etikan ere bizi-bizirik dirauena: aski al da ongia zer den jakitea ona izateko, ala zerbait gehiago behar da?</p>
+<p><strong>Bira platonikoa.</strong> Hemen sartzen da Platon, maisuaren ondarea jaso baina korapilatu egiten duena. <a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>n ikusiko duzunez, Platonek zatitan banatuta irudikatzen du arima —arrazoia, kemena eta apetitua—, eta intelektualismo hutsak aurreikusten ez zuen zerbait aitortzen du: zati horiek elkarren artean <em>gatazkan sar daitezkeela</em>, eta apetitua gauza dela arrazoia arrastaka eramateko, arrazoiak dakiena dakiela ere. Horrekin, Platonek lekua egiten dio arimaren barruan Sokratesek ukatzen zuen akrasiaren oso antzeko zerbaiti. Haren irtenbidea ez da intelektualismoa bertan behera uztea, zabaltzea baizik: bertuteak ongia ezagutzea eskatzen du oraindik ere (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>), baina, gainera, arima <em>ondo ordenatua</em> egotea eskatzen du, arrazoiak gainerako zatiak gobernatzen dituela. Jakitea ez da aski, barruko etxea nahaspilan badago. Horregatik, <a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>n Platonen bertuteak aztertzen dituzunean, arimaren ordena on gisa definituta aurkituko dituzu; eta horregatik igortzen du <a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>k hona: doktrina haren erro sokratikoa atal honetan dago.</p>
+<p>Hala ere, objekzioa ez da kitatuta geratzen. Benetan ezinezkoa al da jakitea zer egin behar den eta, hala ere, ez egitea? Aristotelesek ezetz erantzungo du: akrasia benetakoa dela, eta begi-bistakoa ukatu gabe azal daitekeela, zeren ezagutza «oro har» eduki baitaiteke eta «unean» aplikatu ez, desirak eta gaizki eratutako azturek menderatuta. Erantzun hori, intelektualismoak azaldu gabe uzten duenaren zati on bat konpontzen duena, <a href="../chapters-web-eu/gaia-04.html#sec-17">§17</a>n ikusiko duzu. Oraingoz, gorde ezazu arazoaren muina, gaur egungo etikan ere bizi-bizirik dirauena: aski al da ongia zer den jakitea ona izateko, ala zerbait gehiago behar da?</p>
 </section>
 <section id="sec-08" class="level2">
 <h2 class="anchored" data-anchor-id="sec-08">§08 · Miletoko Aspasia eta emakumea greziar filosofian</h2>
-<p><em>Logos</em>aren eta hitzaren Atenasen (<a href="gaia-02.html#sec-04">§04</a>, <a href="gaia-02.html#sec-05">§05</a>), Sokratesek agoran edonor galdekatzen zuen hartan (<a href="gaia-02.html#sec-06">§06</a>), emakume bat bizi izan zen, bere adimenagatik eta etorriagatik miretsia, jakintsuenei ere hitz egiten irakasteko gauza zena, esan ohi zutenez. Aspasia zuen izena, eta ez zaigu gorde haren eskutik irtendako lerro bakar bat ere. Paradoxa hori —ahots ospetsu bat, zeinaren ahotsik ez baitzaigu geratzen— da atal honetarako sarrera-atea.</p>
+<p><em>Logos</em>aren eta hitzaren Atenasen (<a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>, <a href="../chapters-web-eu/gaia-02.html#sec-05">§05</a>), Sokratesek agoran edonor galdekatzen zuen hartan (<a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a>), emakume bat bizi izan zen, bere adimenagatik eta etorriagatik miretsia, jakintsuenei ere hitz egiten irakasteko gauza zena, esan ohi zutenez. Aspasia zuen izena, eta ez zaigu gorde haren eskutik irtendako lerro bakar bat ere. Paradoxa hori —ahots ospetsu bat, zeinaren ahotsik ez baitzaigu geratzen— da atal honetarako sarrera-atea.</p>
 <p><strong>Nor izan zen Aspasia.</strong> Miletoko Aspasia (o.a.a. 470 inguru - o.a.a. 400 inguru) Joniatik iritsi zen Atenasera, eta hango gizonik eragin handienekoaren, Periklesen, bikotekide bihurtu zen. Atzerritarra zenez, <em>metekoa</em> zen: ez zuen Atenasko hiritartasunik, ezta izaterik ere; eta, garaiko ironietako bat dela eta, Periklesen beraren lege batek, hiritartasuna aita eta ama atenastarren seme-alabentzat gordetzean, hartatik kanpo utzi zuen haren semea. Iturriak bat datoz haren distiran: saloi moduko bat gidatzen zuen, non politikariak, artistak eta filosofoak biltzen baitziren, eta hizlari apartaren ospea zuen, diskurtsoa hezkuntzaren gailurtzat zuen kultura batean.</p>
 <p><strong>Besteen ahotik baino entzuten ez dugun ahotsa.</strong> Aspasia ageri da, izan ere, lehen literatura filosofikoan. <em>Menexeno</em>n, Platonek Sokratesen ahotan jartzen du, erdi serio erdi txantxetan, hura izan zela erretorika irakatsi ziona eta Periklesen hileta-hitzaldi ospetsua ondu zuena<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. Xenofontek autoritate gisa aipatzen du ezkontza-kontuetan, eta Sokratesen beste ikasle batek, Eskinesek, elkarrizketa oso bat eskaini zion, gaur egun galdua; mendeak geroago, Plutarkok harekiko miresmena eta difamazioa bilduko zituen, biak batera. Behin eta berriz maistra gisa aurkezten dute; baita Sokratesen maistra gisa ere. Eta, hala ere, errepara iezaiozu falta denari: segurtasunez egotz diezaiokegun hitz bakar bat ere ez. Hartaz dakigun guztia gizonek iragazita iristen zaigu: Platon, ironizatzen duena; Xenofonte, aipatzen duena; komikoak, itu bihurtu zutenak, haren morala erasoz eta gerrak piztea leporatzeraino. Aspasiarengandik oihartzuna iritsi zaigu, ez ahotsa.</p>
-<p><strong>Zergatik galdu zen haren ahotsa.</strong> Ez zen izan zer esanik ez zuelako: horretan bat datoz iturriak, etsaiak zein adeitsuak. Baldintzengatik izan zen. Gogoratu nortzuk geratzen ziren hiritargotik kanpo (<a href="gaia-02.html#sec-04">§04</a>): emakumeak, besteak beste. Atenastar emakume prestuaren bizitza ate barruan igarotzen zen, <em>oikos</em>ean, etxean; asanbladatik, auzitegitik, gimnasiotik, filosofiak arnasa hartzen zuen espazio publikoetatik baztertua zegoen, eta heziketa formal gutxi jasotzen zuen, edo batere ez. Bazen, gainera, isiltasun hori saritzen zuen ideal bat: Platonek txantxetan Aspasiari egozten dion hileta-hitzaldi berean, Periklesek baieztatzen du emakume baten loriarik handiena dela gizonen artean hartaz ahalik eta gutxien hitz egitea, onerako zein txarrerako<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. Harengandik espero zen ez nabarmentzea, inork ez aipatzea: filosofiak, eztabaida publikoaren alabak, eskatzen zuenaren justu kontrakoa. Horregatik, filosofiaren historian emakumerik ia batere ez egoteak ez du haien gaitasuna neurtzen, haien bazterketa baizik; eta horregatik izan ohi dira azaleratzen diren bakanak, Aspasia bezala, atzerritarrak edo aparteko baliabideak zituzten pertsonak.</p>
+<p><strong>Zergatik galdu zen haren ahotsa.</strong> Ez zen izan zer esanik ez zuelako: horretan bat datoz iturriak, etsaiak zein adeitsuak. Baldintzengatik izan zen. Gogoratu nortzuk geratzen ziren hiritargotik kanpo (<a href="../chapters-web-eu/gaia-02.html#sec-04">§04</a>): emakumeak, besteak beste. Atenastar emakume prestuaren bizitza ate barruan igarotzen zen, <em>oikos</em>ean, etxean; asanbladatik, auzitegitik, gimnasiotik, filosofiak arnasa hartzen zuen espazio publikoetatik baztertua zegoen, eta heziketa formal gutxi jasotzen zuen, edo batere ez. Bazen, gainera, isiltasun hori saritzen zuen ideal bat: Platonek txantxetan Aspasiari egozten dion hileta-hitzaldi berean, Periklesek baieztatzen du emakume baten loriarik handiena dela gizonen artean hartaz ahalik eta gutxien hitz egitea, onerako zein txarrerako<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. Harengandik espero zen ez nabarmentzea, inork ez aipatzea: filosofiak, eztabaida publikoaren alabak, eskatzen zuenaren justu kontrakoa. Horregatik, filosofiaren historian emakumerik ia batere ez egoteak ez du haien gaitasuna neurtzen, haien bazterketa baizik; eta horregatik izan ohi dira azaleratzen diren bakanak, Aspasia bezala, atzerritarrak edo aparteko baliabideak zituzten pertsonak.</p>
 <p><strong>Bi salbuespen, beren ñabardurekin.</strong> Izan ziren, hala ere, arrakalak. Nabarmenena eskola pitagorikoa izan zen: gainerakoek ez bezala, emakumeak onartu zituen kideen artean, agian bizi-komunitate gisa funtzionatzen zuelako, eta ez soilik akademia gisa. Batzuen izena iritsi zaigu, Teanorena esaterako, Pitagorasi emazte edo ikasle gisa lotua; hari egozten zaizkion idatziak, ordea, gehienbat askoz geroagokoak dira. Eta hor dago Diotima: <em>Oturuntza</em>n, Platonek Mantineako Diotima apaizemearen ahotan jartzen du bere pentsamenduaren gailurretako bat, maitasunaren eta Edertasunerantz igotzearen doktrina. Komeni da zuhur jokatzea: ia ziurtasun osoz, Diotima literatur pertsonaia bat da, ez filosofo historiko bat; haren presentziak, beraz, gehiago esaten digu Platonen arteaz, benetako pentsalari batez baino. Hala ere, esanguratsua da Sokratesi maitasunaz irakasten dion ahotsa, fikzioan, emakume batena izatea.</p>
 <p>Figura horiek <em>anakronismorik gabe</em> berreskuratzea iristen zaizkigun bezala aurkeztea da: lekukotuta baina bitartekotuta, batzuetan asmatuta; ez izan ez ziren filosofo sistematiko bihurtzea, ez kontakizunetik ezabatzea. Gertakariak hor dirau: greziar filosofian emakumeak, batez ere, absentzia gisa daude presente; gizonen bitartez baino entzuten ez ditugun ahots gisa, edo gizonek idatzitako pertsonaia gisa. Nork filosofa dezakeen, eta noren ahotsa gordetzen den: galdera hori askoz aurrerago berragertuko da, filosofiaren historiak emakumeei berezko eskubidez sarrera ematen dienean.</p>
 
@@ -615,7 +627,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p>Zizeron, <em>Tusculanae disputationes</em>, V, 10. Esaldia Sokratesi buruzkoa da, baina garai oso baten erretratua da.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Hiritarren multzoa, gainera, gutxiengo bat zen: kanpoan geratzen ziren emakumeak, esklaboak eta bertan bizi ziren atzerritarrak —<em>metekoak</em>—. Isiltasun horretara itzuliko gara <a href="gaia-02.html#sec-08">§08</a>n.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Hiritarren multzoa, gainera, gutxiengo bat zen: kanpoan geratzen ziren emakumeak, esklaboak eta bertan bizi ziren atzerritarrak —<em>metekoak</em>—. Isiltasun horretara itzuliko gara <a href="../chapters-web-eu/gaia-02.html#sec-08">§08</a>n.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Zatia Sexto Enpirikok transmititzen du; Platonek eztabaidagai jartzen du <em>Teeteto</em>n (152a eta hurrengoak).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Jarrera kritiko berak erlijioa ere harrapatu zuen: haren <em>Jainkoez</em> obra, kontatzen denez, honela hasten zen: «jainkoei buruz ezin dut jakin ez badirenik, ezta ez direnik ere». Agnostizismo horrek inpietate-salaketa bat ekarriko omen zion (Diogenes Laerzio, IX, 51).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Sokratesek ez zuen ezer idatzirik utzi: hartaz dakigun ia guztia haren dizipulu Platonengandik dator, bere elkarrizketetako protagonista bihurtu baitzuen. Oso bestela erretratatu zuten, halaber, Xenofonte garaikideak eta Aristofanes komediagileak; azken horrek barregarri utzi zuen <em>Hodeiak</em> komedian. Erretratu horien atzean Sokrates historikoa berreraikitzeko zailtasunari «arazo sokratikoa» deritzo.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -628,19 +640,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -719,7 +843,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -728,8 +853,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -743,6 +929,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -905,44 +1092,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1041,7 +1238,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-01.html" class="pagination-link" aria-label="1. gaia · Mitotik filosofiara">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></span>

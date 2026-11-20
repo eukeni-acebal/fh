@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../zatia-5.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-17.html"><span class="chapter-title">17. gaia · Existentzialismoa</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-17.html"><span class="chapter-title">17. gaia · Existentzialismoa</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-17.html"><span class="chapter-title">17. gaia · Existentzialismoa</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-17.html"><span class="chapter-title">17. gaia · Existentzialismoa</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">17. gaia · Existentzialismoa</span></h1>
 </div>
@@ -516,25 +528,25 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="existentzialismoan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="existentzialismoan-sartzeko">Existentzialismoan sartzeko</h2>
-<p>Nietzschek zeru huts baten aurrean utzi zuen XX. mendeko gizakia: «Jainkoa hil da», eta harekin batera behea jotzen zuen Mendebaldeko balioei eusten zien zoruak (<a href="gaia-16.html#sec-61">§61</a>). Zabalik geratzen zen galdera kezkagarria zen: inork ez badu aldez aurretik idatzi zertarako existitzen garen, nork erabakitzen du, orduan, zer izan behar dugun? <em>Existentzialismoa</em> da eskularru hori jasotzen duen korrontea. Ez da eskuliburu komun bat duen eskola bat, oso pentsalari desberdinen arteko familia-aire bat baizik —batzuk kristauak, besteak ateoak—, abiapuntu bat partekatzen dutenena: filosofatzen hastea ez betiereko esentzietatik, baizik eta nor bere existentzia konkretutik, haragizko eta hezurrezko indibiduo horretatik, eskatu gabe jaiotzen dena, bermerik gabe aukeratu behar duena eta hilko dela dakiena.</p>
-<p>Hiru urratsetan ikusiko dugu. Lehenik, korronte osoari <em>komunak zaizkion ideiak</em>: esentzia aurretzen duen existentzia, askatasuna eta larridura, benetakotasuna masaren aurrean (<a href="gaia-17.html#sec-62">§62</a>). Gero, haren bertsiorik sakonena eta zailena, <em>Martin Heidegger</em>rena, filosofiari izateari buruzko galdera zaharra itzultzen diona eta galdera hori egiten duen ente bakarretik planteatzen duena, gizakiarengandik (<a href="gaia-17.html#sec-63">§63</a>). Eta, azkenik, formulaziorik publikoena eta borrokalariena, <em>Jean-Paul Sartre</em>rena, existentzialismoa kafetegietara, antzerkira eta kalera eraman zuena, eta formula ospetsu batean laburbildu zuena: «libre izatera kondenatuak» gaude (<a href="gaia-17.html#sec-64">§64</a>).</p>
-<p>Komeni da honezkero gogoan hartzea korronte hau ez dela hemen agortzen. Askatasun kokatuari buruzko haren analisia da zimendua, zeinaren gainean Simone de Beauvoirrek, urte gutxi batzuk geroago, emakumearen kondizioari buruzko galdera eraikiko baitu (<a href="gaia-21.html#sec-77">§77</a>); eta haren motiboek —existentziak, bizitzak, sistemen aurreko indibiduoak— oihartzuna dute jarraian ikusiko dugun espainiar pentsamenduan, Unamunoren larrian eta Ortegaren bizi-arrazoian (<a href="gaia-18.html#sec-65">§65</a>-<a href="gaia-18.html#sec-66">§66</a>).</p>
+<p>Nietzschek zeru huts baten aurrean utzi zuen XX. mendeko gizakia: «Jainkoa hil da», eta harekin batera behea jotzen zuen Mendebaldeko balioei eusten zien zoruak (<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a>). Zabalik geratzen zen galdera kezkagarria zen: inork ez badu aldez aurretik idatzi zertarako existitzen garen, nork erabakitzen du, orduan, zer izan behar dugun? <em>Existentzialismoa</em> da eskularru hori jasotzen duen korrontea. Ez da eskuliburu komun bat duen eskola bat, oso pentsalari desberdinen arteko familia-aire bat baizik —batzuk kristauak, besteak ateoak—, abiapuntu bat partekatzen dutenena: filosofatzen hastea ez betiereko esentzietatik, baizik eta nor bere existentzia konkretutik, haragizko eta hezurrezko indibiduo horretatik, eskatu gabe jaiotzen dena, bermerik gabe aukeratu behar duena eta hilko dela dakiena.</p>
+<p>Hiru urratsetan ikusiko dugu. Lehenik, korronte osoari <em>komunak zaizkion ideiak</em>: esentzia aurretzen duen existentzia, askatasuna eta larridura, benetakotasuna masaren aurrean (<a href="../chapters-web-eu/gaia-17.html#sec-62">§62</a>). Gero, haren bertsiorik sakonena eta zailena, <em>Martin Heidegger</em>rena, filosofiari izateari buruzko galdera zaharra itzultzen diona eta galdera hori egiten duen ente bakarretik planteatzen duena, gizakiarengandik (<a href="../chapters-web-eu/gaia-17.html#sec-63">§63</a>). Eta, azkenik, formulaziorik publikoena eta borrokalariena, <em>Jean-Paul Sartre</em>rena, existentzialismoa kafetegietara, antzerkira eta kalera eraman zuena, eta formula ospetsu batean laburbildu zuena: «libre izatera kondenatuak» gaude (<a href="../chapters-web-eu/gaia-17.html#sec-64">§64</a>).</p>
+<p>Komeni da honezkero gogoan hartzea korronte hau ez dela hemen agortzen. Askatasun kokatuari buruzko haren analisia da zimendua, zeinaren gainean Simone de Beauvoirrek, urte gutxi batzuk geroago, emakumearen kondizioari buruzko galdera eraikiko baitu (<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>); eta haren motiboek —existentziak, bizitzak, sistemen aurreko indibiduoak— oihartzuna dute jarraian ikusiko dugun espainiar pentsamenduan, Unamunoren larrian eta Ortegaren bizi-arrazoian (<a href="../chapters-web-eu/gaia-18.html#sec-65">§65</a>-<a href="../chapters-web-eu/gaia-18.html#sec-66">§66</a>).</p>
 </section>
 <section id="sec-62" class="level2">
 <h2 class="anchored" data-anchor-id="sec-62">§62 · Existentzialismoa: ideia nagusiak</h2>
 <p><strong>Existentziaren filosofia bat, ez esentziarena.</strong> Aurreko tradizio osoak, Platonengandik hasita, <em>esentzia</em> jarri zuen aurretik: lehenik gauzen natura dago —zaldi bat, triangelu bat edo gizaki bat <em>zer diren</em>—, eta gero indibiduo konkretuak, eredu hori gauzatu besterik egiten ez dutenak. Existentzialismoak ordena irauli egiten du giza kasurako: gizakiarengan <em>existentziak esentzia aurretzen du</em>. Esan nahi du ez garela mundura etortzen aldez aurretik finkatutako natura batekin, aiztoa mozteko ideiak finkatua datorren bezala; lehenik existitzen gara —aukeratu ez dugun bizitza batera jaurtiak aurkitzen dugu geure burua—, eta gero bakarrik, aukeratuz eta jardunez, goaz garena egiten. Ez dago, beraz, nork bere kopiatu beharreko «gizaki idealaren» aurretiazko planorik. Egiteke dagoen proiektu bat gara, ezer baino lehen.</p>
-<p><strong>Bizitza konkretutik filosofatzea.</strong> Horregatik mesfidatzen da existentzialismoa sistema abstraktu handiez. Lehen bulkada XIX. mendean ematen dio <em>Søren Kierkegaard</em> daniarrak (1813-1855), Hegelen filosofiaren aurka altxatzen denak: ezertarako ez du balio —halaxe dio, funtsean— dena orokorki azaltzen duen sistema handios batek, baldin eta ezer esaten ez badio sufritzen duen, zalantza egiten duen eta bere bizitza hemen eta orain erabaki behar duen indibiduo singularrari. Filosofia, hala, berriro bihurtzen da Sokratesentzat edo estoikoentzat izan zena (<a href="gaia-05.html#sec-22">§22</a>): ez munduari buruzko jakite teoriko bat, <em>bizimodu</em> bat baizik, nork bere existentziarekin moldatzeko modu bat. Axola duten egiak ez dira arbel batean frogatzen direnak, baizik eta haiengatik bizitzeko eta hiltzeko prest gauden haiek.</p>
+<p><strong>Bizitza konkretutik filosofatzea.</strong> Horregatik mesfidatzen da existentzialismoa sistema abstraktu handiez. Lehen bulkada XIX. mendean ematen dio <em>Søren Kierkegaard</em> daniarrak (1813-1855), Hegelen filosofiaren aurka altxatzen denak: ezertarako ez du balio —halaxe dio, funtsean— dena orokorki azaltzen duen sistema handios batek, baldin eta ezer esaten ez badio sufritzen duen, zalantza egiten duen eta bere bizitza hemen eta orain erabaki behar duen indibiduo singularrari. Filosofia, hala, berriro bihurtzen da Sokratesentzat edo estoikoentzat izan zena (<a href="../chapters-web-eu/gaia-05.html#sec-22">§22</a>): ez munduari buruzko jakite teoriko bat, <em>bizimodu</em> bat baizik, nork bere existentziarekin moldatzeko modu bat. Axola duten egiak ez dira arbel batean frogatzen direnak, baizik eta haiengatik bizitzeko eta hiltzeko prest gauden haiek.</p>
 <p><strong>Askatasuna eta larridura.</strong> Ezerk ez bagaitu aldez aurretik definitzen, orduan erro-errotik <em>libreak</em> gara: egoera bakoitzean aukeratzea egokitzen zaigu, eta ezin dugu ez aukeratu, zeren eta korronteak eraman gaitzan uztea ere, dagoeneko, aukera bat baita. Baina askatasun hori ez da arina; astuna da. Norbere bizitzaren erantzule izatearen zorabioa, heltzeko barandarik gabe, da Kierkegaardek <em>larridura</em> deitu zuena. Komeni da beldurretik bereiztea: beldurrak beti du objektu bat —txakurrari, gaixotasunari, azterketari zaio beldur—; larridurak, aldiz, ez du objekturik, eragiten duena askatasuna bera baita, edozer izateko aukera irekia. Norbere aukeren amildegira begiratzen duenak zorabio hori sentitzen du. Larridura, sendatu beharreko matxura bat izatetik urrun, agerkaria da: geure askatasunaren aurrean bakarrik gaudela erakusten digu.</p>
 <p><strong>Benetakotasuna masaren aurrean.</strong> Larriduratik irteteko biderik errazena hari ihes egitea da: aterpe hartzea «egiten denean», pentsatzea «pentsatzen dena», bizitzea «mundu guztia» bizi den bezala. Anonimatuan urtutako existentzia horri, non inor ez baita inor denak trukagarriak direlako, bizitza <em>ez-benetakoa</em> deitzen diote existentzialistek. Haren aurrean, <em>benetakotasuna</em> da norbere existentzia eginkizun eskualdaezin gisa bere gain hartzea: jabetzea bizitza hau nirea dela, aukera hauek nireak direla, eta haien zentzua ez didala jendetzak oparituko. Ez da elkartasunik gabeko apeta bat, kontrakoa baizik: bere buruaren jabe denak bakarrik erantzun dezake benetan besteen aurrean. Masak erantzukizuna urtu egiten du; benetakotasunak, aldarrikatu.</p>
-<p><strong>Absurdua eta korrontearen bi leinuak.</strong> Azken motibo bat geratzen da, <em>absurduarena</em>: gure zentzu-egarriaren eta isilik dirauen unibertso baten arteko etena. Gizakiak arrazoiak eskatzen ditu, eta munduak ez du erantzuten; dibortzio horretatik sortzen da sentsazioa existentzia, funtsean, doakoa dela, justifikaziorik gabea. Diagnostiko komun horren aurrean, existentzialismoa bi leinutan adarkatzen da. Batak, <em>sinestunak</em>, Kierkegaardengan abiatu eta Gabriel Marcelengan edo Karl Jaspersengan jarraitzen duenak, fedearen jauzian ikusten du larriduraren erantzuna. Besteak, <em>ateoak</em>, Nietzscherengandik Jainkoaren heriotza jasotzen duenak (<a href="gaia-16.html#sec-61">§61</a>), aterpe transzendente oro ukatzen du eta gizakia bere askatasunarekin bakarrik uzten du. Bigarren leinu hori izango da —Heideggerrena, ñabardurekin, eta batez ere Sartrerena eta Camusena— XX. mendean nagusituko dena, neurri handi batean bi mundu-gerren esperientziari erantzunez, haiek oso konkretu bihurtu baitzituzten zentzuari, heriotzari eta erantzukizunari buruzko galderak. Autore horiengana hurbilduko gara jarraian <a href="gaia-17.html#tbl-heidegger-eta-sartre">Taula 13</a>.</p>
+<p><strong>Absurdua eta korrontearen bi leinuak.</strong> Azken motibo bat geratzen da, <em>absurduarena</em>: gure zentzu-egarriaren eta isilik dirauen unibertso baten arteko etena. Gizakiak arrazoiak eskatzen ditu, eta munduak ez du erantzuten; dibortzio horretatik sortzen da sentsazioa existentzia, funtsean, doakoa dela, justifikaziorik gabea. Diagnostiko komun horren aurrean, existentzialismoa bi leinutan adarkatzen da. Batak, <em>sinestunak</em>, Kierkegaardengan abiatu eta Gabriel Marcelengan edo Karl Jaspersengan jarraitzen duenak, fedearen jauzian ikusten du larriduraren erantzuna. Besteak, <em>ateoak</em>, Nietzscherengandik Jainkoaren heriotza jasotzen duenak (<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a>), aterpe transzendente oro ukatzen du eta gizakia bere askatasunarekin bakarrik uzten du. Bigarren leinu hori izango da —Heideggerrena, ñabardurekin, eta batez ere Sartrerena eta Camusena— XX. mendean nagusituko dena, neurri handi batean bi mundu-gerren esperientziari erantzunez, haiek oso konkretu bihurtu baitzituzten zentzuari, heriotzari eta erantzukizunari buruzko galderak. Autore horiengana hurbilduko gara jarraian <a href="../chapters-web-eu/gaia-17.html#tbl-heidegger-eta-sartre">Taula 13</a>.</p>
 </section>
 <section id="sec-63" class="level2">
 <h2 class="anchored" data-anchor-id="sec-63">§63 · Martin Heidegger</h2>
 <p><strong>Ahaztutako galdera.</strong> <em>Martin Heidegger</em> (1889-1976) da, Sartreren baimenarekin, existentzialismoaren filosoforik eragin handienekoa, eta baita zailena ere. Haren obra nagusia, <em>Izatea eta denbora</em> (1927), galdera batetik abiatzen da, berak filosofiako zaharrena eta ahaztuena dela uste duena: <em>izateari buruzko</em> galderatik. Zer esan nahi dugu zerbait «badela» esaten dugunean? Tradizioa, Heideggerren arabera, enteez arduratu zen etengabe —gauzez, objektuez, Jainkoaz—, baina itzalpean utzi zuen ente bat izanarazten duen izatea bera. Galdera hori berreskuratzeak abiapuntu berri bat eskatzen du; eta puntu hori galdera hori egiten duen ente bakarra baino ezin da izan, bere izateaz galdetzen dena: gizakia.</p>
-<p><strong><em>Dasein</em>a, munduan-izate bat.</strong> Etiketa zaharrak ez arrastatzeko —«subjektua», «arima», «kontzientzia», suposizioz kargatuak—, Heideggerrek termino berri batez izendatzen du gizakia: <em>Dasein</em>, hitzez hitz «hor-izatea» edo «hor-egotea». Daseina ez da gauza bat gauzen artean, ezta mundua kanpotik begiratzen duen adimen itxi bat ere, Descartesen cogitoan bezala (<a href="gaia-08.html#sec-36">§36</a>). Haren lehen ezaugarria <em>munduan-izate</em> bat izatea da (<em>In-der-Welt-sein</em>): existitzea da jada murgildurik egotea zereginez, tresnaz eta harremanez osaturiko mundu batean, gauzez arduratuz eta besteekin batera biziz. Ez dago lehenik ni bat eta gero hari begiratzeko mundu bat; munduan-izatea da Daseina inoiz irteten ez den kondizioa. Eta, gainera, izaki <em>irekia</em> da: bakarra, zeinari, existitzean, «bere izatea jokoan baitoakio», bere buruaz zer egiten duen axola zaiona.</p>
-<p><strong>Erorketa <em>das Man</em>ean.</strong> Bere eguneroko harremanetan, ordea, Daseinak galtzeko joera du. Zereginek eta elkarbizitzak irentsita, edonor bizi den bezala bizi da gehienetan: egiten <em>dena</em> egiten du, esaten <em>dena</em> esaten du, uste <em>dena</em> uste du. Heideggerrek subjektu anonimo horri <em>das Man</em> deitzen dio —«norbait» edo «jendea» inpertsonala, «esaten da», «eramaten da», «jendea» esamoldeetakoa—. Masa ez-benetakoaren bertsio heideggertarra da (<a href="gaia-17.html#sec-62">§62</a>): <em>das Man</em>ean, inork ez du bere existentziaren kargarik hartzen, erantzukizuna guztien artean banatu eta lurrundu egiten baita. Inpertsonalean urtzeko joera horri <em>erorketa</em> deitzen dio. Ez da bekatu bat, ezta hondamendi bat ere, ia beti existitzen garen ohiko modua baizik, ia saihestezina.</p>
+<p><strong><em>Dasein</em>a, munduan-izate bat.</strong> Etiketa zaharrak ez arrastatzeko —«subjektua», «arima», «kontzientzia», suposizioz kargatuak—, Heideggerrek termino berri batez izendatzen du gizakia: <em>Dasein</em>, hitzez hitz «hor-izatea» edo «hor-egotea». Daseina ez da gauza bat gauzen artean, ezta mundua kanpotik begiratzen duen adimen itxi bat ere, Descartesen cogitoan bezala (<a href="../chapters-web-eu/gaia-08.html#sec-36">§36</a>). Haren lehen ezaugarria <em>munduan-izate</em> bat izatea da (<em>In-der-Welt-sein</em>): existitzea da jada murgildurik egotea zereginez, tresnaz eta harremanez osaturiko mundu batean, gauzez arduratuz eta besteekin batera biziz. Ez dago lehenik ni bat eta gero hari begiratzeko mundu bat; munduan-izatea da Daseina inoiz irteten ez den kondizioa. Eta, gainera, izaki <em>irekia</em> da: bakarra, zeinari, existitzean, «bere izatea jokoan baitoakio», bere buruaz zer egiten duen axola zaiona.</p>
+<p><strong>Erorketa <em>das Man</em>ean.</strong> Bere eguneroko harremanetan, ordea, Daseinak galtzeko joera du. Zereginek eta elkarbizitzak irentsita, edonor bizi den bezala bizi da gehienetan: egiten <em>dena</em> egiten du, esaten <em>dena</em> esaten du, uste <em>dena</em> uste du. Heideggerrek subjektu anonimo horri <em>das Man</em> deitzen dio —«norbait» edo «jendea» inpertsonala, «esaten da», «eramaten da», «jendea» esamoldeetakoa—. Masa ez-benetakoaren bertsio heideggertarra da (<a href="../chapters-web-eu/gaia-17.html#sec-62">§62</a>): <em>das Man</em>ean, inork ez du bere existentziaren kargarik hartzen, erantzukizuna guztien artean banatu eta lurrundu egiten baita. Inpertsonalean urtzeko joera horri <em>erorketa</em> deitzen dio. Ez da bekatu bat, ezta hondamendi bat ere, ia beti existitzen garen ohiko modua baizik, ia saihestezina.</p>
 <p><strong>Larridura eta heriotzarako-izatea.</strong> Zerk atera dezake Daseina errutina anonimo horretatik? Muga-esperientzia batek: <em>larridurak</em>. Beldurrak ez bezala, hark beti baitio zerbait konkreturi beldur, larridurak ez du objekturik: hartan, behea jotzen du eguneroko munduaren etxekotasunak, eta ezerezaren aurrean geratzen gara, existitzearen egitate biluziaren aurrean. Eta ezerez horrek agerian jartzen diguna, azken batean, gure finitutasuna da. Zeren Daseina, izatez, <em>heriotzarako-izate</em> bat baita (<em>Sein-zum-Tode</em>): heriotza ez da noizbait gertatuko den urrutiko gertaera bat, baizik eta nire existentzia osoa oraindanik definitzen duen ahalbiderik berezkoena eta ziurrena. Hari ihes egitea —pentsatuz «hil egiten dela», bai, baina abstraktuan, besteei gertatzen zaien bezala— <em>das Man</em>en koartada da. Bere gain hartzea, aldiz, <em>nire</em> heriotza gisa aurreratzea, horixe da Daseina bere buruarengana itzularazten duena: bere denbora finitua eta berea dela aurrez aurre begiratzen duenak bakarrik bizi dezake modu <em>benetakoan</em>, bere bizitza benetan aukeratuz, igarotzen utzi beharrean.</p>
-<p><strong>Isildu behar ez litzatekeen itzala.</strong> Heideggerren sakontasuna orban larri batekin batera bizi da: 1933an alderdi naziko kide egin zen eta Friburgoko Unibertsitateko errektoretza onartu zuen, eta gero ez zuen inoiz atzera-egite argirik eskaini. Nietzscherekin ez bezala, zeinaren izena haren oinordekoek faltsutu baitzuten (<a href="gaia-16.html#sec-61">§61</a>), hemen filosofoa bera izan zen erregimenarekin konprometitu zena. Kasuak filosofia-irakurle batek egin dezakeen galderarik serioenetako batera behartzen gaitu: noraino kutsatzen du bizitza batek bere obra? Ez dago erantzun erosorik. Komeni da Heidegger irakurtzea —Sartrerengan, Arendtengan (<a href="gaia-19.html#sec-69">§69</a>) edo geroko hermeneutikan izan zuen eragina izugarria da—, baina, horregatik, itzal hori gogoan izateari utzi gabe<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p><strong>Isildu behar ez litzatekeen itzala.</strong> Heideggerren sakontasuna orban larri batekin batera bizi da: 1933an alderdi naziko kide egin zen eta Friburgoko Unibertsitateko errektoretza onartu zuen, eta gero ez zuen inoiz atzera-egite argirik eskaini. Nietzscherekin ez bezala, zeinaren izena haren oinordekoek faltsutu baitzuten (<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a>), hemen filosofoa bera izan zen erregimenarekin konprometitu zena. Kasuak filosofia-irakurle batek egin dezakeen galderarik serioenetako batera behartzen gaitu: noraino kutsatzen du bizitza batek bere obra? Ez dago erantzun erosorik. Komeni da Heidegger irakurtzea —Sartrerengan, Arendtengan (<a href="../chapters-web-eu/gaia-19.html#sec-69">§69</a>) edo geroko hermeneutikan izan zuen eragina izugarria da—, baina, horregatik, itzal hori gogoan izateari utzi gabe<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </section>
 <section id="sec-64" class="level2">
 <h2 class="anchored" data-anchor-id="sec-64">§64 · Jean-Paul Sartre</h2>
@@ -545,10 +557,10 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Jean-Paul Sartre (1905-1980), existentzialismoa Frantziako bizitza publikora eraman zuena eta «libre izatera kondenatuak» gaudela dioen tesian laburbildu zuena. || Egiletza: Anefo / Nationaal Archief, CC0 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Jainkorik gabe, koartadarik gabe.</strong> Tesi hori aitortutako ateismo batean oinarritzen da. Jainko sortzaile bat existituko balitz, pentsa genezake ideia baten arabera egin gintuela, artisauak kartazabaltzekoa bezala, eta aldez aurretik emandako natura bat izango genuke. Baina, Jainkoa hilda (<a href="gaia-16.html#sec-61">§61</a>), ez dago halako ideiarik, ez halako naturarik: «ez dago giza naturarik, ez baitago hura pentsa dezakeen Jainkorik». Eta hortik ondorio biluzi bat ateratzen du Sartrek: gizakia <em>aitzakiarik gabe</em> geratzen da. Ezin du bere izaeraren, bere pasioen, bere hezkuntzaren edo patu baten atzean babestu egiten duena justifikatzeko, zeren hori guztia bere gain hartzen —edo baztertzen— baitu aukeratzean. Erabat geure erantzukizunaren esku emanak gaude.</p>
+<p><strong>Jainkorik gabe, koartadarik gabe.</strong> Tesi hori aitortutako ateismo batean oinarritzen da. Jainko sortzaile bat existituko balitz, pentsa genezake ideia baten arabera egin gintuela, artisauak kartazabaltzekoa bezala, eta aldez aurretik emandako natura bat izango genuke. Baina, Jainkoa hilda (<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a>), ez dago halako ideiarik, ez halako naturarik: «ez dago giza naturarik, ez baitago hura pentsa dezakeen Jainkorik». Eta hortik ondorio biluzi bat ateratzen du Sartrek: gizakia <em>aitzakiarik gabe</em> geratzen da. Ezin du bere izaeraren, bere pasioen, bere hezkuntzaren edo patu baten atzean babestu egiten duena justifikatzeko, zeren hori guztia bere gain hartzen —edo baztertzen— baitu aukeratzean. Erabat geure erantzukizunaren esku emanak gaude.</p>
 <p><strong>Libre izatera kondenatuak.</strong> Hortik dator Sartreren esaldirik ospetsuena: gizakia <em>libre izatera kondenatua</em> dago. «Kondenatua», ez zuelako aukeratu ez existitzea, ez libre izatea; «libre izatera», zeren, behin mundura jaurtita, ez baitago aukeratzeari utz diezaiokeen une bakar bat ere. Eta aukeratzean, dio Sartrek, nork bere gizaki-eredu bat aukeratzen du: zerbait niretzat on gisa hautatzen dudanean, aldi berean baieztatzen dut ona dela nire lekuan legokeen edonorentzat; halako moldez non nire aukerak, nolabait, gizadi osoa konprometitzen baitu. Horregatik, askatasun sartretarra ez da apeta bat, karga eskerga bat baizik, eta <em>larridura</em> du lagun saihestezina: sentitzen du ulertzen duenak, bere kabuz erabakitzean, guztiongatik erabakitzen ari dela, eta ez dagoela gainean inor asmatzen ari dela berretsiko dionik.</p>
-<p><strong>Fede txarra.</strong> Erantzukizun horrek itotzen duenez, ohikoena harengandik ihes egitea da, Sartrek <em>fede txarra</em> (<em>mauvaise foi</em>) deitzen duenaren bidez: libre ez garelako itxurak egiteko autoengainua, gauza finko bat garela emanez, gure aukeren kargarik ez hartzeko. Haren adibide ospetsua kafetegiko zerbitzariarena da, «zerbitzariarena» neurriz kanpo egiten duena —keinu zurrunak, mugimendua puntu bat biziegi—, bere ogibidea bere esentzia balitz bezala, eta ez aukeratu duen eta utz lezakeen paper bat. Fede txarrean dago «ni honelakoa naiz, ezin dut aldatu» edo «ez nuen beste erremediorik» dioena: natura mugiezin bihurtzen du egiaz bere erabakia dena. Fede txarra da, hala, traizio existentzialik behinena, benetakotasunaren kontrakoa (<a href="gaia-17.html#sec-62">§62</a>): askatasuna ukatzea, hartaz ez erantzuteko.</p>
-<p><strong>Konpromisoa eta balantzea.</strong> Honen guztiaren ifrentzu argitsua <em>konpromisoa</em> da (<em>engagement</em>). Geure egintzen bidez egiten bagara geu, eta aukera bakoitzak gizakiaren irudi bat marrazten badu, orduan bizitzea konprometitzea da, munduan alde bat hartzea: Sartre bera intelektual militante bat izan zen, bere mendeko kausa politiko handietan inplikatua. Haren filosofiari leporatu izan zaizkio indibidualismo muturreko bat eta ia mugarik gabeko askatasun-ideia bat, zirkunstantzia material eta sozialen pisua ahazten duela dirudiena. Hain zuzen ere hor emango du pauso erabakigarria haren bizi-lagun <em>Simone de Beauvoir</em>rek: askatasun kokatu hau hartu eta erakutsi nola jarduten duen —eta nola ukatzen den— kondizio konkretu batean, emakumearenean, <em>Bigarren sexua</em>rekin pentsamendu feminista garaikidearen kapitulu handia irekiz (<a href="gaia-21.html#sec-77">§77</a>). Eta, bien bitartean, urte berberetako Espainian, beste pentsalari batzuek bizitza eta existentzia beren filosofiaren erdigune egin zuten bide propio batetik: haiei, Unamunori, Ortegari eta Zambranori, eskaintzen diegu hurrengo gaia (<a href="gaia-18.html#sec-65">§65</a>).</p>
+<p><strong>Fede txarra.</strong> Erantzukizun horrek itotzen duenez, ohikoena harengandik ihes egitea da, Sartrek <em>fede txarra</em> (<em>mauvaise foi</em>) deitzen duenaren bidez: libre ez garelako itxurak egiteko autoengainua, gauza finko bat garela emanez, gure aukeren kargarik ez hartzeko. Haren adibide ospetsua kafetegiko zerbitzariarena da, «zerbitzariarena» neurriz kanpo egiten duena —keinu zurrunak, mugimendua puntu bat biziegi—, bere ogibidea bere esentzia balitz bezala, eta ez aukeratu duen eta utz lezakeen paper bat. Fede txarrean dago «ni honelakoa naiz, ezin dut aldatu» edo «ez nuen beste erremediorik» dioena: natura mugiezin bihurtzen du egiaz bere erabakia dena. Fede txarra da, hala, traizio existentzialik behinena, benetakotasunaren kontrakoa (<a href="../chapters-web-eu/gaia-17.html#sec-62">§62</a>): askatasuna ukatzea, hartaz ez erantzuteko.</p>
+<p><strong>Konpromisoa eta balantzea.</strong> Honen guztiaren ifrentzu argitsua <em>konpromisoa</em> da (<em>engagement</em>). Geure egintzen bidez egiten bagara geu, eta aukera bakoitzak gizakiaren irudi bat marrazten badu, orduan bizitzea konprometitzea da, munduan alde bat hartzea: Sartre bera intelektual militante bat izan zen, bere mendeko kausa politiko handietan inplikatua. Haren filosofiari leporatu izan zaizkio indibidualismo muturreko bat eta ia mugarik gabeko askatasun-ideia bat, zirkunstantzia material eta sozialen pisua ahazten duela dirudiena. Hain zuzen ere hor emango du pauso erabakigarria haren bizi-lagun <em>Simone de Beauvoir</em>rek: askatasun kokatu hau hartu eta erakutsi nola jarduten duen —eta nola ukatzen den— kondizio konkretu batean, emakumearenean, <em>Bigarren sexua</em>rekin pentsamendu feminista garaikidearen kapitulu handia irekiz (<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>). Eta, bien bitartean, urte berberetako Espainian, beste pentsalari batzuek bizitza eta existentzia beren filosofiaren erdigune egin zuten bide propio batetik: haiei, Unamunori, Ortegari eta Zambranori, eskaintzen diegu hurrengo gaia (<a href="../chapters-web-eu/gaia-18.html#sec-65">§65</a>).</p>
 <span id="tbl-heidegger-eta-sartre" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>Heidegger eta Sartre: muin existentzialista bi hiztegitan esana.</caption>
@@ -598,19 +610,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -689,7 +813,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -698,8 +823,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -713,6 +899,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -875,44 +1062,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1011,7 +1208,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../zatia-5.html" class="pagination-link" aria-label="V. zatia · XX. eta XXI. mendeak">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">V. zatia · XX. eta XXI. mendeak</span>

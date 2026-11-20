@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-21.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-22.html"><span class="chapter-title">22. gaia · XXI. mendeko erronkak</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-22.html"><span class="chapter-title">22. gaia · XXI. mendeko erronkak</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-22.html"><span class="chapter-title">22. gaia · XXI. mendeko erronkak</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-5.html">V. zatia · XX. eta XXI. mendeak</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-22.html"><span class="chapter-title">22. gaia · XXI. mendeko erronkak</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">22. gaia · XXI. mendeko erronkak</span></h1>
 </div>
@@ -516,15 +528,15 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="xxi.-mendeko-erronketan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="xxi.-mendeko-erronketan-sartzeko">XXI. mendeko erronketan sartzeko</h2>
-<p>Orainera iritsi gara. Aurreko orrialdeek lehen filosofo greziarrengandik XX. mendeko izen handietaraino ekarri gaituzte, eta azken gaiak galdera bat utzi zuen zabalik: <em>nor geratzen den kanpoan</em> Subjektu osoaren kategoriatik —nor tratatzen den Bestea bezala—; Beauvoirrek emakumeentzat formulatu zuen galdera hori, eta XXI. mendeak mila fronte berritan planteatu du berriro (<a href="gaia-21.html#sec-77">§77</a>). Amaierako gai hau fronte horietara hurbiltzen da. Jada ez ditugu klasiko kontsakratuak aztertzen, pentsalari biziak edo duela oso gutxi hildakoak baizik, zeinen obraren gainean denborak ez baitu oraindik epairik eman: ez dago oraindik XXI. mendeko «kanon» delakorik. Horregatik brotxa-kolpeka ibiliko gara, autore bakoitza bere ideiarik bereizgarrienaren bidez aurkeztuz, haiek agortzeko asmorik gabe.</p>
-<p>Bi pausotan egingo dugu. <strong>Lehenengoak</strong> denok zapaltzen dugun <em>zorua</em> deskribatzen du: mundu <em>globalizatu</em> bat, molde berriko kapitalismo batek gobernatua eta teknologia digitalak errotik eraldatua. Lau diagnostikok —Klein, Bauman, Chomsky eta Hanenek— lagunduko digute ulertzen zer gizarte-motatan bizi garen (<a href="gaia-22.html#sec-78">§78</a>). <strong>Bigarren</strong> pausoak gaur egungo pentsamendu kritikoa borrokan ari den bi fronte handiei erreparatzen die: <em>naturaren</em> defentsa krisi ekologikoaren aurrean, eta feminismoak irekitako <em>genero-auziaren</em> jarraipena. Han aurkituko ditugu Nussbaum, Herrero, Preciado eta, berriro ere, Butler (<a href="gaia-22.html#sec-79">§79</a>).</p>
+<p>Orainera iritsi gara. Aurreko orrialdeek lehen filosofo greziarrengandik XX. mendeko izen handietaraino ekarri gaituzte, eta azken gaiak galdera bat utzi zuen zabalik: <em>nor geratzen den kanpoan</em> Subjektu osoaren kategoriatik —nor tratatzen den Bestea bezala—; Beauvoirrek emakumeentzat formulatu zuen galdera hori, eta XXI. mendeak mila fronte berritan planteatu du berriro (<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>). Amaierako gai hau fronte horietara hurbiltzen da. Jada ez ditugu klasiko kontsakratuak aztertzen, pentsalari biziak edo duela oso gutxi hildakoak baizik, zeinen obraren gainean denborak ez baitu oraindik epairik eman: ez dago oraindik XXI. mendeko «kanon» delakorik. Horregatik brotxa-kolpeka ibiliko gara, autore bakoitza bere ideiarik bereizgarrienaren bidez aurkeztuz, haiek agortzeko asmorik gabe.</p>
+<p>Bi pausotan egingo dugu. <strong>Lehenengoak</strong> denok zapaltzen dugun <em>zorua</em> deskribatzen du: mundu <em>globalizatu</em> bat, molde berriko kapitalismo batek gobernatua eta teknologia digitalak errotik eraldatua. Lau diagnostikok —Klein, Bauman, Chomsky eta Hanenek— lagunduko digute ulertzen zer gizarte-motatan bizi garen (<a href="../chapters-web-eu/gaia-22.html#sec-78">§78</a>). <strong>Bigarren</strong> pausoak gaur egungo pentsamendu kritikoa borrokan ari den bi fronte handiei erreparatzen die: <em>naturaren</em> defentsa krisi ekologikoaren aurrean, eta feminismoak irekitako <em>genero-auziaren</em> jarraipena. Han aurkituko ditugu Nussbaum, Herrero, Preciado eta, berriro ere, Butler (<a href="../chapters-web-eu/gaia-22.html#sec-79">§79</a>).</p>
 <p>Ohar bat, ez galtzeko: gai honek ez du bilatzen zortzi doktrina buruz ikas ditzazun, baizik eta ikasturtetik atera zaitezen <em>zeure garaia pentsatzeko</em> tresna-sorta batekin. Ideia hauetako bakoitza inguratzen zaituen horren gainean piztu dezakezun linterna bat da —zure mugikorra, zure etorkizuneko lana, albisteak, planeta—. Horixe da, azken batean, filosofiaren historia bat ixten duen galdera: zertarako balio digu honek guztiak, bizitzea egokitu zaigun mundua ulertzeko?</p>
 </section>
 <section id="sec-78" class="level2">
 <h2 class="anchored" data-anchor-id="sec-78">§78 · Globalizazioa, kapitalismoa eta mundu birtuala: Bauman, Chomsky, Han, Klein</h2>
-<p><strong>Zoru komuna: mundu globalizatu bat.</strong> <em>Globalizazioa</em> deitzen diogu planeta osoko ekonomiak, kulturak eta komunikazioak elkarrekin lotu dituen prozesuari, sistema interkonektatu bakar bat osatzeraino. Kirol-oinetako bat herrialde batean diseinatzen da, beste batean fabrikatzen eta hirugarren batean saltzen; albiste batek edo moda batek segundo gutxitan ematen dio bira munduari. Prozesu horrek —Gerra Hotzaren amaieratik eta internetekin bizkortua— aberastasuna eta konexioa ekarri ditu, baina baita desberdintasun-, prekaritate- eta kontrol-modu berriak ere. Epigrafe honetako lau pentsalariak, nor bere erara, <em>orainaren diagnostikatzaileak</em> dira: ez dute sistema handirik eraikitzen, filosofo klasikoek bezala; gure garaiko ondoez lauso bati jartzen diote izena. Zentzu horretan, <em>susmoaren maisuen</em> (<a href="gaia-14.html#sec-55">§55</a>) eta Frankfurteko Eskolaren (<a href="gaia-19.html#sec-68">§68</a>) zereginari jarraitzen diote: sistemak ezkutuan mantendu nahiago duena agerian jartzeari.</p>
+<p><strong>Zoru komuna: mundu globalizatu bat.</strong> <em>Globalizazioa</em> deitzen diogu planeta osoko ekonomiak, kulturak eta komunikazioak elkarrekin lotu dituen prozesuari, sistema interkonektatu bakar bat osatzeraino. Kirol-oinetako bat herrialde batean diseinatzen da, beste batean fabrikatzen eta hirugarren batean saltzen; albiste batek edo moda batek segundo gutxitan ematen dio bira munduari. Prozesu horrek —Gerra Hotzaren amaieratik eta internetekin bizkortua— aberastasuna eta konexioa ekarri ditu, baina baita desberdintasun-, prekaritate- eta kontrol-modu berriak ere. Epigrafe honetako lau pentsalariak, nor bere erara, <em>orainaren diagnostikatzaileak</em> dira: ez dute sistema handirik eraikitzen, filosofo klasikoek bezala; gure garaiko ondoez lauso bati jartzen diote izena. Zentzu horretan, <em>susmoaren maisuen</em> (<a href="../chapters-web-eu/gaia-14.html#sec-55">§55</a>) eta Frankfurteko Eskolaren (<a href="../chapters-web-eu/gaia-19.html#sec-68">§68</a>) zereginari jarraitzen diote: sistemak ezkutuan mantendu nahiago duena agerian jartzeari.</p>
 <p><strong>Zygmunt Bauman eta modernitate likidoa.</strong> <em>Zygmunt Bauman</em> (1925-2017) soziologo eta filosofo poloniar-britainiarrak asmatu zuen gure garaiko bizi-esperientzia ondoen laburbiltzen duen irudia: <em>modernitate likidoa</em>. Haren ideia kontraste batetik abiatzen da. XIX. eta XX. mendeetako modernitate «solidoa» egonkorra eta iraunkorra zen: leku batean jaiotzen zen bat, bizitza osorako lanbide bat ikasten zen, irauten zuen familia bat osatzen zen, ideia sendoetan militatzen zen. Egitura solido horiek —lanpostu finkoa, erakundeak, lotura iraunkorrak— <em>urtu</em> egin dira. Modernitate likidoan, aldiz, dena dabil isurian eta ezer ez da finkatzen: lana behin-behinekoa eta aldakorra da, harremanak hauskor eta ezeztagarri bihurtzen dira —Baumanek <em>maitasun likidoaz</em> hitz egin zuen—, identitateak muntatu eta desmuntatu egiten dira, arropaz aldatzen den bezala. Likidotasun horrek inoiz ez bezalako askatasuna dakar, baina baita etengabeko <em>segurtasunik eza</em> ere: zoru sendorik gabe bizi gara oinen azpian, atsedenik gabe geure burua berrasmatzera behartuta, eta antzinako lotura solidoek ematen zuten segurtasun-sarerik gabe. Baumanek <em>kontsumoan</em> ikusi zuen egoera horren motorra: gizarteak jada ez gaitu ekoizle diziplinatu gisa hezten, kontsumitzaile gisa baizik, eta etengabe asegabe mantentzen gaitu, desiratzen eta erosten jarrai dezagun.</p>
-<p><strong>Noam Chomsky eta adostasunaren fabrikazioa.</strong> <em>Noam Chomsky</em> estatubatuarrak (1928an jaioa) —mendeko hizkuntzalari garrantzitsuenetako bat, pentsalari politikoa izateaz gain<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>— mende erdia eman du demokrazia liberaletako boterea aztertzen. Haren ekarpenik aipatuena, Edward Hermanekin batera <em>Askatasunaren zaindariak</em> (1988) liburuan formulatua, <em>adostasunaren fabrikazioaren</em> teoria da. Abiapuntuko galdera deserosoa da: diktadura batean, botereari indarrez eusten zaio; baina nola kontrolatzen da populazioa demokrazia batean, non formalki denok libre baikara eta bozkatu egiten baitugu? Chomskyren erantzuna da kontrola <em>buruen gainean</em> egikaritzen dela, ez gorputzen gainean: komunikabide handiek —publizitatearen eta interes ekonomikoen mende daudenek— informazioa iragazi egiten dute, halako moldez non iritzi publikoak, bere kabuz, eliteei komeni zaiena <em>onartzen</em> amaitzen baitu. Ez dago pentsatzen dena debekatu beharrik, aldez aurretik finkatzea lortzen bada <em>zeri buruz pentsa daitekeen</em>. Horrekin Chomskyk berreskuratu eta eguneratu egiten ditu Frankfurteko Eskolak egina zuen <em>kultura-industriaren</em> kritika (<a href="gaia-19.html#sec-68">§68</a>) eta <em>ideologiaren</em> nozio marxista zaharra (<a href="gaia-14.html#sec-55">§55</a>): gutxi batzuen zerbitzura dagoena natural eta begi-bistako gisa aurkezten duen diskurtsoa.</p>
+<p><strong>Noam Chomsky eta adostasunaren fabrikazioa.</strong> <em>Noam Chomsky</em> estatubatuarrak (1928an jaioa) —mendeko hizkuntzalari garrantzitsuenetako bat, pentsalari politikoa izateaz gain<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>— mende erdia eman du demokrazia liberaletako boterea aztertzen. Haren ekarpenik aipatuena, Edward Hermanekin batera <em>Askatasunaren zaindariak</em> (1988) liburuan formulatua, <em>adostasunaren fabrikazioaren</em> teoria da. Abiapuntuko galdera deserosoa da: diktadura batean, botereari indarrez eusten zaio; baina nola kontrolatzen da populazioa demokrazia batean, non formalki denok libre baikara eta bozkatu egiten baitugu? Chomskyren erantzuna da kontrola <em>buruen gainean</em> egikaritzen dela, ez gorputzen gainean: komunikabide handiek —publizitatearen eta interes ekonomikoen mende daudenek— informazioa iragazi egiten dute, halako moldez non iritzi publikoak, bere kabuz, eliteei komeni zaiena <em>onartzen</em> amaitzen baitu. Ez dago pentsatzen dena debekatu beharrik, aldez aurretik finkatzea lortzen bada <em>zeri buruz pentsa daitekeen</em>. Horrekin Chomskyk berreskuratu eta eguneratu egiten ditu Frankfurteko Eskolak egina zuen <em>kultura-industriaren</em> kritika (<a href="../chapters-web-eu/gaia-19.html#sec-68">§68</a>) eta <em>ideologiaren</em> nozio marxista zaharra (<a href="../chapters-web-eu/gaia-14.html#sec-55">§55</a>): gutxi batzuen zerbitzura dagoena natural eta begi-bistako gisa aurkezten duen diskurtsoa.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-han.jpg" class="img-fluid figure-img"></p>
@@ -532,14 +544,14 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>Byung-Chul Han eta nekearen gizartea.</strong> <em>Byung-Chul Han</em> filosofo korear-alemana (1959an jaioa) da, beharbada, aro digitaleko bizitzaz une honetan gehien irakurtzen den pentsalaria. Haren diagnostikoak, <em>Nekearen gizartea</em> (2010) liburuan kondentsatuak, aldaketa sakon bat deskribatzen du botereak gobernatzen gaituen moduan. Mendeetan zehar <em>gizarte diziplinario</em> batean bizi izan ginen, <em>debekuaren</em> inguruan antolatua: harresiak, arauak eta zaindariak, «ez duzu egin behar» esaten zigutenak. Gizarte horrek, dio Hanek, <em>errendimenduaren gizarte</em> bati utzi dio lekua, kontrako eta itxuraz askatzaile den agindu baten inguruan antolatuari: «<em>zuk ahal duzu</em>, izan zaitez zeure bertsiorik onena, ez dago mugarik». Emaitza paradoxikoa eta krudela da: jada ez gaitu kanpoko nagusi batek esplotatzen, <em>geuk geure burua</em> baizik, geure burua errealizatzen ari garela sinetsita. Errendimendu-subjektua nagusi eta esklabo da aldi berean; etenik gabe exijitzen dio bere buruari eta, iristen ez denean, ez dio errua sistemari egozten, bere buruari baizik: hortik dator gaur egungo <em>depresio-, antsietate- eta akidura</em>-epidemia (<em>burnout</em>). Bigarren diagnostiko batean, <em>Gardentasunaren gizartea</em>-n (2012), beste bihurgune bat gehitzen du Hanek mundu birtualaz: sareetan geure borondatez erakusten dugu geure burua, gure datuak eta gure intimitatea eskainiz, inork behartu gabe. Kanpotik zaintzen zuen panoptiko zaharra <em>digital</em> batek ordezkatu du, non aldi berean preso eta zaindari baikara, munduari beren burua erakusten dioten preso zoriontsuak. Argitaratzean egikaritzen dugula uste dugun askatasuna, iradokitzen du Hanek, kontrol-modu berri eta sotilago bat da.</p>
-<p><strong>Naomi Klein eta hondamendiaren kapitalismoa.</strong> <em>Naomi Klein</em> kanadarra (1970ean jaioa), filosofo akademikoa baino gehiago kazetaria eta aktibista, globalizazioaren ahots kritiko eraginkorrenetako bat bihurtu da. Haren tesirik ezagunena, <em>Shock-doktrina</em>-n (2007) azaldua, <em>hondamendiaren kapitalismoarena</em> da: ohartzea erreforma ekonomikorik gogorrenak —pribatizazioak, murrizketak, desregulazioa— <em>asaldura kolektiboko</em> uneak aprobetxatuz ezarri ohi direla, hondamendi natural batek, gerra batek edo finantza-krisi batek populazioa zorabiatuta eta erreakzionatzeko gaitasunik gabe uzten duenean. Kolpearen ondorengo nahasmenduan, azkar onartzen da garai normaletan jendeak baztertuko lukeena. Kleinek horrela eguneratzen du, XXI. menderako, kapitalismoari egindako kritika zaharra (<a href="gaia-15.html#sec-58">§58</a>): jada ez da soilik lantegiko lanaren esplotazioa, baizik eta sistemak sufrimendua eta beldurra negozio-aukera nola bihurtzen dituen. Haren beste obra ospetsuak, <em>No logo</em>-k (1999), fenomenoaren beste aurpegia erakutsia zuen lehenago: nola marka global handiek ez dituzten produktuak saltzen, <em>identitateak</em> eta bizi-estiloak baizik, eta, bitartean, ekoizpena deslokalizatu egiten duten eskulana merkea den eta eskubideak urriak diren herrialdeetara.</p>
+<p><strong>Naomi Klein eta hondamendiaren kapitalismoa.</strong> <em>Naomi Klein</em> kanadarra (1970ean jaioa), filosofo akademikoa baino gehiago kazetaria eta aktibista, globalizazioaren ahots kritiko eraginkorrenetako bat bihurtu da. Haren tesirik ezagunena, <em>Shock-doktrina</em>-n (2007) azaldua, <em>hondamendiaren kapitalismoarena</em> da: ohartzea erreforma ekonomikorik gogorrenak —pribatizazioak, murrizketak, desregulazioa— <em>asaldura kolektiboko</em> uneak aprobetxatuz ezarri ohi direla, hondamendi natural batek, gerra batek edo finantza-krisi batek populazioa zorabiatuta eta erreakzionatzeko gaitasunik gabe uzten duenean. Kolpearen ondorengo nahasmenduan, azkar onartzen da garai normaletan jendeak baztertuko lukeena. Kleinek horrela eguneratzen du, XXI. menderako, kapitalismoari egindako kritika zaharra (<a href="../chapters-web-eu/gaia-15.html#sec-58">§58</a>): jada ez da soilik lantegiko lanaren esplotazioa, baizik eta sistemak sufrimendua eta beldurra negozio-aukera nola bihurtzen dituen. Haren beste obra ospetsuak, <em>No logo</em>-k (1999), fenomenoaren beste aurpegia erakutsia zuen lehenago: nola marka global handiek ez dituzten produktuak saltzen, <em>identitateak</em> eta bizi-estiloak baizik, eta, bitartean, ekoizpena deslokalizatu egiten duten eskulana merkea den eta eskubideak urriak diren herrialdeetara.</p>
 </section>
 <section id="sec-79" class="level2">
 <h2 class="anchored" data-anchor-id="sec-79">§79 · Ekologismoa eta genero-auzia: Nussbaum, Butler, Herrero, Preciado</h2>
-<p><strong>Bi fronte zabalik.</strong> Aurreko epigrafeak zapaltzen dugun zorua deskribatzen bazuen, honek zoru horren gainean pentsamendu kritikoa gaur borrokan ari den bi gudu handiei erreparatzen die. Lehena <em>ekologikoa</em> da: kontzientzia hartzea kapitalismo globalak planetan zehar zabaldu duen bizimoduak talka egiten duela Lur finitu baten muga fisikoen kontra. Bigarrenak feminismoak irekitako <em>genero-auzia</em> luzatzen du (<a href="gaia-21.html#sec-76">§76</a>-<a href="gaia-21.html#sec-77">§77</a>): galdera, alegia, nor kontatzen den subjektu oso gisa eta gizarteak —eta gaur teknikak ere bai— gorputzak eta identitateak nola fabrikatzen dituen. Epigrafe honetako lau pentsalariek erakusten dute bi fronteak, funtsean, elkarri lotuta daudela.</p>
-<p><strong>Martha Nussbaum eta gaitasunen ikuspegia.</strong> <em>Martha Nussbaum</em> filosofo estatubatuarrak (1947an jaioa) intuizio zahar bat berreskuratu du orainerako: bizitza on bat <em>loratzen</em> den bizitza bat dela, Aristotelesek jada bilatzen zuen <em>eudaimonia</em> hura (<a href="gaia-04.html#sec-18">§18</a>). Haren ekarpenik eraginkorrena, Amartya Sen ekonomialariarekin batera garatua, <em>gaitasunen ikuspegia</em> da. Abiapuntuko galdera praktikoa da: nola neurtu gizarte bat justua den, edo herrialde bat «garatzen» ari den? Ez da nahikoa, erantzuten du Nussbaumek, aberastasunari edo errentari begiratzea, baliabide berak oso balio desberdina baitu pertsona desberdinentzat. Benetan axola duena ez da jendeak zer <em>daukan</em>, baizik eta benetan zer <em>egin dezakeen eta zer izatera irits daitekeen</em>: haren <em>gaitasunak</em>. Nussbaum oinarrizko gaitasunen zerrenda bat ematera ere iristen da, pertsona orok duintasunez bizitzeko egikaritu ahal izan beharko lituzkeenena —besteak beste: osasuna eta gorputz-osotasuna izatea, zentzumenak eta irudimena erabiltzea, pentsatzea, emozioak sentitzea, jolastea, bizitza politikoan parte hartzea eta <em>beste espezieekin eta naturarekin batera bizitzea</em>—. Horrekin Rawlsek planteatu zuen justiziari buruzko galdera eguneratzen du (<a href="gaia-19.html#sec-71">§71</a>), baina zuzenduz: erabakigarria ez da ondasunak banatzea, baizik eta bermatzea bakoitzak erabat gizatiarra den bizitza bat gara dezakeela. Ez da kasualitatea haren gaitasunetako azkenak naturarekiko harremana izendatzea jada: pertsonekiko justizia eta planetarekiko justizia batera pentsatzen hasiak dira.</p>
-<p><strong>Judith Butler, beste behin: bizitza prekarioa.</strong> Ezagutzen dugu jada <em>Judith Butler</em> (1956an jaioa): hirugarren olatuko teoriko handia, generoa <em>performatiboa</em> dela erakutsi zuena —antzezten den paper bat, ez edukitzen den esentzia bat— eta pentsamendu <em>queer</em>-aren bidea ireki zuena (<a href="gaia-21.html#sec-76">§76</a>). Komeni da une batez harengana itzultzea, XXI. mendeko haren obrak bira bat hartu duelako, gai honetako gainerako autoreekin lotzen duena. <em>Bizitza prekarioa</em> (2004) bezalako liburuetan, Butlerrek fokua identitatetik <em>zaurgarritasunera</em> lekualdatzen du: gizaki guztiok benetan partekatzen duguna ez da esentzia bat, <em>prekaritatea</em> baizik —gorputz ageriak izatea: besteen mendekoak, zauritu daitezkeenak eta hiltzen direnak—. Hortik abiatuta, galdetzen du zergatik egiten zaien negar bizitza batzuei galera gisa, eta beste batzuk, aldiz, ez diren aitortzen ere doluaren duin diren bizitza gisa (urrutiko gerretako biktima anonimoak, itotako migratzaileak). Zaurgarritasun komun hori, gainditu beharreko ahulezia izatetik urrun, <em>etika</em> baten zimendua da Butlerrentzat: denok hauskorrak eta elkarmendekoak bagara, denok zor dizkiogu elkarri zaintza eta babesa. Bira horrekin, generoaren pentsalaria ekologismoak eta zaintzen feminismoak zapaltzen duten lurralde berera hurbiltzen da.</p>
-<p><strong>Yayo Herrero eta ekofeminismoa.</strong> <em>Yayo Herrero</em> espainiarra (1965ean jaioa) —antropologoa, ingeniaria eta aktibista— <em>ekofeminismoaren</em> erreferentziazko ahotsetako bat da; korronte horrek diagnostiko bakar batean lotzen ditu epigrafe honetako bi guduak. Haren tesia da naturaren menderakuntzak eta emakumeen mendekotasunak erro komun bat dutela: sistema patriarkal eta kapitalista bat, <em>baliabide ikusezin eta doako</em> gisa tratatzen dituena bai natura, bai historikoki emakumeek beren gain hartu duten zaintza-lana. Herrerok bi hitz gakorekin adierazten du. <em>Ekomendekoak</em> gara: jaten, janzten edo arnasten dugun gauza bakoitza biosferatik dator; beraz, planeta finitu batean mugarik gabe hazten den ekonomia bat, besterik gabe, ezinezkoa da. Eta <em>elkarmendekoak</em> gara: gizaki bakar bat ere ez da bere kabuz aski —denok izan gara zaindutako haurrak, eta ia denok izango gara zaindutako zaharrak—, eta bizitzari eusteko lan hori, ia beti emakumeek egina, ordainik eta aitortzarik gabe, ekonomia «ageriko» osoa gainean eraikita dagoen oinarri ezkutua da. Herreroren ondorioa da erdigunean <em>bizitzaren jasangarritasuna</em> jarri behar dela, kapital-metaketaren ordez: gizartea berrantolatzea benetan bizirik mantentzen gaituenaren inguruan, ez hazkundea hazkundeagatik bilatzearen inguruan. Horrela, aurreko epigrafeko kapitalismoaren kritika (<a href="gaia-22.html#sec-78">§78</a>) eta feminismoaren ondarea (<a href="gaia-21.html#sec-77">§77</a>) proposamen bakar batean elkartzen dira.</p>
+<p><strong>Bi fronte zabalik.</strong> Aurreko epigrafeak zapaltzen dugun zorua deskribatzen bazuen, honek zoru horren gainean pentsamendu kritikoa gaur borrokan ari den bi gudu handiei erreparatzen die. Lehena <em>ekologikoa</em> da: kontzientzia hartzea kapitalismo globalak planetan zehar zabaldu duen bizimoduak talka egiten duela Lur finitu baten muga fisikoen kontra. Bigarrenak feminismoak irekitako <em>genero-auzia</em> luzatzen du (<a href="../chapters-web-eu/gaia-21.html#sec-76">§76</a>-<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>): galdera, alegia, nor kontatzen den subjektu oso gisa eta gizarteak —eta gaur teknikak ere bai— gorputzak eta identitateak nola fabrikatzen dituen. Epigrafe honetako lau pentsalariek erakusten dute bi fronteak, funtsean, elkarri lotuta daudela.</p>
+<p><strong>Martha Nussbaum eta gaitasunen ikuspegia.</strong> <em>Martha Nussbaum</em> filosofo estatubatuarrak (1947an jaioa) intuizio zahar bat berreskuratu du orainerako: bizitza on bat <em>loratzen</em> den bizitza bat dela, Aristotelesek jada bilatzen zuen <em>eudaimonia</em> hura (<a href="../chapters-web-eu/gaia-04.html#sec-18">§18</a>). Haren ekarpenik eraginkorrena, Amartya Sen ekonomialariarekin batera garatua, <em>gaitasunen ikuspegia</em> da. Abiapuntuko galdera praktikoa da: nola neurtu gizarte bat justua den, edo herrialde bat «garatzen» ari den? Ez da nahikoa, erantzuten du Nussbaumek, aberastasunari edo errentari begiratzea, baliabide berak oso balio desberdina baitu pertsona desberdinentzat. Benetan axola duena ez da jendeak zer <em>daukan</em>, baizik eta benetan zer <em>egin dezakeen eta zer izatera irits daitekeen</em>: haren <em>gaitasunak</em>. Nussbaum oinarrizko gaitasunen zerrenda bat ematera ere iristen da, pertsona orok duintasunez bizitzeko egikaritu ahal izan beharko lituzkeenena —besteak beste: osasuna eta gorputz-osotasuna izatea, zentzumenak eta irudimena erabiltzea, pentsatzea, emozioak sentitzea, jolastea, bizitza politikoan parte hartzea eta <em>beste espezieekin eta naturarekin batera bizitzea</em>—. Horrekin Rawlsek planteatu zuen justiziari buruzko galdera eguneratzen du (<a href="../chapters-web-eu/gaia-19.html#sec-71">§71</a>), baina zuzenduz: erabakigarria ez da ondasunak banatzea, baizik eta bermatzea bakoitzak erabat gizatiarra den bizitza bat gara dezakeela. Ez da kasualitatea haren gaitasunetako azkenak naturarekiko harremana izendatzea jada: pertsonekiko justizia eta planetarekiko justizia batera pentsatzen hasiak dira.</p>
+<p><strong>Judith Butler, beste behin: bizitza prekarioa.</strong> Ezagutzen dugu jada <em>Judith Butler</em> (1956an jaioa): hirugarren olatuko teoriko handia, generoa <em>performatiboa</em> dela erakutsi zuena —antzezten den paper bat, ez edukitzen den esentzia bat— eta pentsamendu <em>queer</em>-aren bidea ireki zuena (<a href="../chapters-web-eu/gaia-21.html#sec-76">§76</a>). Komeni da une batez harengana itzultzea, XXI. mendeko haren obrak bira bat hartu duelako, gai honetako gainerako autoreekin lotzen duena. <em>Bizitza prekarioa</em> (2004) bezalako liburuetan, Butlerrek fokua identitatetik <em>zaurgarritasunera</em> lekualdatzen du: gizaki guztiok benetan partekatzen duguna ez da esentzia bat, <em>prekaritatea</em> baizik —gorputz ageriak izatea: besteen mendekoak, zauritu daitezkeenak eta hiltzen direnak—. Hortik abiatuta, galdetzen du zergatik egiten zaien negar bizitza batzuei galera gisa, eta beste batzuk, aldiz, ez diren aitortzen ere doluaren duin diren bizitza gisa (urrutiko gerretako biktima anonimoak, itotako migratzaileak). Zaurgarritasun komun hori, gainditu beharreko ahulezia izatetik urrun, <em>etika</em> baten zimendua da Butlerrentzat: denok hauskorrak eta elkarmendekoak bagara, denok zor dizkiogu elkarri zaintza eta babesa. Bira horrekin, generoaren pentsalaria ekologismoak eta zaintzen feminismoak zapaltzen duten lurralde berera hurbiltzen da.</p>
+<p><strong>Yayo Herrero eta ekofeminismoa.</strong> <em>Yayo Herrero</em> espainiarra (1965ean jaioa) —antropologoa, ingeniaria eta aktibista— <em>ekofeminismoaren</em> erreferentziazko ahotsetako bat da; korronte horrek diagnostiko bakar batean lotzen ditu epigrafe honetako bi guduak. Haren tesia da naturaren menderakuntzak eta emakumeen mendekotasunak erro komun bat dutela: sistema patriarkal eta kapitalista bat, <em>baliabide ikusezin eta doako</em> gisa tratatzen dituena bai natura, bai historikoki emakumeek beren gain hartu duten zaintza-lana. Herrerok bi hitz gakorekin adierazten du. <em>Ekomendekoak</em> gara: jaten, janzten edo arnasten dugun gauza bakoitza biosferatik dator; beraz, planeta finitu batean mugarik gabe hazten den ekonomia bat, besterik gabe, ezinezkoa da. Eta <em>elkarmendekoak</em> gara: gizaki bakar bat ere ez da bere kabuz aski —denok izan gara zaindutako haurrak, eta ia denok izango gara zaindutako zaharrak—, eta bizitzari eusteko lan hori, ia beti emakumeek egina, ordainik eta aitortzarik gabe, ekonomia «ageriko» osoa gainean eraikita dagoen oinarri ezkutua da. Herreroren ondorioa da erdigunean <em>bizitzaren jasangarritasuna</em> jarri behar dela, kapital-metaketaren ordez: gizartea berrantolatzea benetan bizirik mantentzen gaituenaren inguruan, ez hazkundea hazkundeagatik bilatzearen inguruan. Horrela, aurreko epigrafeko kapitalismoaren kritika (<a href="../chapters-web-eu/gaia-22.html#sec-78">§78</a>) eta feminismoaren ondarea (<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>) proposamen bakar batean elkartzen dira.</p>
 <p><strong>Paul B. Preciado eta gorputza lurralde gisa.</strong> Pentsalari hauetako erradikalenarekin ixten dugu. <em>Paul B. Preciado</em> filosofo espainiarrak (1970ean jaioa) muturreraino eramaten du Butlerren ideia —generoa eraiki egiten dela—, baina teoria feministak eman gabe zuen urrats material bat ematen du: ez dira hizkuntza eta arauak bakarrik gure gorputzak fabrikatzen dituztenak, baita <em>industriak</em>, <em>farmakoak</em> eta <em>teknologiak</em> ere. <em>Testo yonqui</em>-n (2008) —non bere esperientzia propioa kontatzen baitu, testosterona hartzen— <em>erregimen farmakopornografikoaren</em> kontzeptua asmatzen du, deskribatzeko gaur egungo kapitalismoak nola gobernatzen duen gorputzaren eta sexuaren bidez: antisorgailu-pilulak, hormonek, kirurgiak, pornoaren industriak eta farmazia-industriak ekoitzi eta arautu egiten dute sentitzen duguna, desiratzen duguna eta garena. Gorputzak aurretiko datu natural izateari uzten dio, eta fabrikatutako eta lehian dagoen <em>lurralde</em> bihurtzen da: <em>biopolitika</em> haren —bizitza bera kudeatzen duen boterearen— luzapen bat, hemen molekulen planoraino iristen dena. Pentsalari <em>trans</em> eta <em>transfeminismoaren</em> figura zentrala den aldetik, Preciadok bakoitzak bere gorputza eta bere identitatea berregiteko duen askatasuna defendatzen du. Haren tesiak eztabaidatuak eta probokatzaileak dira —berak berariaz bilatzen du deseroso jartzea—, baina azken ondorioetaraino eramaten dute ibilbide oso honi hasiera eman zion aurkikuntza: sexu-desberdintasunean «naturaltzat» daukagunetik oso gutxi dela benetan naturala.</p>
 </section>
 <section id="amaitzeko" class="level2">
@@ -556,19 +568,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -647,7 +771,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -656,8 +781,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -671,6 +857,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -833,44 +1020,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -969,7 +1166,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-21.html" class="pagination-link" aria-label="21. gaia · Beauvoir eta pentsamendu feminista">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">21. gaia · Beauvoir eta pentsamendu feminista</span></span>

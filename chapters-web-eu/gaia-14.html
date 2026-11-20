@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-13.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-14.html"><span class="chapter-title">14. gaia · XIX. mendea: positibismoa eta susmoaren filosofoak</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-14.html"><span class="chapter-title">14. gaia · XIX. mendea: positibismoa eta susmoaren filosofoak</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -491,10 +503,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-14.html"><span class="chapter-title">14. gaia · XIX. mendea: positibismoa eta susmoaren filosofoak</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-4.html">IV. zatia · XIX. mendea</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-14.html"><span class="chapter-title">14. gaia · XIX. mendea: positibismoa eta susmoaren filosofoak</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">14. gaia · XIX. mendea: positibismoa eta susmoaren filosofoak</span></h1>
 </div>
@@ -515,7 +527,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="sec-54" class="level2">
 <h2 class="anchored" data-anchor-id="sec-54">§54 · Comte eta positibismoa</h2>
-<p><strong>Zientziarekiko fedea.</strong> XIX. mendeak zientzia modernoaren izugarrizko ospea jasotzen du oinordetzan: Newtonen fisikak erakutsia zuen naturak giza arrazoiak aurki ditzakeen legeei obeditzen diela (<a href="gaia-07.html#sec-33">§33</a>), eta arrakastak etengabe pilatzen ari ziren. <em>Auguste Comtek</em> (1798-1857) ondorio erradikal bat ateratzen du arrakasta horretatik: ezagutza baliozko bakarra zientifikoa da, eta iritsi da haren metodoa gizartearen azterketara ere hedatzeko ordua. Jarrera horri <em>positibismoa</em> deitu zion, eta harekin, gainera, diziplina berri bat sortu zuen: <em>soziologia</em>.</p>
+<p><strong>Zientziarekiko fedea.</strong> XIX. mendeak zientzia modernoaren izugarrizko ospea jasotzen du oinordetzan: Newtonen fisikak erakutsia zuen naturak giza arrazoiak aurki ditzakeen legeei obeditzen diela (<a href="../chapters-web-eu/gaia-07.html#sec-33">§33</a>), eta arrakastak etengabe pilatzen ari ziren. <em>Auguste Comtek</em> (1798-1857) ondorio erradikal bat ateratzen du arrakasta horretatik: ezagutza baliozko bakarra zientifikoa da, eta iritsi da haren metodoa gizartearen azterketara ere hedatzeko ordua. Jarrera horri <em>positibismoa</em> deitu zion, eta harekin, gainera, diziplina berri bat sortu zuen: <em>soziologia</em>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-comte.jpg" class="img-fluid figure-img"></p>
@@ -528,18 +540,18 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-55" class="level2">
 <h2 class="anchored" data-anchor-id="sec-55">§55 · Susmoaren filosofoak: Marx, Nietzsche eta Freud</h2>
-<p><strong>Konfiantzatik susmora.</strong> Filosofia moderno osoak kontzientzian jarria zuen konfiantza. Descartesek <em>pentsatzen dut</em> hura ziurtasunaren harkaitz bihurtu zuen (<a href="gaia-08.html#sec-36">§36</a>); Kantek arrazoi autonomoan jarri zuen ezagutzaren eta moralaren oinarria (<a href="gaia-12.html#sec-50">§50</a>, <a href="gaia-12.html#sec-51">§51</a>); Ilustrazioak uste zuen arrazoia gardena zela bere buruarentzat (<a href="gaia-11.html#sec-47">§47</a>). XIX. mendeak kontrako susmoa inkubatzen du: kontzientzia <em>ez dela nagusi bere etxean</em>, pentsamendu libre eta arrazionaltzat hartzen duguna kontrolatzen ez ditugun indar ezkutuen azaleko efektua dela. XX. mendean jada, <em>Paul Ricoeur</em> (1913-2005) filosofoak <em>Susmoaren Eskola</em> izenaz bataiatu zuen korronte hori, eta Marxi, Nietzscheri eta Freudi <em>susmoaren</em> hiru <em>maisuak</em> deitu zien <a href="gaia-14.html#tbl-susmoaren-hiru-maisuak">Taula 12</a>: bakoitzak berehalako kontzientziaz mesfidatzen irakasten du, eta haren atzean kausa ezkutu bat deszifratzen.</p>
-<p><strong>Darwin, aurrekaria.</strong> Hiru horiek baino lehen, astinaldi zientifiko batek prestatua zuen lurra; Filosofia 1ean ikasi zenuen. <em>Charles Darwinek</em> (1809-1882) 1859an argitaratu zuen <em>Espezieen jatorria</em>, eta hautespen naturalaren teoriarekin gizakia kreazioaren erdigunetik kanporatu zuen: aurrerantzean ez zen jainko-asmo baten obra berezia, animalien arteko animalia bat baizik, prozesu itsu baten emaitza. Freudek berak deskribatuko zuen kolpe hori giza harrotasunari ezarritako hiru <em>umiliazio</em> handietako bat bezala: Kopernikok Lurra kosmosaren erdigunetik atera zuen (<a href="gaia-07.html#sec-33">§33</a>), Darwinek gizakia biziaren erdigunetik atera zuen, eta psikoanalisiak ni kontzientea aterako zuen adimenaren erdigunetik. Darwin ez da, zorrotz hitz eginda, susmoaren filosofo bat, baina haren <em>deszentratze</em> biologikoa da gero datozen hirurak adoretzen dituen atzeko oihala.</p>
+<p><strong>Konfiantzatik susmora.</strong> Filosofia moderno osoak kontzientzian jarria zuen konfiantza. Descartesek <em>pentsatzen dut</em> hura ziurtasunaren harkaitz bihurtu zuen (<a href="../chapters-web-eu/gaia-08.html#sec-36">§36</a>); Kantek arrazoi autonomoan jarri zuen ezagutzaren eta moralaren oinarria (<a href="../chapters-web-eu/gaia-12.html#sec-50">§50</a>, <a href="../chapters-web-eu/gaia-12.html#sec-51">§51</a>); Ilustrazioak uste zuen arrazoia gardena zela bere buruarentzat (<a href="../chapters-web-eu/gaia-11.html#sec-47">§47</a>). XIX. mendeak kontrako susmoa inkubatzen du: kontzientzia <em>ez dela nagusi bere etxean</em>, pentsamendu libre eta arrazionaltzat hartzen duguna kontrolatzen ez ditugun indar ezkutuen azaleko efektua dela. XX. mendean jada, <em>Paul Ricoeur</em> (1913-2005) filosofoak <em>Susmoaren Eskola</em> izenaz bataiatu zuen korronte hori, eta Marxi, Nietzscheri eta Freudi <em>susmoaren</em> hiru <em>maisuak</em> deitu zien <a href="../chapters-web-eu/gaia-14.html#tbl-susmoaren-hiru-maisuak">Taula 12</a>: bakoitzak berehalako kontzientziaz mesfidatzen irakasten du, eta haren atzean kausa ezkutu bat deszifratzen.</p>
+<p><strong>Darwin, aurrekaria.</strong> Hiru horiek baino lehen, astinaldi zientifiko batek prestatua zuen lurra; Filosofia 1ean ikasi zenuen. <em>Charles Darwinek</em> (1809-1882) 1859an argitaratu zuen <em>Espezieen jatorria</em>, eta hautespen naturalaren teoriarekin gizakia kreazioaren erdigunetik kanporatu zuen: aurrerantzean ez zen jainko-asmo baten obra berezia, animalien arteko animalia bat baizik, prozesu itsu baten emaitza. Freudek berak deskribatuko zuen kolpe hori giza harrotasunari ezarritako hiru <em>umiliazio</em> handietako bat bezala: Kopernikok Lurra kosmosaren erdigunetik atera zuen (<a href="../chapters-web-eu/gaia-07.html#sec-33">§33</a>), Darwinek gizakia biziaren erdigunetik atera zuen, eta psikoanalisiak ni kontzientea aterako zuen adimenaren erdigunetik. Darwin ez da, zorrotz hitz eginda, susmoaren filosofo bat, baina haren <em>deszentratze</em> biologikoa da gero datozen hirurak adoretzen dituen atzeko oihala.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-darwin.png" class="img-fluid figure-img"></p>
 <figcaption>Charles Darwin (1809-1882): hautespen naturalaren bidezko eboluzioaren teoriarekin, gizakia izaki bizidunen arteko animalia bat gehiago bezala kokatu zuen. Herbert Rose Barrauden argazkia, 1880ko hamarkada. || Egiletza: Herbert Rose Barraud, jabari publikoa / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Marx: kontzientziaren susmoa.</strong> <em>Karl Marxek</em> (1818-1883) kontzientzia <em>ideologia</em> gisa desmaskaratzen du. Gure ideiak, balioak eta sinesmenak ez omen dira espirituaren sorkuntza libreak, baldintza material eta ekonomikoen eta klase menderatzailearen interesen isla baizik. «Ez du kontzientziak izatea determinatzen —idazten du—; izate sozialak determinatzen du kontzientzia». Erlijioa, urrutira joan gabe, ustiapen erreala ezkutatzen duen kontsolamendu iluzoriozkoa da harentzat: «herriaren opioa». Pentsamendu bat benetan ulertzeko, galdetu behar da zer interesen zerbitzura dagoen. Haren azterketa patxadatsuak hurrengo gaian itxaroten digu (<a href="gaia-15.html#sec-57">§57</a>–<a href="gaia-15.html#sec-58">§58</a>).</p>
-<p><strong>Nietzsche: moralaren susmoa.</strong> <em>Friedrich Nietzschek</em> (1844-1900) sakratutzat ditugun balioen kontra zuzentzen du susmoa. Moralaren atzean ez omen dago ez jainko-agindu bat, ez arrazoi hutsa, baizik eta bizitza, sena, <em>botere-nahia</em> eta, sarritan, ahulen gaitzondoa. Haren <em>genealogiak</em> ez du galdetzen balio bat egiazkoa den, baizik eta nondik datorren eta nori egiten dion mesede. Eta «Jainkoa hil da» aldarrikatzen du: mendebaldeko moralari eusten zion oinarria desagertu egin da, eta oraindik ez ditugu haren ondorioak neurtu. Aurrerago irakurriko dugu sakonean (<a href="gaia-16.html#sec-59">§59</a>–<a href="gaia-16.html#sec-61">§61</a>).</p>
-<p><strong>Freud: niaren susmoa.</strong> <em>Sigmund Freudek</em> (1856-1939) kontzientziara beraraino eramaten du susmoa: ni kontzientea <em>inkontzienteak</em> —desira erreprimituek eta bulkadek— gobernaturiko psike baten punta ikusgarria baino ez da, eta indar horiek guk aitortzen duguna baino askoz gehiago erabakitzen dute. Geure buruari ematen dizkiogun arrazoiak, maiz, ezagutzen ez ditugun motiboen arrazionalizazioak dira. Haren pentsamenduari hurrengo atala eskaintzen diogu (<a href="gaia-14.html#sec-56">§56</a>).</p>
-<p><strong>Keinu komuna.</strong> Hirurek desberdin dute desmaskaratzen dutena (ekonomia, botere-nahia, inkontzientea), baina keinu bera partekatzen dute: berehalako kontzientziaz susmatzea eta haren atzean hura azalduko duen kausa ezkutu bat bilatzea. Haiekin, krisian sartzen da arrazoi garden eta subirano batean modernitateak zuen konfiantza (<a href="gaia-11.html#sec-47">§47</a>, <a href="gaia-12.html#sec-51">§51</a>): subjektuak utzi egiten dio oinarri seguru izateari, deszifratu beharreko zerbait bihurtzeko. XIX. mendeko birarik sakonena da, eta oraindik ere determinatzen du geure buruaz pentsatzeko dugun modua.</p>
+<p><strong>Marx: kontzientziaren susmoa.</strong> <em>Karl Marxek</em> (1818-1883) kontzientzia <em>ideologia</em> gisa desmaskaratzen du. Gure ideiak, balioak eta sinesmenak ez omen dira espirituaren sorkuntza libreak, baldintza material eta ekonomikoen eta klase menderatzailearen interesen isla baizik. «Ez du kontzientziak izatea determinatzen —idazten du—; izate sozialak determinatzen du kontzientzia». Erlijioa, urrutira joan gabe, ustiapen erreala ezkutatzen duen kontsolamendu iluzoriozkoa da harentzat: «herriaren opioa». Pentsamendu bat benetan ulertzeko, galdetu behar da zer interesen zerbitzura dagoen. Haren azterketa patxadatsuak hurrengo gaian itxaroten digu (<a href="../chapters-web-eu/gaia-15.html#sec-57">§57</a>–<a href="../chapters-web-eu/gaia-15.html#sec-58">§58</a>).</p>
+<p><strong>Nietzsche: moralaren susmoa.</strong> <em>Friedrich Nietzschek</em> (1844-1900) sakratutzat ditugun balioen kontra zuzentzen du susmoa. Moralaren atzean ez omen dago ez jainko-agindu bat, ez arrazoi hutsa, baizik eta bizitza, sena, <em>botere-nahia</em> eta, sarritan, ahulen gaitzondoa. Haren <em>genealogiak</em> ez du galdetzen balio bat egiazkoa den, baizik eta nondik datorren eta nori egiten dion mesede. Eta «Jainkoa hil da» aldarrikatzen du: mendebaldeko moralari eusten zion oinarria desagertu egin da, eta oraindik ez ditugu haren ondorioak neurtu. Aurrerago irakurriko dugu sakonean (<a href="../chapters-web-eu/gaia-16.html#sec-59">§59</a>–<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a>).</p>
+<p><strong>Freud: niaren susmoa.</strong> <em>Sigmund Freudek</em> (1856-1939) kontzientziara beraraino eramaten du susmoa: ni kontzientea <em>inkontzienteak</em> —desira erreprimituek eta bulkadek— gobernaturiko psike baten punta ikusgarria baino ez da, eta indar horiek guk aitortzen duguna baino askoz gehiago erabakitzen dute. Geure buruari ematen dizkiogun arrazoiak, maiz, ezagutzen ez ditugun motiboen arrazionalizazioak dira. Haren pentsamenduari hurrengo atala eskaintzen diogu (<a href="../chapters-web-eu/gaia-14.html#sec-56">§56</a>).</p>
+<p><strong>Keinu komuna.</strong> Hirurek desberdin dute desmaskaratzen dutena (ekonomia, botere-nahia, inkontzientea), baina keinu bera partekatzen dute: berehalako kontzientziaz susmatzea eta haren atzean hura azalduko duen kausa ezkutu bat bilatzea. Haiekin, krisian sartzen da arrazoi garden eta subirano batean modernitateak zuen konfiantza (<a href="../chapters-web-eu/gaia-11.html#sec-47">§47</a>, <a href="../chapters-web-eu/gaia-12.html#sec-51">§51</a>): subjektuak utzi egiten dio oinarri seguru izateari, deszifratu beharreko zerbait bihurtzeko. XIX. mendeko birarik sakonena da, eta oraindik ere determinatzen du geure buruaz pentsatzeko dugun modua.</p>
 <span id="tbl-susmoaren-hiru-maisuak" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>Susmoaren hiru maisuak: keinu bera (kontzientzia desmaskaratu eta haren atzean kausa ezkutu bat bilatu) hiru bidetatik.</caption>
@@ -558,21 +570,21 @@ ul.task-list li input[type="checkbox"] {
 <td><em>ideologia</em>: klase menderatzailearen interesen isla</td>
 <td>baldintza material eta ekonomikoak («izate sozialak kontzientzia determinatzen du»)</td>
 <td>ideia bat zer interesen zerbitzura dagoen aztertzea</td>
-<td><a href="gaia-15.html#sec-57">§57</a>-<a href="gaia-15.html#sec-58">§58</a></td>
+<td><a href="../chapters-web-eu/gaia-15.html#sec-57">§57</a>-<a href="../chapters-web-eu/gaia-15.html#sec-58">§58</a></td>
 </tr>
 <tr class="even">
 <td><strong>Nietzsche</strong> (1844-1900)</td>
 <td><em>morala</em>: sakratutzat hartutako balioak</td>
 <td>bizitza, sena, botere-nahia, gaitzondoa</td>
 <td><em>genealogia</em>: balio bat nondik datorren eta nori egiten dion mesede</td>
-<td><a href="gaia-16.html#sec-59">§59</a>-<a href="gaia-16.html#sec-61">§61</a></td>
+<td><a href="../chapters-web-eu/gaia-16.html#sec-59">§59</a>-<a href="../chapters-web-eu/gaia-16.html#sec-61">§61</a></td>
 </tr>
 <tr class="odd">
 <td><strong>Freud</strong> (1856-1939)</td>
 <td><em>ni kontzientea</em>, itxuraz bere buruaren jabe</td>
 <td><em>inkontzientea</em>: desira erreprimituak eta bulkadak</td>
 <td><em>psikoanalisia</em>: asoziazio librea eta ametsen interpretazioa</td>
-<td><a href="gaia-14.html#sec-56">§56</a></td>
+<td><a href="../chapters-web-eu/gaia-14.html#sec-56">§56</a></td>
 </tr>
 </tbody>
 </table>
@@ -590,7 +602,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Bi topikak.</strong> Freudek elkarren segidako bi eredurekin deskribatu zuen aparatu psikikoa. <em>Lehen topikan</em> hiru maila bereizten ditu: <em>kontzientea</em> (oraintxe bertan hautematen duguna), <em>prekontzientea</em> (kontzientea ez dena baina izatera irits daitekeena, gogora ekartzen dugun oroitzapen bat bezala) eta <em>inkontzientea</em> (<em>errepresioak</em> kontzientziatik aktiboki aparte mantentzen duena, itzultzeari gogor egiten diona). <em>Bigarren topikan</em>, helduagoan, gatazkan dauden hiru instantzia deskribatzen ditu: <em>Id-a</em>, bulkaden gordailu inkontzientea, <em>plazer-printzipioaren</em> arabera dabilena eta berehalako asebetetzea eskatzen duena; <em>egoa</em>, errealitatearekin negoziatzen duena eta <em>errealitate-printzipioaren</em> arabera dabilena; eta <em>supergoa</em>, gurasoen eta gizartearen arauak barneratzen dituena eta epaitzen eta zentsuratzen duen kontzientzia moral gisa jarduten duena. Egoa etengabeko tentsioan bizi da, Id-aren eskakizunen, supergoaren debekuen eta kanpo-munduaren mugen artean estututa.</p>
 <p><strong>Bulkadak.</strong> Aparatu guztia mugitzen dutenak <em>bulkadak</em> dira, gorputzezkoaren eta psikikoaren arteko mugan kokatutako indarrak. Freudek bi multzotan bildu zituen: <em>Eros</em>, bizi-bulkada (energia sexuala edo <em>libido</em>a, plazera, batasuna eta kontserbazioa bilatzen dituena), eta, geroago, <em>Tánatos</em>, heriotza-bulkada, erasora, suntsipenera eta bizigabera itzultzera bultzatzen duena. Giza bizitza bi indar horien jokoa eta gatazka da. Eta sexualitatea, zentzu zabalean ulertua eta haurtzarotik bertatik presente dagoena, garapen psikikoaren motor handietako bat da; tesi horrek eskandalizatu egin zuen bere garaia.</p>
 <p><strong>Metodoa.</strong> Nola iritsi inkontzientera, definizioz ezkutatzen bada? Freudek psikoanalisiaren metodoa asmatu zuen horretarako. Haren bide nagusiak dira <em>asoziazio librea</em> (pazienteak burura datorkion guztia esaten du, bere burua zentsuratu gabe); <em>ametsen interpretazioa</em> («inkontzienterako errege-bidea»), non <em>eduki agerikoa</em> (amesten eta gogoratzen duguna) eta <em>eduki latentea</em> (amets horrek mozorrotzen duen desira erreprimitua) bereizten baititu; eta hutsegiteei eta sintomei arreta jartzea, horiek salatu egiten baitute errepresioak ezkutatzen duena. Sendatzea, funtsean, <em>erreprimitua kontziente egitea</em> da.</p>
-<p><strong>Psikoanalisiaren estatutua.</strong> Freudek XX. mendean izan zuen eragina (psikologian, artean, geure buruaz hitz egiteko moduan bertan) zaila da gehiegi nabarmentzea. Baina zientzia izateko haren asmoa oso eztabaidatua izan da. <em>Karl Popperrek</em> (1902-1994) objektatu zuen psikoanalisia ez dela zientzia bat, <em>sasi-zientzia</em> bat baizik, ez delako <em>faltsagarria</em>: edozein jokabide, eta baita kontrakoa ere, beti azal daiteke haren kontzeptuekin; beraz, ezerk ezin izango luke inoiz gezurtatu, eta dena azaltzen duen teoria batek ez du ezer azaltzen. Irizpide hori (faltsagarritasuna) Popperrekin aztertuko dugu aurrerago (<a href="gaia-19.html#sec-70">§70</a>). Beste batzuek psikoanalisia defendatzen dute, ez zientzia esperimental gisa, zentzua interpretatzeko arte gisa baizik. Eztabaida irekita dago oraindik; inork zalantzan jartzen ez duena da, Freuden ondoren, ezin diogula jada kontzientziari lehengo inozentzia zaharrez begiratu.</p>
+<p><strong>Psikoanalisiaren estatutua.</strong> Freudek XX. mendean izan zuen eragina (psikologian, artean, geure buruaz hitz egiteko moduan bertan) zaila da gehiegi nabarmentzea. Baina zientzia izateko haren asmoa oso eztabaidatua izan da. <em>Karl Popperrek</em> (1902-1994) objektatu zuen psikoanalisia ez dela zientzia bat, <em>sasi-zientzia</em> bat baizik, ez delako <em>faltsagarria</em>: edozein jokabide, eta baita kontrakoa ere, beti azal daiteke haren kontzeptuekin; beraz, ezerk ezin izango luke inoiz gezurtatu, eta dena azaltzen duen teoria batek ez du ezer azaltzen. Irizpide hori (faltsagarritasuna) Popperrekin aztertuko dugu aurrerago (<a href="../chapters-web-eu/gaia-19.html#sec-70">§70</a>). Beste batzuek psikoanalisia defendatzen dute, ez zientzia esperimental gisa, zentzua interpretatzeko arte gisa baizik. Eztabaida irekita dago oraindik; inork zalantzan jartzen ez duena da, Freuden ondoren, ezin diogula jada kontzientziari lehengo inozentzia zaharrez begiratu.</p>
 
 
 </section>
@@ -603,19 +615,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -694,7 +818,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -703,8 +828,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -718,6 +904,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -880,44 +1067,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1016,7 +1213,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-13.html" class="pagination-link" aria-label="13. gaia · Utilitarismoa">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">13. gaia · Utilitarismoa</span></span>

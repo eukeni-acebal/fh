@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-10.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-11.html"><span class="chapter-title">11. gaia · Ilustrazioa</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-11.html"><span class="chapter-title">11. gaia · Ilustrazioa</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -492,10 +504,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-11.html"><span class="chapter-title">11. gaia · Ilustrazioa</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-3.html">III. zatia · Aro Modernoa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-11.html"><span class="chapter-title">11. gaia · Ilustrazioa</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">11. gaia · Ilustrazioa</span></h1>
 </div>
@@ -516,40 +528,40 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="ilustrazioan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="ilustrazioan-sartzeko">Ilustrazioan sartzeko</h2>
-<p>Aurreko gaian, modernitateari jarraitu genion botere politikoaren oinarria gizakiengan beraiengan bilatzen —eta ez jada Jainkoarengan—, liberalismora eta gizarte kapitalista berrira iritsi arte (<a href="gaia-10.html#sec-46">§46</a>). Ausardia hura ez zen Estatuaren teoriaren pasarte isolatu bat izan: mugimendu askoz zabalago baten lantza-punta zen; mugimendu horrek, XVII. eta XVIII. mendeetan, dena —natura, gizartea, erlijioa, morala— arrazoiaren auzitegiaren mende jartzea hartu zuen xede. Mugimendu hori <em>Ilustrazioa</em> da, «Argien mendea», eta gai honetan barrutik ibiliko gara hartan zehar.</p>
-<p><strong>Pentsatzera ausartzen den mugimendua.</strong> Ilustrazioa Europako mugimendu kultural, filosofiko eta politiko bat da, hiru helburu nagusi partekatzen dituena: sineskeriaren, dogmaren eta tradizioaren zama hilaren aurka borrokatzea; munduaren eta gizartearen azalpen arrazionalak bilatzea; eta jakintza <em>zabaltzea</em>, ordu arte ezjakintasunean bizi zena emantzipatzeko —hortik datoz Diderot eta d’Alemberten <em>Entziklopedia</em> frantsesa bezalako egitasmoak—. Haren sustraiak humanismoan eta Errenazimentuko zientzia berrian daude (<a href="gaia-07.html#sec-30">§30</a>, <a href="gaia-07.html#sec-33">§33</a>), haiek jarria baitzuten jada gizakia gogoetaren erdigunean; haren bulkada politikoa Ingalaterra parlamentariotik dator, pentsalari jazarriei aterpe eman zien Holandatik igarotzen da —Descartes bera haien artean— eta 1789ko Iraultzan amaituko duen Frantzian pizten da. Haren epigonoa, haren espiritua ondoen bildu zuen pentsalaria, Immanuel Kant izan zen.</p>
-<p><strong>Gaiaren mapa.</strong> Proiektu ilustratuaren bihotzetik hasiko gara, Kantek Ilustrazioa zer zen galdetu zion testu labur eta ospetsuaren bidez irakurrita: arrazoiarekiko konfiantza, «adingabetasunetik» irtetea eta, orobat, arrazoi horren mugak (<a href="gaia-11.html#sec-47">§47</a>). Gero haren fruitu politiko handia ikusiko dugu, Gizonaren Eskubideen aldarrikapena, eta haren unibertsalismoaren eta benetako irismenaren arteko tartea (<a href="gaia-11.html#sec-48">§48</a>). Eta unibertsalismo hori azken ondorioetaraino serio hartu eta gizateriaren erdia kanpoan uzten zuela salatu zutenekin itxiko dugu: feminismo ilustratuaren lehen ahotsekin, Olympe de Gouges eta Mary Wollstonecraftekin (<a href="gaia-11.html#sec-49">§49</a>).</p>
+<p>Aurreko gaian, modernitateari jarraitu genion botere politikoaren oinarria gizakiengan beraiengan bilatzen —eta ez jada Jainkoarengan—, liberalismora eta gizarte kapitalista berrira iritsi arte (<a href="../chapters-web-eu/gaia-10.html#sec-46">§46</a>). Ausardia hura ez zen Estatuaren teoriaren pasarte isolatu bat izan: mugimendu askoz zabalago baten lantza-punta zen; mugimendu horrek, XVII. eta XVIII. mendeetan, dena —natura, gizartea, erlijioa, morala— arrazoiaren auzitegiaren mende jartzea hartu zuen xede. Mugimendu hori <em>Ilustrazioa</em> da, «Argien mendea», eta gai honetan barrutik ibiliko gara hartan zehar.</p>
+<p><strong>Pentsatzera ausartzen den mugimendua.</strong> Ilustrazioa Europako mugimendu kultural, filosofiko eta politiko bat da, hiru helburu nagusi partekatzen dituena: sineskeriaren, dogmaren eta tradizioaren zama hilaren aurka borrokatzea; munduaren eta gizartearen azalpen arrazionalak bilatzea; eta jakintza <em>zabaltzea</em>, ordu arte ezjakintasunean bizi zena emantzipatzeko —hortik datoz Diderot eta d’Alemberten <em>Entziklopedia</em> frantsesa bezalako egitasmoak—. Haren sustraiak humanismoan eta Errenazimentuko zientzia berrian daude (<a href="../chapters-web-eu/gaia-07.html#sec-30">§30</a>, <a href="../chapters-web-eu/gaia-07.html#sec-33">§33</a>), haiek jarria baitzuten jada gizakia gogoetaren erdigunean; haren bulkada politikoa Ingalaterra parlamentariotik dator, pentsalari jazarriei aterpe eman zien Holandatik igarotzen da —Descartes bera haien artean— eta 1789ko Iraultzan amaituko duen Frantzian pizten da. Haren epigonoa, haren espiritua ondoen bildu zuen pentsalaria, Immanuel Kant izan zen.</p>
+<p><strong>Gaiaren mapa.</strong> Proiektu ilustratuaren bihotzetik hasiko gara, Kantek Ilustrazioa zer zen galdetu zion testu labur eta ospetsuaren bidez irakurrita: arrazoiarekiko konfiantza, «adingabetasunetik» irtetea eta, orobat, arrazoi horren mugak (<a href="../chapters-web-eu/gaia-11.html#sec-47">§47</a>). Gero haren fruitu politiko handia ikusiko dugu, Gizonaren Eskubideen aldarrikapena, eta haren unibertsalismoaren eta benetako irismenaren arteko tartea (<a href="../chapters-web-eu/gaia-11.html#sec-48">§48</a>). Eta unibertsalismo hori azken ondorioetaraino serio hartu eta gizateriaren erdia kanpoan uzten zuela salatu zutenekin itxiko dugu: feminismo ilustratuaren lehen ahotsekin, Olympe de Gouges eta Mary Wollstonecraftekin (<a href="../chapters-web-eu/gaia-11.html#sec-49">§49</a>).</p>
 </section>
 <section id="sec-47" class="level2">
 <h2 class="anchored" data-anchor-id="sec-47">§47 · Proiektu ilustratua: arrazoiaren ahalmena eta mugak</h2>
 <p><strong>Bere buruaz galdetzen duen garaia.</strong> Garai gutxik jarri diote izena beren buruari, eta eztabaidatu dute zer esan nahi zuen. Ilustrazioa horietako bat izan zen. 1784an, Berlingo aldizkari batek galdera bat egin zien irakurleei —zer da Ilustrazioa?—, eta, erantzunen artean, bat izan zen laburra, ia zirkunstantziazkoa, garai oso baten manifestu bihurtuko zena: Immanuel Kantena (1724-1804)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Komeni da astiro irakurtzea, bertan baitago taupaka proiektu ilustratuaren onena —eta eztabaidagarriena—.</p>
 <p><strong>«<em>Sapere aude</em>»: adingabetasunetik irtetea.</strong> Kant ospetsu bihurtu den definizio batekin hasten da: «Ilustrazioa gizakia bere adingabetasunetik irtetea da, norbera baita adingabetasun horren errudun». Terminoak ondo ulertu behar dira. <em>Adingabetasuna</em> ez da hemen urte kontua, «norbere adimena beste baten gidaritzarik gabe erabiltzeko ezgaitasuna» baizik: norbaitek haren ordez pentsatzea behar duenarena. Eta <em>norbera da errudun</em>, kausa ez baitago buru-argitasun faltan, daukagun adimena erabiltzeko erabaki eta adore faltan baizik. Hortik dator Kantek Horazio poeta latindarrarengandik hartu eta garaiaren ikur bihurtzen duen leloa: «<em>Sapere aude!</em>», «ausar zaitez jakitera!»: izan ezazu zeure adimena erabiltzeko adorea! Adingabe mantentzen gaituena, dio, ez da munduaren zailtasuna, geure <em>nagikeria</em> eta <em>koldarkeria</em> baizik.</p>
 <p><strong>Tutoreak.</strong> Zergatik da hain nekeza norberak bere kabuz pentsatzea? Erosoa delako ez egitea. Nire ordez pentsatzen duen liburu bat badut, kontzientzia-lana egiten didan zuzendari espiritual bat eta dieta agintzen didan mediku bat, ez dut ahalegindu beharrik: beste batzuek hartzen dute beren gain zeregin gogaikarri hori. <em>Tutore</em> deitzen die Kantek gidari bihurtzen direnei eta norbere kontura pentsatzea zaila eta arriskutsua ere badela sinetsarazten digutenei. Taka-takan edukitako abelburuekin konparatzen du hori: bakarrik ibiltzearen arriskuez izutzen dituzte, egiaz erorketa gutxi batzuen ondoren ibiltzen ikasiko luketen arren. Gizarte osoa haurtzaro luzatu batean bizi da horrela, ez argirik falta zaiolako, tutoretzara ohitu delako baizik. Ilustrazioaren helburua da gizarteak <em>adin-nagusitasuna</em> erdiestea.</p>
-<p><strong>Autonomia heteronomiaren aurrez aurre.</strong> Adin-nagusitasun horrek izen filosofiko bat du: <em>autonomia</em> —<em>autós</em>, nork bere burua, eta <em>nómos</em>, legea edo araua—, norberak bere araua bere buruari ematea eta bere kabuz pentsatzea eta erabakitzea. Haren kontrakoa <em>heteronomia</em> da —<em>héteros</em>, bestea—, beste batek ezarritako arauaren arabera gobernatzea. Kantek uzten dizkigun kontzeptu emankorrenetako bat da, eta bere indar osoarekin berragertuko da haren etikan, non borondatearen autonomia duintasun moralaren giltza bera izango baita (<a href="gaia-12.html#sec-51">§51</a>).</p>
+<p><strong>Autonomia heteronomiaren aurrez aurre.</strong> Adin-nagusitasun horrek izen filosofiko bat du: <em>autonomia</em> —<em>autós</em>, nork bere burua, eta <em>nómos</em>, legea edo araua—, norberak bere araua bere buruari ematea eta bere kabuz pentsatzea eta erabakitzea. Haren kontrakoa <em>heteronomia</em> da —<em>héteros</em>, bestea—, beste batek ezarritako arauaren arabera gobernatzea. Kantek uzten dizkigun kontzeptu emankorrenetako bat da, eta bere indar osoarekin berragertuko da haren etikan, non borondatearen autonomia duintasun moralaren giltza bera izango baita (<a href="../chapters-web-eu/gaia-12.html#sec-51">§51</a>).</p>
 <p><strong>Askatasuna eta arrazoiaren erabilera bikoitza.</strong> Nork bere kabuz pentsatzera ausartzeko, baldintza bat behar da, gizabanakoaren esku bakarrik ez dagoena: <em>askatasuna</em>. Baina Kantek modu zehatz batean ulertzen du, lehen begiratuan harrigarria dena<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Arrazoiaren bi erabilera bereizten ditu. <em>Erabilera publikoa</em> norberak «jakintsu gisa» egiten duena da, hau da, irakurleen publiko zabalari idatziz zuzenduta; erabilera horrek <em>beti librea</em> izan behar du, hark bakarrik eginarazten baitio aurrera gizateriari. <em>Erabilera pribatua</em> norberak kargu edo funtzio jakin batetik egiten duena da, eta hori bai, muga daiteke —eta batzuetan mugatu behar da—, makineria sozialak funtziona dezan.</p>
 <p><strong>Arrazoitu, baina obeditu.</strong> Kanten adibideek argitzen dute. Ofizialak nagusien agindua obeditu behar du kuartelean —han ez dagokio eztabaidatzea—, baina, gizon ikasi gisa, zerbitzu militarraren akatsen kritika bat argitara dezake idatziz. Zergadunak dagokion zerga ordaindu behar du, baina haren bidegabekeria publikoki sala dezake. Apaizak bere elizaren kredoaren arabera irakatsi behar dio bere komunitateari, baina, jakintsu gisa, kredo horri berari dizkion eragozpenak azal ditzake munduaren aurrean. Ideia Kantek Prusiako Federiko II.ari egozten dion goiburuan laburbiltzen da: «Arrazoi ezazue nahi adina eta nahi duzuenaz, baina obeditu!». Ilustrazioak eskatzen duena, beraz, ez da desobedientzia, ez desordena, zerbait zehatzagoa eta indartsuagoa baizik: eztabaida publikorako askatasuna; hura gabe, ez dago bere burua zuzendu eta aurrera egin dezakeen gizarterik.</p>
 <p><strong>Ilustrazio-garaia, ez garai <em>ilustratua</em>.</strong> Kant argia da bere garaiaz. Garai ilustratu batean bizi al gara? —galdetzen dio bere buruari—. Haren erantzuna ezezkoa da. <em>Ilustrazio</em>-garai batean? Bai: emantzipaziorako baldintzak abian dira jada, oztopoak gutxituz doaz, libre pentsatzeko lekua ireki da. Ilustrazioa ez da iritsitako egoera bat, bidean den <em>zeregin</em> bat baizik —komeni da ñabardura hori gogoan atxikitzea, txertoa baita ideia inozo baten aurka: arrazoia aldarrikatzea aski dela mundua arrazoizko bihur dadin—.</p>
 <p><strong>Aurrerabidea eta duintasuna.</strong> Hortik haren hondoko baikortasuna: konfiantza, arrazoiak, askatasunez erabilita, gizarte hobea eraiki dezakeela eta gizakiari bere <em>duintasuna</em> itzul diezaiokeela. Kantek irudi itxaropentsu batekin ixten du bere testua: pentsaera librearen espiritua herriaren sentieran barneratzen da azkenean eta, denborarekin, baita gobernu-printzipioetan ere, gizakia —«makina bat baino zerbait gehiago dena»— bere duintasunaren arabera tratatzen ikasten baitute. Itxaropen bera dago taupaka 1789ko Frantziako Iraultzak bere asmoak laburbiltzeko erabiliko zuen leloan: «askatasuna, berdintasuna, anaitasuna».</p>
-<p><strong>Arrazoiaren ahalmena eta mugak.</strong> Honaino arrazoiaren <em>ahalmena</em>: askatzeko, kritikatzeko eta aurrerarazteko duen gaitasuna. Baina atal honen izenburuak <em>mugez</em> ere hitz egiten du, eta komeni da bi bereiztea. Lehena barnekoa da: arrazoia goresten duen Kant bera izango da haren mugak markatuko dituena, benetan heldua den arrazoi batek bere burua aztertu behar baitu eta bere ezagutza noraino iristen den aitortu. Hori da haren filosofia kritikoaren bihotza, eta hurrengo gaian ikusiko dugu (<a href="gaia-12.html#sec-50">§50</a>); arrazoi ilustratua, ondo ulertuta, ez da inozoa, autokritikoa baizik. Bigarren muga historikoa da: baikortasun ilustratuak laster aurkitu zuen erresistentzia. <em>Erromantizismoak</em> arrazoiaren unibertsalismoari sentimenduaren, historiaren eta herri bakoitzaren berezitasunaren balioa kontrajarri zion; eta, XX. mendean jada, Horkheimerrek eta Adornok, beren <em>Ilustrazioaren dialektika</em>n, salatuko zuten kalkulu huts bihurtutako arrazoi bat —arrazoi <em>instrumentala</em>— agindutako emantzipazioaren aurka itzul zitekeela, eta menderakuntza-forma berrietan berriro eror (<a href="gaia-19.html#sec-68">§68</a>). Muga horiek gogoan izateak ez du proiektu ilustratua apaltzen: zintzoago bihurtzen du.</p>
-<p>Zeren, bere argi-ilun guztiekin ere, Ilustrazioa ez baitzen gizabanako bakoitzaren kontzientzian geratu. Guztiona den arrazoi batekiko konfiantza irismen izugarriko fruitu politiko batean gauzatu zen: gizakiak libre eta eskubidez berdin jaiotzen direla aldarrikatzean (<a href="gaia-11.html#sec-48">§48</a>).</p>
+<p><strong>Arrazoiaren ahalmena eta mugak.</strong> Honaino arrazoiaren <em>ahalmena</em>: askatzeko, kritikatzeko eta aurrerarazteko duen gaitasuna. Baina atal honen izenburuak <em>mugez</em> ere hitz egiten du, eta komeni da bi bereiztea. Lehena barnekoa da: arrazoia goresten duen Kant bera izango da haren mugak markatuko dituena, benetan heldua den arrazoi batek bere burua aztertu behar baitu eta bere ezagutza noraino iristen den aitortu. Hori da haren filosofia kritikoaren bihotza, eta hurrengo gaian ikusiko dugu (<a href="../chapters-web-eu/gaia-12.html#sec-50">§50</a>); arrazoi ilustratua, ondo ulertuta, ez da inozoa, autokritikoa baizik. Bigarren muga historikoa da: baikortasun ilustratuak laster aurkitu zuen erresistentzia. <em>Erromantizismoak</em> arrazoiaren unibertsalismoari sentimenduaren, historiaren eta herri bakoitzaren berezitasunaren balioa kontrajarri zion; eta, XX. mendean jada, Horkheimerrek eta Adornok, beren <em>Ilustrazioaren dialektika</em>n, salatuko zuten kalkulu huts bihurtutako arrazoi bat —arrazoi <em>instrumentala</em>— agindutako emantzipazioaren aurka itzul zitekeela, eta menderakuntza-forma berrietan berriro eror (<a href="../chapters-web-eu/gaia-19.html#sec-68">§68</a>). Muga horiek gogoan izateak ez du proiektu ilustratua apaltzen: zintzoago bihurtzen du.</p>
+<p>Zeren, bere argi-ilun guztiekin ere, Ilustrazioa ez baitzen gizabanako bakoitzaren kontzientzian geratu. Guztiona den arrazoi batekiko konfiantza irismen izugarriko fruitu politiko batean gauzatu zen: gizakiak libre eta eskubidez berdin jaiotzen direla aldarrikatzean (<a href="../chapters-web-eu/gaia-11.html#sec-48">§48</a>).</p>
 </section>
 <section id="sec-48" class="level2">
 <h2 class="anchored" data-anchor-id="sec-48">§48 · Gizonaren Eskubideak</h2>
-<p><strong>Norbanakoaren autonomiatik guztien eskubideetara.</strong> Gizaki bakoitza bere kabuz pentsatzeko gai bada eta hori egin ahal izan behar badu (<a href="gaia-11.html#sec-47">§47</a>), orduan inork ez du jaiotzaz beste inork baino gehiago balio: guztiek arrazoi bera partekatzen dute eta, harekin batera, duintasun bera. Intuizio guztiz ilustratu horretatik jaiotzen da <em>giza eskubideen</em> ideia modernoa: eskubide horiek ez ditu erregeak ematen, ezta ohiturak ere; <em>pertsona izate hutsagatik</em> dauzkagu. Eta ideia hori ez zen filosofia-liburuetan geratu: gaur oraindik gu gobernatzen gaituzten dokumentu solemneetan idatzi zen.</p>
-<p><strong>Herentzia filosofiko bat: berezko eskubideak.</strong> Zimendu teorikoa John Lockerengan ikusia genuen jada (<a href="gaia-10.html#sec-44">§44</a>). Boterea Jainkoarengandik jaitsarazten zutenen aurrean, Lockek defendatu zuen gizakiok naturaz <em>berezko eskubide</em> batzuk ditugula —bizitza, askatasuna, jabetza—, gizarte oro baino lehenagokoak eta <em>besterenezinak</em>: inork ezin dizkigu kendu, eta guk ezin ditugu erabat laga. Eskubide-adierazpenak, neurri handi batean, lege bihurtutako filosofia hori dira: kontratuaren eta berezko eskubideen teoria Estatu baten hizkera juridikora itzultzen dute.</p>
-<p><strong>Hiru adierazpen.</strong> Prozesua metagarria izan zen. Ingalaterran, 1689ko <em>Eskubideen Adierazpenak</em> (<em>Bill of Rights</em>) mugak jarri zizkion erregearen botereari parlamentuaren alde, Lockeri hondo-oihal gisa balio izan zion iraultzaren ondoren (<a href="gaia-10.html#sec-44">§44</a>). Amerikan, <em>Virginiako Eskubideen Adierazpenak</em> eta <em>Independentziaren Adierazpenak</em>, biak 1776koak, aldarrikatu zuten «gizon guztiak berdin sortuak direla», eskubide besterenezinez hornituak. Eta Frantzian, 1789ko <em>Gizonaren eta Hiritarraren Eskubideen Adierazpena</em> Iraultzaren ikur bihurtu zen, bere baieztapen biribilarekin: «gizonak libre eta eskubidez berdin jaiotzen dira, eta hala irauten dute». Hirurek muin bera partekatzen dute: legearen aurreko berdintasuna, askatasuna, jabetza, subiranotasuna nazioarengan datzala eta ez monarkarengan, eta ideia bat —erro guztiz ilustratukoa—: boterea eskubide horiek bermatzeko existitzen dela, ez zapaltzeko.</p>
+<p><strong>Norbanakoaren autonomiatik guztien eskubideetara.</strong> Gizaki bakoitza bere kabuz pentsatzeko gai bada eta hori egin ahal izan behar badu (<a href="../chapters-web-eu/gaia-11.html#sec-47">§47</a>), orduan inork ez du jaiotzaz beste inork baino gehiago balio: guztiek arrazoi bera partekatzen dute eta, harekin batera, duintasun bera. Intuizio guztiz ilustratu horretatik jaiotzen da <em>giza eskubideen</em> ideia modernoa: eskubide horiek ez ditu erregeak ematen, ezta ohiturak ere; <em>pertsona izate hutsagatik</em> dauzkagu. Eta ideia hori ez zen filosofia-liburuetan geratu: gaur oraindik gu gobernatzen gaituzten dokumentu solemneetan idatzi zen.</p>
+<p><strong>Herentzia filosofiko bat: berezko eskubideak.</strong> Zimendu teorikoa John Lockerengan ikusia genuen jada (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>). Boterea Jainkoarengandik jaitsarazten zutenen aurrean, Lockek defendatu zuen gizakiok naturaz <em>berezko eskubide</em> batzuk ditugula —bizitza, askatasuna, jabetza—, gizarte oro baino lehenagokoak eta <em>besterenezinak</em>: inork ezin dizkigu kendu, eta guk ezin ditugu erabat laga. Eskubide-adierazpenak, neurri handi batean, lege bihurtutako filosofia hori dira: kontratuaren eta berezko eskubideen teoria Estatu baten hizkera juridikora itzultzen dute.</p>
+<p><strong>Hiru adierazpen.</strong> Prozesua metagarria izan zen. Ingalaterran, 1689ko <em>Eskubideen Adierazpenak</em> (<em>Bill of Rights</em>) mugak jarri zizkion erregearen botereari parlamentuaren alde, Lockeri hondo-oihal gisa balio izan zion iraultzaren ondoren (<a href="../chapters-web-eu/gaia-10.html#sec-44">§44</a>). Amerikan, <em>Virginiako Eskubideen Adierazpenak</em> eta <em>Independentziaren Adierazpenak</em>, biak 1776koak, aldarrikatu zuten «gizon guztiak berdin sortuak direla», eskubide besterenezinez hornituak. Eta Frantzian, 1789ko <em>Gizonaren eta Hiritarraren Eskubideen Adierazpena</em> Iraultzaren ikur bihurtu zen, bere baieztapen biribilarekin: «gizonak libre eta eskubidez berdin jaiotzen dira, eta hala irauten dute». Hirurek muin bera partekatzen dute: legearen aurreko berdintasuna, askatasuna, jabetza, subiranotasuna nazioarengan datzala eta ez monarkarengan, eta ideia bat —erro guztiz ilustratukoa—: boterea eskubide horiek bermatzeko existitzen dela, ez zapaltzeko.</p>
 <p><strong>Unibertsalismoa eta haren letra txikia.</strong> Hemen, ordea, arretaz irakurri behar da, eta ez idealizatu. Adierazpenek «Gizonaz» hitz egiten dute termino unibertsaletan, baina subjektu unibertsal hori, praktikan, hitzek agintzen zutena baino askoz estuagoa izan zen. Berdintasuna aldarrikatzen zuen mugimendu bera bazterketa sakonekin batera bizi izan zen. Hiru, batez ere:</p>
 <ol type="1">
-<li><em>Emakumeak.</em> Adierazpenetako «Gizona», sarriegi, gizonezkoa zen. Emakumeak hiritartasun politikotik kanpo geratu ziren —botorik gabe, karguetarako sarbiderik gabe, nortasun juridiko osorik gabe—. Horixe da lehen feministek salatuko duten bazterketa (<a href="gaia-11.html#sec-49">§49</a>).</li>
+<li><em>Emakumeak.</em> Adierazpenetako «Gizona», sarriegi, gizonezkoa zen. Emakumeak hiritartasun politikotik kanpo geratu ziren —botorik gabe, karguetarako sarbiderik gabe, nortasun juridiko osorik gabe—. Horixe da lehen feministek salatuko duten bazterketa (<a href="../chapters-web-eu/gaia-11.html#sec-49">§49</a>).</li>
 <li><em>Esklabo egindako pertsonak eta herri kolonizatuak.</em> Frantziak eta sortu berriak ziren Estatu Batuek askatasuna aldarrikatzen zuten, esklabotzari eta beren inperio kolonialei eusten zieten bitartean. Kontraesana begi-bistakoa zen, eta laster lehertuko zen: Haitiren independentziak (1804), Adierazpena hitzez hitz hartu zuten esklaboen matxinada batetik jaioak, agerian utzi zuen.</li>
-<li><em>Jabetzarik gabekoak.</em> Boto-eskubidea luzaroan aberastasunari lotu zitzaion —<em>zentso-sufragioa</em>—: Frantzia iraultzailea hiritar «aktiboak», botoa ematen zutenak, eta «pasiboak», ematen ez zutenak, bereiztera ere iritsi zen. Ezer ez zeukanak gutxi kontatzen zuen. Lockeren eta ekonomia berriaren eskutik jaiotzen ikusi genuen liberalismoaren beste aurpegia da (<a href="gaia-10.html#sec-46">§46</a>).</li>
+<li><em>Jabetzarik gabekoak.</em> Boto-eskubidea luzaroan aberastasunari lotu zitzaion —<em>zentso-sufragioa</em>—: Frantzia iraultzailea hiritar «aktiboak», botoa ematen zutenak, eta «pasiboak», ematen ez zutenak, bereiztera ere iritsi zen. Ezer ez zeukanak gutxi kontatzen zuen. Lockeren eta ekonomia berriaren eskutik jaiotzen ikusi genuen liberalismoaren beste aurpegia da (<a href="../chapters-web-eu/gaia-10.html#sec-46">§46</a>).</li>
 </ol>
-<p><strong>Bere garaia baino handiagoa den printzipioa.</strong> Adierazpenek agindutakoa ez betetzeak ez ditu baliogabetzen; alderantziz. Printzipio <em>unibertsal</em> bat aldarrikatzean —gizaki guztiak libre eta berdinak dira—, baztertuen esku jarri zuten beren lekua erreklamatzeko armarik eraginkorrena: aski zen araua benetan guztiei, salbuespenik gabe, aplikatzeko exijitzea. Eta horixe bera egin zuten, 1791n jada, Adierazpena femeninoan berridaztera ausartu ziren lehen emakume pentsalariek. Haiei eskaintzen diegu azken atala (<a href="gaia-11.html#sec-49">§49</a>).</p>
+<p><strong>Bere garaia baino handiagoa den printzipioa.</strong> Adierazpenek agindutakoa ez betetzeak ez ditu baliogabetzen; alderantziz. Printzipio <em>unibertsal</em> bat aldarrikatzean —gizaki guztiak libre eta berdinak dira—, baztertuen esku jarri zuten beren lekua erreklamatzeko armarik eraginkorrena: aski zen araua benetan guztiei, salbuespenik gabe, aplikatzeko exijitzea. Eta horixe bera egin zuten, 1791n jada, Adierazpena femeninoan berridaztera ausartu ziren lehen emakume pentsalariek. Haiei eskaintzen diegu azken atala (<a href="../chapters-web-eu/gaia-11.html#sec-49">§49</a>).</p>
 </section>
 <section id="sec-49" class="level2">
 <h2 class="anchored" data-anchor-id="sec-49">§49 · Feminismo ilustratua: Olympe de Gouges eta Mary Wollstonecraft</h2>
-<p><strong>Ilustrazioari hitzetik heltzea.</strong> Ilustrazioak aldarrikatua zuen gizaki guztiak berdinak direla arrazoian eta eskubideetan (<a href="gaia-11.html#sec-47">§47</a>, <a href="gaia-11.html#sec-48">§48</a>). Aski zen printzipio hori koherentziaz aplikatzea kontraesan deseroso bat azalera zedin: zergatik geratzen ziren kanpoan emakumeak? Hori indarrez seinalatzen lehenak Frantziako Iraultzaren bi garaikide izan ziren, bata Frantzian eta bestea Ingalaterran. Haien pentsamenduari <em>feminismo ilustratua</em> deitzen diogu<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>: <em>feminismoa</em>, emakumeen berdintasuna aldarrikatzen duelako; <em>ilustratua</em>, Ilustrazioaren beraren armekin egiten duelako. Ez ziren emakumeak defendatzen lehenak —Platonek jada emakumeak onartuak zituen bere hiri idealeko zaindarien artean (<a href="gaia-03.html#sec-11">§11</a>)—, baina bai defentsa hori programa arrazoitu eta publiko bihurtzen lehenak.</p>
-<p><strong>Olympe de Gouges (1748-1793).</strong> Autodidakta, antzerkigile eta aktibista, Olympe de Gougesek printzipio iraultzailea bere ondorio logikoraino eraman zuen. 1791n <em>Emakumearen eta emakume hiritarraren eskubideen adierazpena</em> idatzi zuen, 1789ko Adierazpenaren kalkoa (<a href="gaia-11.html#sec-48">§48</a>), baina femeninoan berridatzia, hain zuzen ere hark isiltzen zuena ikusgai egiteko: emakumeak ez zeudela haren «Gizonaren» barruan. Haren lehen artikuluak ez du zalantzarako lekurik uzten: «Emakumea libre jaiotzen da, eta gizonaren berdin irauten du eskubideetan». Erabateko berdintasun juridikoa erreklamatu zuen —botoa, karguetarako sarbidea, jabetza, dibortzioa—, eta, gainera, abolizionista izan zen, esklabotzaren aurkakoa. Haren esaldi bat modu tristean profetiko bihurtu zen: emakumeak «urkamendira igotzeko eskubidea badu, tribunara igotzekoa ere izan behar du». Gillotinan hil zen 1793an, Izuaren garaian, neurri handi batean bere ideiengatik kondenatua.</p>
+<p><strong>Ilustrazioari hitzetik heltzea.</strong> Ilustrazioak aldarrikatua zuen gizaki guztiak berdinak direla arrazoian eta eskubideetan (<a href="../chapters-web-eu/gaia-11.html#sec-47">§47</a>, <a href="../chapters-web-eu/gaia-11.html#sec-48">§48</a>). Aski zen printzipio hori koherentziaz aplikatzea kontraesan deseroso bat azalera zedin: zergatik geratzen ziren kanpoan emakumeak? Hori indarrez seinalatzen lehenak Frantziako Iraultzaren bi garaikide izan ziren, bata Frantzian eta bestea Ingalaterran. Haien pentsamenduari <em>feminismo ilustratua</em> deitzen diogu<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>: <em>feminismoa</em>, emakumeen berdintasuna aldarrikatzen duelako; <em>ilustratua</em>, Ilustrazioaren beraren armekin egiten duelako. Ez ziren emakumeak defendatzen lehenak —Platonek jada emakumeak onartuak zituen bere hiri idealeko zaindarien artean (<a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>)—, baina bai defentsa hori programa arrazoitu eta publiko bihurtzen lehenak.</p>
+<p><strong>Olympe de Gouges (1748-1793).</strong> Autodidakta, antzerkigile eta aktibista, Olympe de Gougesek printzipio iraultzailea bere ondorio logikoraino eraman zuen. 1791n <em>Emakumearen eta emakume hiritarraren eskubideen adierazpena</em> idatzi zuen, 1789ko Adierazpenaren kalkoa (<a href="../chapters-web-eu/gaia-11.html#sec-48">§48</a>), baina femeninoan berridatzia, hain zuzen ere hark isiltzen zuena ikusgai egiteko: emakumeak ez zeudela haren «Gizonaren» barruan. Haren lehen artikuluak ez du zalantzarako lekurik uzten: «Emakumea libre jaiotzen da, eta gizonaren berdin irauten du eskubideetan». Erabateko berdintasun juridikoa erreklamatu zuen —botoa, karguetarako sarbidea, jabetza, dibortzioa—, eta, gainera, abolizionista izan zen, esklabotzaren aurkakoa. Haren esaldi bat modu tristean profetiko bihurtu zen: emakumeak «urkamendira igotzeko eskubidea badu, tribunara igotzekoa ere izan behar du». Gillotinan hil zen 1793an, Izuaren garaian, neurri handi batean bere ideiengatik kondenatua.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-gouges.png" class="img-fluid figure-img"></p>
@@ -564,7 +576,7 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>Arrazoiak ez du sexurik.</strong> Haren tesia erro guztiz ilustratukoa da: emakumeak gizonezkoak bezain gai dira <em>arrazoirako</em> —egia, azken batean, bat eta bera da guztientzat— eta, horrexegatik beragatik, <em>arrazionalki hezi behar dira</em>, ez atsegin emateko trebatu. Gizarteak neskei txikitatik irakasten badie beren arma bakarra edertasuna dela, eta arinkerian mantentzen baditu, ez da ezgai direlako, libre egingo lituzkeen hezkuntza ukatzen zaielako baizik. Wollstonecraftek <em>hezkidetza</em> defendatu zuen —neskak eta mutilak elkarrekin heztea—, eta eutsi zion emakumea gizonezkoaren <em>bidelagun</em> izan daitekeela, eta ez bakarrik emazte, eta lanbide bati ekin diezaiokeela, hala nahi badu. Hezkuntza ona, idatzi zuen, adimena indartzen duena da, «gizabanakoak <em>independente</em> egingo duten bertute-azturak eskura ditzan»; eta «gizabanakoak», azpimarratzen zuen, emakumeak hartzen ditu barnean, gizonezkoak bezainbat.</p>
-<p><strong>Gora apuntatzen zuen kritika.</strong> Nabarmena da haren salaketa ez zela Ilustrazioaren etsaien aurka zuzentzen, Ilustrazioaren beraren aurka baizik, bere buruarekin kontraesanean erortzen zenean. Haren itu nagusia Rousseau izan zen, ez gutxiago (<a href="gaia-10.html#sec-45">§45</a>), hark defendatua baitzuen emakumea gizonezkoaren atseginerako eta zerbitzurako hezi behar zela. Horrelako ideia bat askatasunaren eta demokraziaren txapeldun handienetako batengandik etortzea izan zen, Wollstonecraftentzat, sumingarriena: erakusten zuen unibertsalismo ilustratua, inolako arrazoirik gabe, gizateriaren erdiaren atarian gelditzen zela.</p>
+<p><strong>Gora apuntatzen zuen kritika.</strong> Nabarmena da haren salaketa ez zela Ilustrazioaren etsaien aurka zuzentzen, Ilustrazioaren beraren aurka baizik, bere buruarekin kontraesanean erortzen zenean. Haren itu nagusia Rousseau izan zen, ez gutxiago (<a href="../chapters-web-eu/gaia-10.html#sec-45">§45</a>), hark defendatua baitzuen emakumea gizonezkoaren atseginerako eta zerbitzurako hezi behar zela. Horrelako ideia bat askatasunaren eta demokraziaren txapeldun handienetako batengandik etortzea izan zen, Wollstonecraftentzat, sumingarriena: erakusten zuen unibertsalismo ilustratua, inolako arrazoirik gabe, gizateriaren erdiaren atarian gelditzen zela.</p>
 <p><strong>Mugak eta kontraesanak.</strong> Hala ere, haren pentsamenduak baditu mugak, eta komeni da aitortzea.</p>
 <ol type="1">
 <li><em>Rol bereiziak.</em> Bere ausardia gorabehera, Wollstonecraft ez zen iritsi erabat zalantzan jartzera emakumeek eta gizonezkoek izaera eta gizarte-eginkizun desberdinak zituztenik; aitzitik, sexu bakoitzak bere eremua duintasunez lantzea defendatzen zuen.</li>
@@ -590,7 +602,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Solaskidea</td>
-<td>1789ko <em>Adierazpen</em> frantsesa, emakumeak kanpoan uzten zituena (<a href="gaia-11.html#sec-48">§48</a>)</td>
+<td>1789ko <em>Adierazpen</em> frantsesa, emakumeak kanpoan uzten zituena (<a href="../chapters-web-eu/gaia-11.html#sec-48">§48</a>)</td>
 <td>Talleyrand, emakumeentzat etxeko hezkuntza hutsa defendatzen zuena</td>
 </tr>
 <tr class="odd">
@@ -610,35 +622,147 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p><strong>Hazia eta olatuak.</strong> Gougesek eta Wollstonecraftek ez zuten mugimendu antolatu bat sortu, baina errotik ateratzen zaila den hazi bat landatu zuten. Haien bi aldarrikapen handiek —berdintasun juridikoak eta hezkuntzarako eskubideak— geroko feminismo osoa elikatuko zuten: XIX. mendeko <em>lehen olatu</em> sufragista, botoa konkistatuko zuena; eta, geroago, Simone de Beauvoiren gogoeta eta olatu garaikideak, eskuliburuaren amaieran aztertzen direnak (<a href="gaia-21.html#sec-76">§76</a>-<a href="gaia-21.html#sec-77">§77</a>). Zailena egina zuten: Ilustrazioari hitzetik heldu, eta haren arrazoi unibertsala benetan unibertsala izan zedila exijitu, salbuespenik gabe.</p>
+<p><strong>Hazia eta olatuak.</strong> Gougesek eta Wollstonecraftek ez zuten mugimendu antolatu bat sortu, baina errotik ateratzen zaila den hazi bat landatu zuten. Haien bi aldarrikapen handiek —berdintasun juridikoak eta hezkuntzarako eskubideak— geroko feminismo osoa elikatuko zuten: XIX. mendeko <em>lehen olatu</em> sufragista, botoa konkistatuko zuena; eta, geroago, Simone de Beauvoiren gogoeta eta olatu garaikideak, eskuliburuaren amaieran aztertzen direnak (<a href="../chapters-web-eu/gaia-21.html#sec-76">§76</a>-<a href="../chapters-web-eu/gaia-21.html#sec-77">§77</a>). Zailena egina zuten: Ilustrazioari hitzetik heldu, eta haren arrazoi unibertsala benetan unibertsala izan zedila exijitu, salbuespenik gabe.</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Kantek tratamendu propioa izango du aurrerago, haren filosofia kritikoak pentsamenduaren etapa oso bat irekitzen baitu (<a href="gaia-12.html#sec-50">§50</a>). Hemen programa ilustratuari ahotsa eman zion pentsalari gisa baino ez zaigu interesatzen.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Kantek tratamendu propioa izango du aurrerago, haren filosofia kritikoak pentsamenduaren etapa oso bat irekitzen baitu (<a href="../chapters-web-eu/gaia-12.html#sec-50">§50</a>). Hemen programa ilustratuari ahotsa eman zion pentsalari gisa baino ez zaigu interesatzen.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Kanten banaketak alderantzikatu egiten du guk gaur hitzoi ematen diegun zentzua: guretzat, «publikoa» ofiziala edo estatuarena izan ohi da, eta «pribatua», norberarena; Kantengan, berriz, ia alderantziz da. Komeni da erreparatzea berak nola definitzen dituen terminoak —berehala azaltzen dira— eta haien ohiko esanahia jakintzat ez ematea.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Historiografiak —eta curriculumak berak— feminismoaren «lehen olatua» deitzen dio batzuetan. Hemen etiketa hori XIX. mendeko mugimendu sufragistarentzat gordetzen dugu (<a href="gaia-21.html#sec-76">§76</a>), eta «feminismo ilustratua» esaten diegu aurreko pentsalari hauei, Ilustrazioaren tresnak —arrazoia, autonomia eta eskubideak— emakumearen egoerari aplikatzen dizkiotenei. Korrespondentzia-taulak «lehen olatua» gordetzen du, dekretuarekiko trazabilitaterako.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Historiografiak —eta curriculumak berak— feminismoaren «lehen olatua» deitzen dio batzuetan. Hemen etiketa hori XIX. mendeko mugimendu sufragistarentzat gordetzen dugu (<a href="../chapters-web-eu/gaia-21.html#sec-76">§76</a>), eta «feminismo ilustratua» esaten diegu aurreko pentsalari hauei, Ilustrazioaren tresnak —arrazoia, autonomia eta eskubideak— emakumearen egoerari aplikatzen dizkiotenei. Korrespondentzia-taulak «lehen olatua» gordetzen du, dekretuarekiko trazabilitaterako.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Hau da, etxeko lanetara eta familia zaintzera soilik bideraturiko hezkuntza bat, prestakuntza orokorrik gabea, eta are gutxiago unibertsitatekoa.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Alaba erditu eta egun gutxira hil zen; alabak ere Mary zuen izena: Mary Shelley, urte batzuk geroago zientzia-fikzioaren eleberri aitzindari bat idatziko zuena, inondik ere ezaguna egingo zaizuna: <em>Frankenstein</em> (1818).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -717,7 +841,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -726,8 +851,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -741,6 +927,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -903,44 +1090,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1039,7 +1236,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-10.html" class="pagination-link" aria-label="10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">10. gaia · Filosofia politiko modernoa: gizarte-kontratutik liberalismora</span></span>

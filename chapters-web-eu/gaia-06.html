@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../zatia-2.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-2.html">II. zatia · Erdi Aroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-06.html"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-2.html">II. zatia · Erdi Aroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-06.html"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -494,10 +506,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-2.html">II. zatia · Erdi Aroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-06.html"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-2.html">II. zatia · Erdi Aroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-06.html"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></h1>
 </div>
@@ -519,21 +531,21 @@ ul.task-list li input[type="checkbox"] {
 <section id="erdi-aroko-filosofian-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="erdi-aroko-filosofian-sartzeko">Erdi Aroko filosofian sartzeko</h2>
 <p>II. zatiaren sarrerak ezarri du markoa: mila urtez, Europako filosofiak kristautasunaren barruan pentsatzen du, Jainko bakar eta sortzaile bat, gizakiaren salbazioa eta fedez onartzen den egia errebelatu bat baieztatzen dituen erlijio baten barruan (II. zatia). Gai hau marko horren barruan filosofiak egin zuenean sartzen da. Eta behin eta berriz egin zuena funtsezko galdera bakar baten aurrean neurtzea izan zen: Jainkoak egia jada errebelatu badu, zer geratzen zaio arrazoiari egiteko? Fedea eta arrazoia, sinesten dena eta frogatzen dena, aliatuak dira, arrotzak ala aurkariak?</p>
-<p><strong>Galdera bat, hiru erantzun.</strong> Gai hau galdera horren inguruan antolatu dugu, horixe baita garai osoari batasuna ematen diona, eta kontrastez ondoen aztertzen dena. Aldamio-lana egiten duen atal baten ondoren, zeinak azaltzen baitu nola banatu zen eta nola lan egin zuen Erdi Aroko filosofiak (<a href="gaia-06.html#sec-25">§25</a>), gaiaren bihotza hiru pentsalari handi dira, galderari hiru modu desberdinetan erantzun ziotenak. Hiponako Agustinek, garaiaren hastapenetan, fedea eta arrazoia mugimendu bakar batean urtzen ditu: sinetsi egin behar da ulertzeko (<a href="gaia-06.html#sec-26">§26</a>). Akinoko Tomasek, Erdi Aroaren gailurrean, arretaz bereizten ditu, harmonizatzen direla erakusteko, eta arrazoi hutsez frogatzen du Jainkoaren existentzia, bere bost bide ospetsuekin (<a href="gaia-06.html#sec-27">§27</a>). Ockhamgo Guillermok, amaieran, banandu egiten ditu: arrazoiak ia ezin du ezer frogatu Jainkoaz, eta hura oso-osorik fedearentzat geratzen da (<a href="gaia-06.html#sec-28">§28</a>). Sinetsi ulertzeko, harmonizatu, banandu: hiru jarrera, jarraian irakurtzea komeni dena, bakoitza besteen aurrez aurre hobeto ulertzen delako, eta hiruren artean arazoaren arku osoa marrazten dutelako, batasunik estuenetik modernitateari atea irekiko dion dibortzioraino.</p>
-<p><strong>Laugarren figura bat.</strong> Gaia ikasgelatik irtenda itxiko dugu. Teologiaren maisu handien ondoan, Erdi Aroak izan zituen eskolako filosofoaren moldean sartzen ez diren figurak, hala ere leku bat merezi dutenak. Hildegard von Bingen (abadesa, bisionarioa, naturalista, konpositorea) horietako bat da, eta harekin, Aspasiak (<a href="gaia-02.html#sec-08">§08</a>) eta Hipatiak (<a href="gaia-05.html#sec-24">§24</a>) ireki zuten seriearen hirugarrenarekin, gogorarazten dugu garai baten pentsamendua ez dela inoiz oso-osorik kabitzen bere autore kanonikoetan (<a href="gaia-06.html#sec-29">§29</a>).</p>
+<p><strong>Galdera bat, hiru erantzun.</strong> Gai hau galdera horren inguruan antolatu dugu, horixe baita garai osoari batasuna ematen diona, eta kontrastez ondoen aztertzen dena. Aldamio-lana egiten duen atal baten ondoren, zeinak azaltzen baitu nola banatu zen eta nola lan egin zuen Erdi Aroko filosofiak (<a href="../chapters-web-eu/gaia-06.html#sec-25">§25</a>), gaiaren bihotza hiru pentsalari handi dira, galderari hiru modu desberdinetan erantzun ziotenak. Hiponako Agustinek, garaiaren hastapenetan, fedea eta arrazoia mugimendu bakar batean urtzen ditu: sinetsi egin behar da ulertzeko (<a href="../chapters-web-eu/gaia-06.html#sec-26">§26</a>). Akinoko Tomasek, Erdi Aroaren gailurrean, arretaz bereizten ditu, harmonizatzen direla erakusteko, eta arrazoi hutsez frogatzen du Jainkoaren existentzia, bere bost bide ospetsuekin (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>). Ockhamgo Guillermok, amaieran, banandu egiten ditu: arrazoiak ia ezin du ezer frogatu Jainkoaz, eta hura oso-osorik fedearentzat geratzen da (<a href="../chapters-web-eu/gaia-06.html#sec-28">§28</a>). Sinetsi ulertzeko, harmonizatu, banandu: hiru jarrera, jarraian irakurtzea komeni dena, bakoitza besteen aurrez aurre hobeto ulertzen delako, eta hiruren artean arazoaren arku osoa marrazten dutelako, batasunik estuenetik modernitateari atea irekiko dion dibortzioraino.</p>
+<p><strong>Laugarren figura bat.</strong> Gaia ikasgelatik irtenda itxiko dugu. Teologiaren maisu handien ondoan, Erdi Aroak izan zituen eskolako filosofoaren moldean sartzen ez diren figurak, hala ere leku bat merezi dutenak. Hildegard von Bingen (abadesa, bisionarioa, naturalista, konpositorea) horietako bat da, eta harekin, Aspasiak (<a href="../chapters-web-eu/gaia-02.html#sec-08">§08</a>) eta Hipatiak (<a href="../chapters-web-eu/gaia-05.html#sec-24">§24</a>) ireki zuten seriearen hirugarrenarekin, gogorarazten dugu garai baten pentsamendua ez dela inoiz oso-osorik kabitzen bere autore kanonikoetan (<a href="../chapters-web-eu/gaia-06.html#sec-29">§29</a>).</p>
 </section>
 <section id="sec-25" class="level2">
 <h2 class="anchored" data-anchor-id="sec-25">§25 · Erdi Aroko filosofia: etapak, metodoak eta auziak</h2>
 <p>Autoreetan sartu aurretik, aldamio pixka bat komeni da: jakitea zer etapa handitan banatzen den mila urte hauetako filosofia, nola lan egiten eta irakasten zen hartan, zein izan zen haren arazo nagusia eta zer herentzia grekoz baliatu zen hura pentsatzeko. Atal honek armazoi hori muntatzen du; hurrengoek hiru pentsalari zehatzekin betetzen dute.</p>
-<p><strong>Bi etapa handi: patristika eta eskolastika.</strong> Erdi Aroko filosofia kristaua bi une handitan banatu ohi da, tartean trantsizioko hainbat mende dituztela. Lehena <em>patristika</em> da (<em>pater</em>, «aita», hitzetik): <em>Elizgurasoak</em> deitutakoen obra, lehen pentsalari kristauena, zeinek, II. eta VIII. mendeen artean, doktrina definitu eta beste interpretazio batzuen aurrean defendatu baitzuten. Haien zeregina ez zen hainbeste ikertzea, <em>eraikitzea</em> baizik: fede berriari formulazio intelektual sendo bat ematea, garaiko kultura paganoarekin lehiatzeko gai izango zena. Horretarako, eskura zuten filosofia grekora jo zuten, platonismora batez ere. Patristikaren gailurra, eta alde handiz haren filosoforik sakonena, Hiponako Agustin da (<a href="gaia-06.html#sec-26">§26</a>).</p>
-<p>Bigarren unea <em>eskolastika</em> da (<em>schola</em>, «eskola», hitzetik): Erdi Aroko eskoletan lantzen den filosofia (monasterioetakoak, gero katedraletakoak eta, XIII. mendetik aurrera, unibertsitateak), XI. eta XV. mendeen artean. Patristikak fundatu egiten bazuen, eskolastikak <em>sistematizatu</em> egiten du: jada ezarritako doktrina-gorputz bat jasotzen du oinordetzan, eta hura ordenatzeari, zehazteari eta gero eta zorroztasun tekniko handiagoz defendatzeari ekiten dio. Irakasleen eta ikasgelen filosofia da, latinez idatzia publiko espezializatu batentzat, oinordetzan hartutako arazoak atsedenik gabe eztabaidatzen dituena. Haren bi figura nagusiak, eta gai honetako beste bi protagonistak, Akinoko Tomas (<a href="gaia-06.html#sec-27">§27</a>) eta Ockhamgo Guillermo (<a href="gaia-06.html#sec-28">§28</a>) dira, jada azken fasean, eraikin eskolastiko handia pitzatzen hasten denean.</p>
+<p><strong>Bi etapa handi: patristika eta eskolastika.</strong> Erdi Aroko filosofia kristaua bi une handitan banatu ohi da, tartean trantsizioko hainbat mende dituztela. Lehena <em>patristika</em> da (<em>pater</em>, «aita», hitzetik): <em>Elizgurasoak</em> deitutakoen obra, lehen pentsalari kristauena, zeinek, II. eta VIII. mendeen artean, doktrina definitu eta beste interpretazio batzuen aurrean defendatu baitzuten. Haien zeregina ez zen hainbeste ikertzea, <em>eraikitzea</em> baizik: fede berriari formulazio intelektual sendo bat ematea, garaiko kultura paganoarekin lehiatzeko gai izango zena. Horretarako, eskura zuten filosofia grekora jo zuten, platonismora batez ere. Patristikaren gailurra, eta alde handiz haren filosoforik sakonena, Hiponako Agustin da (<a href="../chapters-web-eu/gaia-06.html#sec-26">§26</a>).</p>
+<p>Bigarren unea <em>eskolastika</em> da (<em>schola</em>, «eskola», hitzetik): Erdi Aroko eskoletan lantzen den filosofia (monasterioetakoak, gero katedraletakoak eta, XIII. mendetik aurrera, unibertsitateak), XI. eta XV. mendeen artean. Patristikak fundatu egiten bazuen, eskolastikak <em>sistematizatu</em> egiten du: jada ezarritako doktrina-gorputz bat jasotzen du oinordetzan, eta hura ordenatzeari, zehazteari eta gero eta zorroztasun tekniko handiagoz defendatzeari ekiten dio. Irakasleen eta ikasgelen filosofia da, latinez idatzia publiko espezializatu batentzat, oinordetzan hartutako arazoak atsedenik gabe eztabaidatzen dituena. Haren bi figura nagusiak, eta gai honetako beste bi protagonistak, Akinoko Tomas (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>) eta Ockhamgo Guillermo (<a href="../chapters-web-eu/gaia-06.html#sec-28">§28</a>) dira, jada azken fasean, eraikin eskolastiko handia pitzatzen hasten denean.</p>
 <p><strong>Nola lan egiten zen: <em>lectio</em>, <em>quaestio</em>, <em>disputatio</em>.</strong> Eskolastika ez da aro bat bakarrik: <em>metodo</em> bat ere bada, irakasteko eta pentsatzeko modu bat, ezagutzea komeni dena, irakurriko ditugun testuen forma bera azaltzen baitu. Irakaskuntza kateaturiko hiru ariketaren inguruan zebilen. Lehena <em>lectio</em> zen: testu autorizatu baten irakurketa iruzkindua (Biblia, Aristotelesen obra bat, Elizgurasoen sententzia-bilduma bat); maisuak irakurri eta lerroz lerro azaltzen zuen. Irakurketa horretatik sortzen zen, berez, bigarren ariketa: <em>quaestio</em>a, <em>auzia</em>, testuak planteatzen duen eta aparte eztabaidatzea merezi duen arazoa. Eta auzia hirugarrenaren bidez ebazten zen, hirurotan bizienaren bidez: <em>disputatio</em>a, <em>eztabaida</em>, arauturiko debate bat, non lehenik tesi baten aldeko eta kontrako argudioak azaltzen baitziren, eta maisuak azkenean bere ebazpen propioaz ixten baitzuen auzia, objekzioei banan-banan erantzunez.</p>
-<p>Egitura hori da (auzia planteatu, kontrako argudioak lerrokatu, ebatzi, objekzioak errefusatu) garaiko obra handiei forma ematen diena: <em>summak</em>, jakintza guztia ordenaturik besarkatu nahi duten bilduma erraldoi horiek. Akinoko Tomasen <em>Summa theologiae</em>, handik aterako baitira bost bideak (<a href="gaia-06.html#sec-27">§27</a>), osorik dago horrela idatzita: eztabaidaturiko auzien segida gisa. Komeni da hori gogoan izatea, irakurtzen duguna testuingurutik ez ateratzeko: testu haiek ez dira saiakerak, ez tratatu jarraituak, eskola-debate baten piezak baizik.</p>
+<p>Egitura hori da (auzia planteatu, kontrako argudioak lerrokatu, ebatzi, objekzioak errefusatu) garaiko obra handiei forma ematen diena: <em>summak</em>, jakintza guztia ordenaturik besarkatu nahi duten bilduma erraldoi horiek. Akinoko Tomasen <em>Summa theologiae</em>, handik aterako baitira bost bideak (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>), osorik dago horrela idatzita: eztabaidaturiko auzien segida gisa. Komeni da hori gogoan izatea, irakurtzen duguna testuingurutik ez ateratzeko: testu haiek ez dira saiakerak, ez tratatu jarraituak, eskola-debate baten piezak baizik.</p>
 <p><strong>Auzi handia: fedea eta arrazoia.</strong> Zertaz eztabaidatzen zen ikasgela haietan? Gauza askotaz, baina batek zeharkatzen ditu gainerako guztiak eta hark ematen dio bizkarrezurra gai honi: <em>fedearen</em> eta <em>arrazoiaren</em> arteko harremanak. Arazoa, ikusi genuenez, kristautasunetik beretik sortzen da (II. zatia). Azken egia Jainkoak errebelatu badu eta fedez onartzen bada, zer zeregin geratzen zaio arrazoiari, grekoek mendeetan zorroztutako tresna horri? Erantzun posibleek mutur batetik besterainoko sorta osoa osatzen dute. Mutur batean <em>fideismoa</em> dago: arrazoiaz mesfidatzen da eta dena fedearen esku uzten du, halako punturaino non autore goiztiar batek, Tertulianok, galdetu ahal izan baitzuen zer ikustekorik duen Atenasek Jerusalemekin, filosofiak ebanjelioarekin. Beste muturrean, kontrako tentazioa agertuko litzateke: arrazoia auzitegi autonomo bihurtzea, fedea kontraesateko ere gai dena; horixe defendatzea leporatu zitzaien Aristotelesen irakurle erradikal batzuei, beren «egia bikoitzaren» doktrinarekin. Bi muturren artean tarteko jarrera asko kabitzen dira, eta horiexek dira benetan kontatzen dutenak.</p>
-<p>Hurrengo hiru atalek jarrera horietako hiru zeharkatzen dituzte, eta ez kasualitatez, baizik eta hiruren artean ibilbide osoa marrazten dutelako. Agustinek fedea eta arrazoia lotzen ditu, ia urtzeraino: sinetsi egiten da ulertzeko (<a href="gaia-06.html#sec-26">§26</a>). Tomasek bereizi egiten ditu, harmonizatzeko: bakoitzari bere eremua ematen dio, eta erakusten du ezin dutela elkar kontraesan, egia bakarra baita (<a href="gaia-06.html#sec-27">§27</a>). Ockhamek banandu egiten ditu: Jainkoa ukitzen zuen ia guztia kentzen dio arrazoiari, eta fedeari itzultzen dio (<a href="gaia-06.html#sec-28">§28</a>). Ez da komeni gehiago aurreratzea: aski da gogoan hartzea galdera berak oso erantzun desberdinak onartzen dituela, eta hari erantzuteko modua mendeekin aldatzen dela.</p>
+<p>Hurrengo hiru atalek jarrera horietako hiru zeharkatzen dituzte, eta ez kasualitatez, baizik eta hiruren artean ibilbide osoa marrazten dutelako. Agustinek fedea eta arrazoia lotzen ditu, ia urtzeraino: sinetsi egiten da ulertzeko (<a href="../chapters-web-eu/gaia-06.html#sec-26">§26</a>). Tomasek bereizi egiten ditu, harmonizatzeko: bakoitzari bere eremua ematen dio, eta erakusten du ezin dutela elkar kontraesan, egia bakarra baita (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>). Ockhamek banandu egiten ditu: Jainkoa ukitzen zuen ia guztia kentzen dio arrazoiari, eta fedeari itzultzen dio (<a href="../chapters-web-eu/gaia-06.html#sec-28">§28</a>). Ez da komeni gehiago aurreratzea: aski da gogoan hartzea galdera berak oso erantzun desberdinak onartzen dituela, eta hari erantzuteko modua mendeekin aldatzen dela.</p>
 <p><strong>Herentzia grekoa: bi harrera.</strong> Beren fedea pentsatzeko, Erdi Arokoak ez ziren hutsetik abiatu: oinordetzan jasotzen ari ziren filosofia grekoan bermatu ziren. Baina ez zuten dena batera jaso, eta horrek markatu zuen bi etapen arteko aldea. Erdi Aroko filosofiak Antzinaroaren segidako bi harrera handi baliatzen ditu.</p>
-<p>Lehena <em>platonismoarena</em> da, eta, zehazkiago, haren bertsio berantiarrarena: Plotinoren <em>neoplatonismoarena</em>. Aski goiz egon zen eskuragarri, eta oso hurbila gertatu zen kristautasunetik, haren neurrira egina zirudien punturaino. Ez da zaila zergatik ikustea: mundu sentikor eta aldakor baten eta mundu adigarri, betiereko eta goragoko baten arteko banaketa platonikoa (<a href="gaia-03.html#sec-09">§09</a>) ondo egokitzen zen kreaturaren eta Jainkoaren arteko bereizketa kristauarekin; arima ez-material eta hilezkor baten ideiak, gorputza baino gorago dagoenarenak (<a href="gaia-03.html#sec-11">§11</a>), antropologia kristaua berresten zuen; eta Platonen Ongi gorena Jainko sortzailearen aurrerapen gisa irakur zitekeen. Horixe da patristikak lantzen duen herentzia, eta Agustinek jeinuz kristautzen duena (<a href="gaia-06.html#sec-26">§26</a>).</p>
-<p>Bigarren harrera, askoz berantiarragoa eta askoz gatazkatsuagoa, <em>Aristotelesena</em> da. Haren obraren zati handi bat galduta zegoen Mendebalde latindarrarentzat, eta XII. eta XIII. mendeen artean baino ez zen berreskuratu, grekotik eta, batez ere, arabieratik egindako itzulpenen bidez: mundu islamiarreko filosofoak izan ziren, Avicena eta Averroes esaterako, Aristoteles kontserbatu eta iruzkindu zutenak, eta haien bitartekaritzaz (eta Toledokoa bezalako itzulpen-guneenaz) itzuli zen Europara (II. zatia). Haren etorrera astinaldi bat izan zen. Aristotelesek sistema oso eta ahaltsu bat eskaintzen zuen natura azaltzeko, baina fedearekin uztartzen zailak ziren tesiak zituen, hala nola munduaren betierekotasuna, kreazioarekin talka egiten duena, edo arimaren hilezkortasun pertsonalari buruzko haren zalantzak. Eliza hura irakastea debekatzera ere iritsi zen, eta XIII. mendea haren digestioaz bizi izan zen. Akinoko Tomasen egiteko handia horixe bera izango da: erakustea aristotelismoak, ondo ulertuta, fedea mehatxatzen ez duela ez ezik, haren zerbitzura ere jar daitekeela (<a href="gaia-06.html#sec-27">§27</a>). Horrekin, Aristotelesengan aztertu genuen <em>formaren</em>, aktoaren eta potentziaren eta lehen motorraren metafisika (<a href="gaia-04.html#sec-14">§14</a>) teologia kristauaren harrobi bihurtzen da.</p>
+<p>Lehena <em>platonismoarena</em> da, eta, zehazkiago, haren bertsio berantiarrarena: Plotinoren <em>neoplatonismoarena</em>. Aski goiz egon zen eskuragarri, eta oso hurbila gertatu zen kristautasunetik, haren neurrira egina zirudien punturaino. Ez da zaila zergatik ikustea: mundu sentikor eta aldakor baten eta mundu adigarri, betiereko eta goragoko baten arteko banaketa platonikoa (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>) ondo egokitzen zen kreaturaren eta Jainkoaren arteko bereizketa kristauarekin; arima ez-material eta hilezkor baten ideiak, gorputza baino gorago dagoenarenak (<a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>), antropologia kristaua berresten zuen; eta Platonen Ongi gorena Jainko sortzailearen aurrerapen gisa irakur zitekeen. Horixe da patristikak lantzen duen herentzia, eta Agustinek jeinuz kristautzen duena (<a href="../chapters-web-eu/gaia-06.html#sec-26">§26</a>).</p>
+<p>Bigarren harrera, askoz berantiarragoa eta askoz gatazkatsuagoa, <em>Aristotelesena</em> da. Haren obraren zati handi bat galduta zegoen Mendebalde latindarrarentzat, eta XII. eta XIII. mendeen artean baino ez zen berreskuratu, grekotik eta, batez ere, arabieratik egindako itzulpenen bidez: mundu islamiarreko filosofoak izan ziren, Avicena eta Averroes esaterako, Aristoteles kontserbatu eta iruzkindu zutenak, eta haien bitartekaritzaz (eta Toledokoa bezalako itzulpen-guneenaz) itzuli zen Europara (II. zatia). Haren etorrera astinaldi bat izan zen. Aristotelesek sistema oso eta ahaltsu bat eskaintzen zuen natura azaltzeko, baina fedearekin uztartzen zailak ziren tesiak zituen, hala nola munduaren betierekotasuna, kreazioarekin talka egiten duena, edo arimaren hilezkortasun pertsonalari buruzko haren zalantzak. Eliza hura irakastea debekatzera ere iritsi zen, eta XIII. mendea haren digestioaz bizi izan zen. Akinoko Tomasen egiteko handia horixe bera izango da: erakustea aristotelismoak, ondo ulertuta, fedea mehatxatzen ez duela ez ezik, haren zerbitzura ere jar daitekeela (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>). Horrekin, Aristotelesengan aztertu genuen <em>formaren</em>, aktoaren eta potentziaren eta lehen motorraren metafisika (<a href="../chapters-web-eu/gaia-04.html#sec-14">§14</a>) teologia kristauaren harrobi bihurtzen da.</p>
 <p>Armazoia jada muntatuta (bi etapa, metodo bat, auzi nagusi bat eta bi herentzia greko), auzi horri bere hiru erantzun handiak eman zizkioten hiru ahotsetan sar gaitezke. Denboran lehenengoa denarekin hasiko gara: Agustinekin.</p>
 </section>
 <section id="sec-26" class="level2">
@@ -546,14 +558,14 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 <p><strong>Sinetsi ulertzeko.</strong> Fedearen eta arrazoiaren arazoaren aurrean, Agustinen jarrera ez da fideista: ez dio arrazoiari uko egiten fedearen mesedetan. Baina ez ditu bata bestearen ondoan jartzen ere, bi bide independente balira bezala. Mugimendu bakar batean uztartzen ditu, formula ospetsu batean bildua: <em>credo ut intellegam, intellegam ut credam</em>, «sinesten dut ulertzeko, ulertzen dut sinesteko». Fedea eta arrazoia ez dira elkarren kontra jartzen, ezta elkarri ez ikusiarena egiten ere: elkar behar dute eta elkar indartzen dute. Fedea da abiapuntua, bilaketa bideratzen duena eta arrazoiak oraindik ikusten ez duena eskaintzen duena; baina fededuna ez da fedean geratzen: arrazoia erabiltzen du sinesten duen horretan sakontzeko eta hobeto ulertzeko. Ez dago sinestearen eta ulertzearen artean aukeratu beharrik: sinetsi egiten da ulertu ahal izateko, eta ulertutakoak fedea sendotzen du. Arrazoia, erlijioaren etsaia izatetik urrun, haren aliaturik onena da.</p>
-<p><strong>Eszeptizismoaren aurka: oker banago, banaiz.</strong> Arrazoiarekiko konfiantza horrek lehen borroka batera behartzen du Agustin: <em>eszeptizismoaren</em> aurkakora, inolako egia ziurrik erdiets dezakegula ukatzen duen doktrinaren aurkakora (<a href="gaia-05.html#sec-23">§23</a>). Ezer ezin balitz ziurtasunez jakin, egiaren bilaketa bera alferrikakoa litzateke. Agustinek ospetsu egingo duen argudio zorrotz batez erantzuten du. Eszeptikoak guztiaz zalantza egiten du; baina, guztiaz zalantza egin arren, ezin du zalantzan jarri <em>zalantza egiten ari dela</em>, eta, beraz, bera, zalantza egiten duena, <em>existitzen dela</em>. Are gehiago: oker egon arren, haren iritzi guztiak faltsuak izan arren, oker egoteko existitu egin behar du. <em>Si fallor, sum</em>: «oker banago, banaiz». Okerrak berak frogatzen du oker dagoena existitzen dela. Bada, beraz, gutxienez egia bat inolako zalantzak uki ezin dezakeena: neure existentziarena, subjektu kontziente naizen aldetik. Harekin batera eszeptizismoa eraitsita geratzen da, eta puntu irmo bat ziurtatzen da, handik abiatzeko<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p><strong>Eszeptizismoaren aurka: oker banago, banaiz.</strong> Arrazoiarekiko konfiantza horrek lehen borroka batera behartzen du Agustin: <em>eszeptizismoaren</em> aurkakora, inolako egia ziurrik erdiets dezakegula ukatzen duen doktrinaren aurkakora (<a href="../chapters-web-eu/gaia-05.html#sec-23">§23</a>). Ezer ezin balitz ziurtasunez jakin, egiaren bilaketa bera alferrikakoa litzateke. Agustinek ospetsu egingo duen argudio zorrotz batez erantzuten du. Eszeptikoak guztiaz zalantza egiten du; baina, guztiaz zalantza egin arren, ezin du zalantzan jarri <em>zalantza egiten ari dela</em>, eta, beraz, bera, zalantza egiten duena, <em>existitzen dela</em>. Are gehiago: oker egon arren, haren iritzi guztiak faltsuak izan arren, oker egoteko existitu egin behar du. <em>Si fallor, sum</em>: «oker banago, banaiz». Okerrak berak frogatzen du oker dagoena existitzen dela. Bada, beraz, gutxienez egia bat inolako zalantzak uki ezin dezakeena: neure existentziarena, subjektu kontziente naizen aldetik. Harekin batera eszeptizismoa eraitsita geratzen da, eta puntu irmo bat ziurtatzen da, handik abiatzeko<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 <p><strong>Egia zure barruan dago, eta zure gainetik.</strong> Non bilatzen da, orduan, egia? Ez kanpoan, zentzumenen munduan, barruan baizik. «Ez irten kanpora, sartu zeure baitan: gizakiaren barnean bizi da egia», idazten du Agustinek. <em>Barnekotasunerako</em> bira da, haren ekarpen handienetako bat. Baina barrurako mugimendu hori ez da norberarengan amaitzen. Arimak bere barnean aurkitzen dituen egiak aztertzen dituenean (matematikarenak, esaterako, edo ongiarenak eta edertasunarenak), <em>aldaezinak</em>, <em>betierekoak</em> eta <em>beharrezkoak</em> direla aurkitzen du: zazpi eta hiru hamar izatea beti da hala, guztiontzat, eta ez dago nik pentsatzearen mende. Eta orduan paradoxa erabakigarri batekin egiten du topo: giza arima aldakorra da, aldatu egiten da eta huts egiten du; baina berak antzematen dituen egia horiek ez dira aldatzen eta ez dute huts egiten. Aldaezina den zerbait, nahitaez, aldakorra dena baino gorenagoa da. Beraz, egia horiek arimaren gainetik daude: ez ditu berak sortu, aurkitu egiten ditu, jada hor zegoen perla bat aurkitzen duenak bezala.</p>
 <p><strong>Jainkoaren existentzia.</strong> Hemen dago Jainkoaren existentziaren froga agustindarra, eta errepara iezaiozu nola jaiotzen den: ez kanpoko munduari begiratzetik, Tomasek egingo duen bezala, arimaren barrura begiratzetik baizik. Betiereko egia aldaezinak baldin badaude, gure adimen aldakorra baino gorenagoak, betiereko oinarri aldaezin batek existitu behar du, haiei eusten dienak: Egia goren batek, zeinaren mende baitaude egia partikular guztiak. Eta betiereko Egia hori, absolutua, gainerako guztien iturria, ezin da Jainkoa baino beste ezer izan. Jainkoa eta Egia bat bera dira: egia badela frogatzea Jainkoa badela frogatzea da. Jainkoaren existentzia, beraz, ez da frogatzen naturan dituen ondorioengatik, arimak bere barnean aurkitzen dituen betierekoaren aztarnengatik baizik<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<p><strong>Argialdia.</strong> Galdera bat geratzen da: betiereko egia horiek gure adimenaren gainetik badaude, nola lortzen du adimen finitu eta aldakor batek haietara iristea? Agustinen erantzuna <em>argialdiaren</em> teoria da, eta horixe da Platonen ondarea kristautzeko haren modua. Platonentzat, Formak ezagutzea arimak jaio aurretik ikusitakoa <em>gogoratzea</em> zen (<a href="gaia-03.html#sec-10">§10</a>); baina kristautasunak ukatu egiten du arima gorputza baino lehen existitzen denik, eta, beraz, anamnesiak ez du balio. Agustinek argialdiaz ordezkatzen du: begiak koloreak eguzkiaren argirik gabe ikusten ez dituen bezala, adimenak ez ditu betiereko egiak atzematen haiek adigarri egingo dizkion argi espiritual bat gabe, eta argi hori Jainkoa bera da. Ezagutzen ditugun egiak <em>ideia eredugarriak</em> dira, gauza guztien betiereko ereduak, jada ez daudenak, Platonengan bezala, aparteko zeru batean, Jainkoaren adimenean baizik, haren pentsamendu sortzaile gisa. Jainkoak, sortu gintuenak, argitu egiten gaitu, ezagutu ahal izan dezagun. Egia ezagutzea, azken batean, Jainkoarekin topo egiteko modu bat da. Hala, Agustinengan, ezagutzaren teoria eta erlijioa gauza bakarra dira: jakiterako bidea eta Jainkoarenganako bidea bat datoz, eta biak arimaren barnetik igarotzen dira. Eredu horrek aginduko du harik eta, zortzi mende geroago, beste pentsalari batek proposatu arte ez barrutik hastea, zentzumenetatik eta mundutik baizik: Akinoko Tomasek.</p>
+<p><strong>Argialdia.</strong> Galdera bat geratzen da: betiereko egia horiek gure adimenaren gainetik badaude, nola lortzen du adimen finitu eta aldakor batek haietara iristea? Agustinen erantzuna <em>argialdiaren</em> teoria da, eta horixe da Platonen ondarea kristautzeko haren modua. Platonentzat, Formak ezagutzea arimak jaio aurretik ikusitakoa <em>gogoratzea</em> zen (<a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a>); baina kristautasunak ukatu egiten du arima gorputza baino lehen existitzen denik, eta, beraz, anamnesiak ez du balio. Agustinek argialdiaz ordezkatzen du: begiak koloreak eguzkiaren argirik gabe ikusten ez dituen bezala, adimenak ez ditu betiereko egiak atzematen haiek adigarri egingo dizkion argi espiritual bat gabe, eta argi hori Jainkoa bera da. Ezagutzen ditugun egiak <em>ideia eredugarriak</em> dira, gauza guztien betiereko ereduak, jada ez daudenak, Platonengan bezala, aparteko zeru batean, Jainkoaren adimenean baizik, haren pentsamendu sortzaile gisa. Jainkoak, sortu gintuenak, argitu egiten gaitu, ezagutu ahal izan dezagun. Egia ezagutzea, azken batean, Jainkoarekin topo egiteko modu bat da. Hala, Agustinengan, ezagutzaren teoria eta erlijioa gauza bakarra dira: jakiterako bidea eta Jainkoarenganako bidea bat datoz, eta biak arimaren barnetik igarotzen dira. Eredu horrek aginduko du harik eta, zortzi mende geroago, beste pentsalari batek proposatu arte ez barrutik hastea, zentzumenetatik eta mundutik baizik: Akinoko Tomasek.</p>
 </section>
 <section id="sec-27" class="level2">
 <h2 class="anchored" data-anchor-id="sec-27">§27 · Akinoko Tomas: fedearen eta arrazoiaren harmonia eta bost bideak</h2>
-<p>Akinoko Tomas (1224-1274 o.a.) eskolastikaren gailurra da, eta Erdi Aroko sintesi intelektualik handiena. Fraide domingotarra eta Parisko Unibertsitateko irakaslea, XIII. mende betean, une erabakigarri bat bizitzea egokitu zitzaion: Aristoteles Mendebaldera itzultzen ari zen, eta fededunak eta filosofoak zatitzeko mehatxua zekarren (<a href="gaia-06.html#sec-25">§25</a>). Haren obra eskerga —<em>Summa theologiae</em> buru duela— erronka horri emandako erantzun gisa ulertzen da osorik: erakustea filosofiarik onena, Aristotelesena, eta fede kristaua, elkarren aurka egon beharrean, elkarren beharrean daudela. Agustinek Platonekin pentsatu zuen tokian, Tomasek Aristotelesekin pentsatzen du, eta maisu-aldaketa horrek ia dena aldatzen du<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Akinoko Tomas (1224-1274 o.a.) eskolastikaren gailurra da, eta Erdi Aroko sintesi intelektualik handiena. Fraide domingotarra eta Parisko Unibertsitateko irakaslea, XIII. mende betean, une erabakigarri bat bizitzea egokitu zitzaion: Aristoteles Mendebaldera itzultzen ari zen, eta fededunak eta filosofoak zatitzeko mehatxua zekarren (<a href="../chapters-web-eu/gaia-06.html#sec-25">§25</a>). Haren obra eskerga —<em>Summa theologiae</em> buru duela— erronka horri emandako erantzun gisa ulertzen da osorik: erakustea filosofiarik onena, Aristotelesena, eta fede kristaua, elkarren aurka egon beharrean, elkarren beharrean daudela. Agustinek Platonekin pentsatu zuen tokian, Tomasek Aristotelesekin pentsatzen du, eta maisu-aldaketa horrek ia dena aldatzen du<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-tomas-aquino.png" class="img-fluid figure-img"></p>
@@ -562,7 +574,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p><strong>Fedearen eta arrazoiaren harmonia.</strong> Gaiaren arazo nagusiaren aurrean, Tomasen jarrera <em>harmonia</em>rena da, eta Agustinena baino finagoa. Ez ditu bata bestearekin urtzen: arreta handiz <em>bereizten</em> ditu, gero bat datozela erakusteko. Arrazoia eta fedea ezagutzarako bi bide desberdin dira. Arrazoia, filosofia, zentzumenen datuetatik abiatzen da, eta frogapenez egiten du aurrera; fedea, teologia, Jainkoak errebelatu duenetik abiatzen da, eta errebelatzen duenaren autoritateagatik onartzen da. Metodo desberdinak dituzte eta, neurri handi batean, objektu desberdinak. Baina —eta hauxe da gakoa— <em>ezin diote elkarri kontra egin</em>, egia bakarra delako: Jainkoa da, aldi berean, pentsatzeko darabilgun arrazoiaren egilea eta sinesten dugun errebelazioarena, eta Jainkoak ez dio bere buruari kontra egiten. Arrazoibide batek fedearekin talka egiten duela badirudi, seinale arrazoibidea gaizki egina dagoela.</p>
 <p><strong>Arrazoia noraino iristen den eta zerk gainditzen duen.</strong> Nola banatzen dute, orduan, eremua? Tomasek hiru gune bereizten ditu. Badira egia batzuk fedearenak <em>soilik</em> direnak, arrazoimenaren ahalmena gainditzen dutelako: Jainkoa bat eta hirukoitza dela, edo mundua denboran kreatua izan dela, ezin dira frogatu; sinetsi baino ezin dira egin. Badira egia batzuk arrazoiarenak <em>soilik</em> direnak: munduaren ezagutza naturalarenak. Eta bada biek partekatzen duten zerrenda bat: Jainkoari buruzko egiak, arrazoituz ere irits daitezkeenak, haren existentzia adibidez. Bi bideetatik heltzeko moduko egia horiei <em>fedearen atarikoak</em> (<em>praeambula fidei</em>) deitzen die Tomasek: erlijioaren hitzaurre arrazionala dira, arrazoiak bere kabuz egin dezakeen bide-zatia, fedeak lekukoa hartu aurretik. Filosofiak ez du agortzen ezagut daitekeen guztia, baina ez da neskame mutu bat ere: bere autonomia eta bere duintasuna ditu. Fedeak koroatu egiten du, ez ezabatu.</p>
-<p><strong>Jainkoa mundutik abiatuta frogatzea.</strong> Jainkoaren existentzia da, hain zuzen ere, atariko horietan garrantzitsuena: sinesten den egia bat, baina <em>frogatu</em> ere egin daitekeena. Eta hemen ikusten da Agustinekiko bira. Tomasek ez du Jainkoa frogatzen barrura begiratuz, arimaren betiereko egien bidez, <em>kanpora</em> begiratuz baizik: zentzumenek munduaz ematen dizkiguten datuetatik abiatuta. Haren froga <em>a posteriori</em> da: behatzen ditugun efektuetatik haien kausaraino igotzen da. Haren <em>bost bide</em> ospetsuetako bakoitza esperientzia-gertaera batetik abiatzen da, kausen hariari atzerantz jarraitzen dio, eta ondorioztatzen du kate hori ezin dela infinituraino luzatu, baizik eta lehen kide bat eskatzen duela, Jainkoa dena. Denek partekatzen dute eskeleto hori; eusten dien metafisika —aktoa eta potentzia, lau kausak, lehen motorra— jada ikasi genuen Aristotelesena da (<a href="gaia-04.html#sec-14">§14</a>), orain teologiaren zerbitzura jarria.</p>
+<p><strong>Jainkoa mundutik abiatuta frogatzea.</strong> Jainkoaren existentzia da, hain zuzen ere, atariko horietan garrantzitsuena: sinesten den egia bat, baina <em>frogatu</em> ere egin daitekeena. Eta hemen ikusten da Agustinekiko bira. Tomasek ez du Jainkoa frogatzen barrura begiratuz, arimaren betiereko egien bidez, <em>kanpora</em> begiratuz baizik: zentzumenek munduaz ematen dizkiguten datuetatik abiatuta. Haren froga <em>a posteriori</em> da: behatzen ditugun efektuetatik haien kausaraino igotzen da. Haren <em>bost bide</em> ospetsuetako bakoitza esperientzia-gertaera batetik abiatzen da, kausen hariari atzerantz jarraitzen dio, eta ondorioztatzen du kate hori ezin dela infinituraino luzatu, baizik eta lehen kide bat eskatzen duela, Jainkoa dena. Denek partekatzen dute eskeleto hori; eusten dien metafisika —aktoa eta potentzia, lau kausak, lehen motorra— jada ikasi genuen Aristotelesena da (<a href="../chapters-web-eu/gaia-04.html#sec-14">§14</a>), orain teologiaren zerbitzura jarria.</p>
 <p>Hauek dira bost bideak:</p>
 <ol type="1">
 <li><p><strong>Higiduraren bidea.</strong> Ikusten dugu munduan badirela higitzen diren gauzak, hau da, aldatzen direnak. Baina higitzen den oro beste batek higiarazten du, zeren zerbait higiaraztea potentziatik aktora pasaraztea baita, eta hori jada aktoan dagoen zerbaitek bakarrik eragin dezake. Motor-segida hori ezin da infinituraino atzera eraman: orduan ez bailegoke lehen motorrik, eta, hura gabe, gainerakoek ere ez lukete higiaraziko. Existitu behar du, beraz, <em>lehen motor ibilge</em> batek, higiarazten duenak higitua izan gabe: «eta denek ulertzen dute hori Jainkoa dela».</p></li>
@@ -582,11 +594,11 @@ ul.task-list li input[type="checkbox"] {
 <figcaption>Ockhamgo Guillermo (1287 inguru-1347 o.a.). Surreyko eliza bateko beirate bat. || Egiletza: Moscarlop, CC BY-SA 3.0 / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p><strong>Unibertsalen arazoa.</strong> Ockham ulertzeko, Erdi Aro osoko eztabaida handienetako bati begiratu behar diozu: <em>unibertsalen arazoari</em>. <em>Unibertsal</em> bat termino orokor bat da, «gizakia» edo «zuritasuna» bezalakoa, banako askori aldi berean aplikatzen zaiena. Galdera hau da: zeri dagokio termino hori errealitatean? Ba al dago gizatasuna bezalako zerbait, gizaki guztietan benetan presente dagoen natura komun bat, ala gizaki konkretuak baino ez dira existitzen, eta «gizakia» haiei ematen diegun izen bat besterik ez da? Eztabaida urrutitik zetorren: funtsean, Platonen eta Aristotelesen arteko auzi zaharra zen: hark unibertsala aparteko mundu batean kokatzen zuen (<a href="gaia-03.html#sec-09">§09</a>); honek, gauzen barruan (<a href="gaia-04.html#sec-14">§14</a>). Unibertsalek nolabaiteko existentzia erreala dutela zioten haien aurrean (<em>errealismoa</em>), Ockhamek kontrako jarrera defendatzen du: <em>nominalismoa</em>.</p>
+<p><strong>Unibertsalen arazoa.</strong> Ockham ulertzeko, Erdi Aro osoko eztabaida handienetako bati begiratu behar diozu: <em>unibertsalen arazoari</em>. <em>Unibertsal</em> bat termino orokor bat da, «gizakia» edo «zuritasuna» bezalakoa, banako askori aldi berean aplikatzen zaiena. Galdera hau da: zeri dagokio termino hori errealitatean? Ba al dago gizatasuna bezalako zerbait, gizaki guztietan benetan presente dagoen natura komun bat, ala gizaki konkretuak baino ez dira existitzen, eta «gizakia» haiei ematen diegun izen bat besterik ez da? Eztabaida urrutitik zetorren: funtsean, Platonen eta Aristotelesen arteko auzi zaharra zen: hark unibertsala aparteko mundu batean kokatzen zuen (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>); honek, gauzen barruan (<a href="../chapters-web-eu/gaia-04.html#sec-14">§14</a>). Unibertsalek nolabaiteko existentzia erreala dutela zioten haien aurrean (<em>errealismoa</em>), Ockhamek kontrako jarrera defendatzen du: <em>nominalismoa</em>.</p>
 <p><strong>Nominalismoa.</strong> Ockhamentzat, banakoak baino ez dira existitzen. Ez dago inolako «gizatasunik» gauzetan flotatzen, ez zeru platoniko batean ere: gizaki hau eta beste hura existitzen dira, bakoitza singular eta bakarra, eta besterik ez. Zer dira, orduan, unibertsalak? <em>Izen</em> hutsak (hortik <em>nominalismoa</em>), buruko zeinuak, zeinen bidez antzeko gauzak elkartzen baititugu, haiek pentsatu ahal izateko eta haiez ekonomiaz hitz egiteko. «Gizakia» hitzak ez du entitate komun bat izendatzen: antzeko banako askoren ordez balio duen kontzeptu bat da. Unibertsala ez dago errealitatean, adimenean eta hizkuntzan baizik; munduan, dena da partikularra. Ondorio itzeleko tesia da: atzemateko natura komunik ez badago, ezagutzak norabidea aldatzen du, eta metafisika bere objektuen zati handi bat gabe geratzen da.</p>
 <p><strong>Ockhamen labana.</strong> Nominalismoaren atzean metodo-printzipio bat dago taupaka, Ockham bere doktrinetako edozein baino ospetsuago egin duena: entitateak beharrik gabe ez biderkatzearena. «Alferrik egiten da gehiagorekin gutxiagorekin egin daitekeena»: azalpen sinpleago batek gertakariak azaltzen baditu, soberan dago korapilatsuagoa. Ekonomia-printzipio hori, bera baino geroagokoa den irudi zorioneko batez, <em>Ockhamen labana</em> izenez ezagutzen da, soberako guztia moztu eta ezabatzen duelako. Unibertsalei aplikatuta, labanak natura komunak erraztatzen ditu: dena azaltzeko banakoak eta kontzeptu batzuk aski badira, zertarako postulatu, gainera, entitate unibertsalak? Filosofia osoari aplikatuta, eskolastikak hazarazitako bereizketa eta entitateen baso hostotsua inausten du. Aho apartako tresna kritikoa da, eta bizirik dirau: zientzia modernoak erabiltzen du, gauza bera azaltzen duten bi teoriaren artean sinpleena hobesten duen bakoitzean.</p>
-<p><strong>Fedearen eta arrazoiaren banaketa.</strong> Labana horrek berak, teologiarantz jiratuta, guri gehien axola zaigun emaitza dakar. Tomasek uste bazuen arrazoiak Jainkoaren existentzia eta fedearen beste atariko batzuk froga zitzakeela (<a href="gaia-06.html#sec-27">§27</a>), Ockhamek ukatu egiten du. Haren frogak, kritikapean jarrita, ez dira erabakigarriak: munduko efektu finituetatik ez da beharrezkotasunez ondorioztatzen Jainko infinitu, bakar eta ahalguztidun bat, kristautasunak ulertzen duen bezalakoa. Arrazoiak, asko jota, lehen printzipio baten existentzia probable bihur dezake, baina ezin du fedearen Jainkoa frogatu. Eta horrekin harmonia tomista hautsi egiten da. Fedea eta arrazoia <em>bananduta</em> geratzen dira: erlijioaren egiak ez dira frogaren esparrukoak, fedearenak soilik baizik; sinetsi egiten dira, Jainkoak errebelatu dituelako, ez arrazoiak frogatzen dituelako. Filosofia esperientziaz eta logikaz ezagut daitekeenaz arduratzen da; teologia, sinesten denaz. Bakoitza bere eremuan, elkar inbaditu gabe.</p>
-<p><strong>Arrail horrek irekitzen duena.</strong> Banaketak aho bikoitza du, eta horregatik Ockhamek atzera eta aurrera begiratzen du aldi berean. Alde batetik, fedea goresten du: arrazoiaren tutoretzatik askatzean, Jainko ahalguztidun baten borondate askearen mende soilik jartzen du, eta Jainko horren erabakiak frogatzeko edo ulertzeko gai izan beharrik ez dugu. Bestetik, eta nahi gabe, arrazoia emantzipatzen du: filosofiak dogmak justifikatu beharrik ez duenean, libre geratzen da mundurantz jiratzeko, singularrerantz eta behagarrirantz, bere metodo propioekin. Nominalismoak, banako konkretuei arreta jartzea eskatzen duenak, eta labanak, sinpletasuna exijitzen duenak, zientzia modernoak hartuko duen norabidea seinalatzen dute jada. Hala, azken eskolastiko handia modernoen lehena ere bada: Tomasek batu zuena bereiztean, Ockhamek Erdi Aroa ixten du fedearen aldetik, eta, arrazoiaren aldetik, atea erdirekitzen du, handik sartuko baita Descartes (<a href="gaia-08.html#sec-36">§36</a>).</p>
+<p><strong>Fedearen eta arrazoiaren banaketa.</strong> Labana horrek berak, teologiarantz jiratuta, guri gehien axola zaigun emaitza dakar. Tomasek uste bazuen arrazoiak Jainkoaren existentzia eta fedearen beste atariko batzuk froga zitzakeela (<a href="../chapters-web-eu/gaia-06.html#sec-27">§27</a>), Ockhamek ukatu egiten du. Haren frogak, kritikapean jarrita, ez dira erabakigarriak: munduko efektu finituetatik ez da beharrezkotasunez ondorioztatzen Jainko infinitu, bakar eta ahalguztidun bat, kristautasunak ulertzen duen bezalakoa. Arrazoiak, asko jota, lehen printzipio baten existentzia probable bihur dezake, baina ezin du fedearen Jainkoa frogatu. Eta horrekin harmonia tomista hautsi egiten da. Fedea eta arrazoia <em>bananduta</em> geratzen dira: erlijioaren egiak ez dira frogaren esparrukoak, fedearenak soilik baizik; sinetsi egiten dira, Jainkoak errebelatu dituelako, ez arrazoiak frogatzen dituelako. Filosofia esperientziaz eta logikaz ezagut daitekeenaz arduratzen da; teologia, sinesten denaz. Bakoitza bere eremuan, elkar inbaditu gabe.</p>
+<p><strong>Arrail horrek irekitzen duena.</strong> Banaketak aho bikoitza du, eta horregatik Ockhamek atzera eta aurrera begiratzen du aldi berean. Alde batetik, fedea goresten du: arrazoiaren tutoretzatik askatzean, Jainko ahalguztidun baten borondate askearen mende soilik jartzen du, eta Jainko horren erabakiak frogatzeko edo ulertzeko gai izan beharrik ez dugu. Bestetik, eta nahi gabe, arrazoia emantzipatzen du: filosofiak dogmak justifikatu beharrik ez duenean, libre geratzen da mundurantz jiratzeko, singularrerantz eta behagarrirantz, bere metodo propioekin. Nominalismoak, banako konkretuei arreta jartzea eskatzen duenak, eta labanak, sinpletasuna exijitzen duenak, zientzia modernoak hartuko duen norabidea seinalatzen dute jada. Hala, azken eskolastiko handia modernoen lehena ere bada: Tomasek batu zuena bereiztean, Ockhamek Erdi Aroa ixten du fedearen aldetik, eta, arrazoiaren aldetik, atea erdirekitzen du, handik sartuko baita Descartes (<a href="../chapters-web-eu/gaia-08.html#sec-36">§36</a>).</p>
 <p><strong>Hiru ahotsak, begi-kolpe batean.</strong> Galdera beraren hiru erantzun zeharkatu ditugu. Komeni da elkarrekin ikustea, haien kontrastean bakarrik neurtzen baita batetik besterako bidea: fedea eta arrazoia Agustinengan urtuta, haien harmonia orekatua Tomasengan, haien dibortzioa Ockhamengan. Hurrengo taulak laburbiltzen ditu.</p>
 <span id="tbl-erdi-aroko-filosofiaren-hiru-ahotsak" class="tbl-ancla"></span>
 <table class="caption-top table">
@@ -647,7 +659,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-29" class="level2">
 <h2 class="anchored" data-anchor-id="sec-29">§29 · Hildegard von Bingen-en nortasun poliedrikoa</h2>
-<p>Honaino zeharkatu dugun Erdi Aroko filosofia teologiaren maisu handien filosofia da: denak gizonezkoak, klerikoak eta irakasleak. Baina garai bateko pentsamendua ez da inoiz osorik sartzen haren autore kanonikoetan, eta komeni da gaia ikasgelatik irtenda ixtea, bere garaiko moldeetatik erabat gainezka egin zuen figura bat gogoratzeko: Hildegard von Bingen (1098-1179 o.a.), XII. mendeko Renaniako abadesa. Aspasiarekin (<a href="gaia-02.html#sec-08">§08</a>) ireki eta Hipatiarekin (<a href="gaia-05.html#sec-24">§24</a>) jarraitu genuen serie bateko hirugarrena da: beren garaiko oztopo guztien kontra bizitza intelektualean arrastoa utzi zuten emakumeena<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<p>Honaino zeharkatu dugun Erdi Aroko filosofia teologiaren maisu handien filosofia da: denak gizonezkoak, klerikoak eta irakasleak. Baina garai bateko pentsamendua ez da inoiz osorik sartzen haren autore kanonikoetan, eta komeni da gaia ikasgelatik irtenda ixtea, bere garaiko moldeetatik erabat gainezka egin zuen figura bat gogoratzeko: Hildegard von Bingen (1098-1179 o.a.), XII. mendeko Renaniako abadesa. Aspasiarekin (<a href="../chapters-web-eu/gaia-02.html#sec-08">§08</a>) ireki eta Hipatiarekin (<a href="../chapters-web-eu/gaia-05.html#sec-24">§24</a>) jarraitu genuen serie bateko hirugarrena da: beren garaiko oztopo guztien kontra bizitza intelektualean arrastoa utzi zuten emakumeena<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/retrato-hildegard.jpg" class="img-fluid figure-img"></p>
@@ -664,7 +676,7 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p>Aipatzen diren latinezko formulak haren obretatik datoz (<em>Aitorpenak</em>, <em>Egiazko erlijioa</em>, <em>Bakarrizketak</em>).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Descartesen <em>cogito ergo sum</em>ekiko ahaidetasuna (<a href="gaia-08.html#sec-36">§36</a>) begi-bistakoa da, eta Descartesek berak aitortu zuen. Baina testuingurua eta helburua desberdinak dira: Agustinek ez du bilatzen, Descartesek bezala, jakite guztia berreraikitzeko lehen printzipio bat, baizik eta baieztatzea arimak, bere baitara itzultzean, zalantzarik gabeko egiak aurkitzen dituela, Jainkoarenganantz goratzen dutenak.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Descartesen <em>cogito ergo sum</em>ekiko ahaidetasuna (<a href="../chapters-web-eu/gaia-08.html#sec-36">§36</a>) begi-bistakoa da, eta Descartesek berak aitortu zuen. Baina testuingurua eta helburua desberdinak dira: Agustinek ez du bilatzen, Descartesek bezala, jakite guztia berreraikitzeko lehen printzipio bat, baizik eta baieztatzea arimak, bere baitara itzultzean, zalantzarik gabeko egiak aurkitzen dituela, Jainkoarenganantz goratzen dutenak.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Agustinek beste bide klasikoago batzuk ere eskaintzen ditu, hala nola munduaren ordenatik eta edertasunetik sortzaile batenganaino igotzen dena, edo gauzen ontasun-mailetatik Ongi gorenerantz abiatzen dena. Baina froga bereziki agustindarra, barnekotasunerako haren bira ondoen adierazten duena, betiereko egiena da.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Aipatzen diren bost bideen testuak <em>Summa theologiae</em>tik datoz denak: I. partea, 2. kuestioa, 3. artikulua.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>«Labana» ospetsua ez da izen horrekin ageri haren testuetan, baina fideltasunez laburbiltzen du berak behin eta berriz aplikatzen duen ekonomia-printzipio bat.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -673,19 +685,131 @@ ul.task-list li input[type="checkbox"] {
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -764,7 +888,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -773,8 +898,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -788,6 +974,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -950,44 +1137,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1086,7 +1283,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../zatia-2.html" class="pagination-link" aria-label="II. zatia · Erdi Aroa">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">II. zatia · Erdi Aroa</span>

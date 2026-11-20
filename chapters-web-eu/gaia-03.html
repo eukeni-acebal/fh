@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="eu" xml:lang="eu"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,18 +40,19 @@ ul.task-list li input[type="checkbox"] {
 <link href="../chapters-web-eu/gaia-02.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-ee624aba7dd1a522a65201b5a843d75b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fc20a56aadcab808120179de1ae02e97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1eae7551a8b327b748a04a3a7b98b1fb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-b29469c5149ea663b658181c1cab893f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -85,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../quarto-theme/print.css">
 </head>
 
-<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar docked quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -108,6 +109,7 @@ ul.task-list li input[type="checkbox"] {
       for (let i=0; i < toggles.length; i++) {
         const toggle = toggles[i];
         if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
           if (alternate) {
             toggle.classList.add("alternate");
           } else {
@@ -137,13 +139,19 @@ ul.task-list li input[type="checkbox"] {
       manageTransitions('#quarto-margin-sidebar .nav-link', true);
       // Switch the toggles
       setColorSchemeToggle(alternate)
-      // Hack to workaround the fact that safari doesn't
-      // properly recolor the scrollbar when toggling (#1455)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
         manageTransitions("body", false);
-        window.scrollTo(0, 1);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
         setTimeout(() => {
-          window.scrollTo(0, 0);
+          window.scrollTo(0, scrollY);
           manageTransitions("body", true);
         }, 40);
       }
@@ -237,6 +245,7 @@ ul.task-list li input[type="checkbox"] {
       // Read the current dark / light value
       let toAlternate = !hasAlternateSentinel();
       toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
       setStyleSentinel(toAlternate);
       toggleGiscusIfUsed(toAlternate, darkModeDefault);
       window.dispatchEvent(new Event('resize'));
@@ -251,13 +260,13 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Lanabes-barra">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-03.html"><span class="chapter-title">3. gaia · Atenasko Platon</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Aldatu alboko barraren nabigazioa" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-03.html"><span class="chapter-title">3. gaia · Atenasko Platon</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Bilatu" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -268,17 +277,14 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Webgune"><div class="quarto-sidebar-header"><div class="sidebar-header-item">
+<p><a href="https://arete.eukeniacebal.net/">Areté</a></p>
+</div></div>
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Filosofiaren Historia</a> 
-        <div class="sidebar-tools-main tools-wide">
-    <a href="https://arete.eukeniacebal.net/" title="Areté bilduma" class="quarto-navigation-tool px-1" aria-label="Areté bilduma"><i class="bi bi-house-door"></i></a>
-    <a href="https://arete.eukeniacebal.net/hf/" title="Gaztelaniazko bertsioa" class="quarto-navigation-tool px-1" aria-label="Gaztelaniazko bertsioa"><i class="bi bi-translate"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf" title="PDFa deskargatu" class="quarto-navigation-tool px-1" aria-label="PDFa deskargatu"><i class="bi bi-file-earmark-pdf"></i></a>
-    <a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia" title="Idatzidazu" class="quarto-navigation-tool px-1" aria-label="Idatzidazu"><i class="bi bi-envelope"></i></a>
-    <a href="https://github.com/eukeni-acebal/fh" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna"><i class="bi"></i></a>
+        <div class="sidebar-tools-main">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Aldatu modu iluna" aria-label="Aldatu modu iluna"><i class="bi"></i></button>
 </div>
     </div>
       </div>
@@ -302,12 +308,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">I. zatia · Antzinaroa</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. zatia · Antzinaroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true" aria-label="Aldatu atala: I. zatia · Antzinaroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-01.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1. gaia · Mitotik filosofiara</span></a>
@@ -338,12 +344,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-2.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">II. zatia · Erdi Aroa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. zatia · Erdi Aroa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true" aria-label="Aldatu atala: II. zatia · Erdi Aroa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-06.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6. gaia · Erdi Aroko filosofia: Jainkoa, fedea eta arrazoia</span></a>
@@ -354,12 +360,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-3.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">III. zatia · Aro Modernoa</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. zatia · Aro Modernoa</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true" aria-label="Aldatu atala: III. zatia · Aro Modernoa">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-07.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7. gaia · Modernitatearen jaiotza</span></a>
@@ -395,12 +401,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">IV. zatia · XIX. mendea</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. zatia · XIX. mendea</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="true" aria-label="Aldatu atala: IV. zatia · XIX. mendea">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-13.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">13. gaia · Utilitarismoa</span></a>
@@ -426,12 +432,12 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../zatia-5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">V. zatia · XX. eta XXI. mendeak</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Aldatu atala">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. zatia · XX. eta XXI. mendeak</span></a>
+            <button type="button" class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true" aria-label="Aldatu atala: V. zatia · XX. eta XXI. mendeak">
+              <i class="bi bi-chevron-right ms-2" aria-hidden="true"></i>
+            </button> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters-web-eu/gaia-17.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">17. gaia · Existentzialismoa</span></a>
@@ -476,11 +482,17 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
     </div>
-</nav>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<ul>
+<li><a href="https://arete.eukeniacebal.net/hf/" lang="es" hreflang="es">En castellano</a></li>
+<li><a href="https://github.com/eukeni-acebal/fh/releases/latest/download/filosofiaren-historia.pdf">PDFa deskargatu</a></li>
+<li><a href="mailto:arete.eukeni@gmail.com?subject=Akatsa%20edo%20iradokizuna%20%C2%B7%20Filosofiaren%20Historia">Idatzidazu</a></li>
+</ul>
+</div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">Orrialde honetan</h2>
    
   <ul class="collapse">
@@ -494,10 +506,10 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-03.html"><span class="chapter-title">3. gaia · Atenasko Platon</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Bidea"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../zatia-1.html">I. zatia · Antzinaroa</a></li><li class="breadcrumb-item"><a href="../chapters-web-eu/gaia-03.html"><span class="chapter-title">3. gaia · Atenasko Platon</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-title">3. gaia · Atenasko Platon</span></h1>
 </div>
@@ -519,7 +531,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="platonengan-sartzeko" class="level2">
 <h2 class="anchored" data-anchor-id="platonengan-sartzeko">Platonengan sartzeko</h2>
 <p>Platonekin (o.a.a. 427 inguru - o.a.a. 347) aldatu egiten da irakurriko dugunaren eskala. Honaino ideia solteak, zatiak, jarrerak bildu ditugu; orain, lehen aldiz, <em>sistema</em> batekin egiten dugu topo: azalpen oso batekin, non errealitateak, ezagutzak, arimak, bertuteak eta politikak elkarri eusten baitiote. Horregatik eskaintzen diogu gai oso bat, eta horregatik komeni da mapa ikustea xehetasunetan sartu aurretik.</p>
-<p><strong>Autore bat, sistema bat.</strong> Dena artikulatzen duen pieza bereizketa bat da, agian jada entzutez ezagutuko duzuna: ikusten ditugun gauzak eta gauzok direna izanarazten dituzten <em>Formak</em> bereizten dituena. Hortik sortzen da gainerako guztia. Errealitateak bi plano baditu, bi modu egongo dira haietara iristeko, ezagutzaren bi maila (<a href="gaia-03.html#sec-10">§10</a>); gizakiak Formak ezagut baditzake, haren <em>arimak</em> goi-natura horretatik zerbait izango du (<a href="gaia-03.html#sec-11">§11</a>); arimak zatiak baditu, bertute bat egongo da bakoitzarentzat (<a href="gaia-03.html#sec-12">§12</a>); eta bertuteak arima ordenatzen badu, beste horrenbestek ordenatu behar du hiria (<a href="gaia-03.html#sec-13">§13</a>). Eredu bera dabil sistema osoan goitik behera, eta Platonek esplizitu egiten du paralelismo ospetsu batean: arima justuak eta hiri justuak egitura bera dute. Paralelismo hori ulertzen duenak Platon ulertzen du.</p>
+<p><strong>Autore bat, sistema bat.</strong> Dena artikulatzen duen pieza bereizketa bat da, agian jada entzutez ezagutuko duzuna: ikusten ditugun gauzak eta gauzok direna izanarazten dituzten <em>Formak</em> bereizten dituena. Hortik sortzen da gainerako guztia. Errealitateak bi plano baditu, bi modu egongo dira haietara iristeko, ezagutzaren bi maila (<a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a>); gizakiak Formak ezagut baditzake, haren <em>arimak</em> goi-natura horretatik zerbait izango du (<a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>); arimak zatiak baditu, bertute bat egongo da bakoitzarentzat (<a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>); eta bertuteak arima ordenatzen badu, beste horrenbestek ordenatu behar du hiria (<a href="../chapters-web-eu/gaia-03.html#sec-13">§13</a>). Eredu bera dabil sistema osoan goitik behera, eta Platonek esplizitu egiten du paralelismo ospetsu batean: arima justuak eta hiri justuak egitura bera dute. Paralelismo hori ulertzen duenak Platon ulertzen du.</p>
 <p><strong>Bizitza eta zirkunstantzia.</strong> Hori guztia ez da hutsean pentsatzen. Platon Atenasko aristokrata bat da, Peloponesoko gerra galdu berri duen eta ezegonkortasun eta indarkeria politikoko urteak bizi dituen hiri batekoa. Gobernatzera deitua zegoen, eta politikatik aldendu egin zen. Kausak badu izena: bere maisu Sokratesen (o.a.a. 470 inguru - o.a.a. 399) kondena eta heriotza, Atenasko demokraziak berak exekutatu baitzuen 399. urtean. Hiriak berak ezagutzen zuen gizonik justuena hiltzeak zauri bat eta galdera bat utzi zizkion Platoni, aurrerantzean utziko ez zutenak: nork gobernatu behar du, eta nola prestatzen da halakoa?</p>
 <p><strong>Akademia.</strong> Bere garaiko politikaz etsita, Platonek <em>Akademia</em> sortu zuen o.a.a. 387 inguru, Atenasko kanpoaldean Academo heroiari eskainitako baso batean; hortik datorkio izena, eta hortik datoz gure «akademia» eta «akademiko» hitzak. Ez zen eskola arrunt bat izan. Mendebaldeko goi-mailako irakaskuntzako lehen erakundetzat jo ohi da: komunitate egonkor eta iraunkorra, liburutegi eta bizitza propioarekin, matematika, dialektika eta filosofia ikertzeari eta irakasteari emana (jakintza jakintzagatik, ez sofistek saltzen zuten erretorika baliagarria)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Akademiak ia hiru mendez iraun zuen sortzailea hil ondoren, harik eta Sila jeneral erromatarrak Atenas arpilatu zuenean, o.a.a. 86. urtean, sakabanatuta geratu zen arte; eta mintegi hartatik atera zen, beste askoren artean, Aristoteles, han hogei bat urtez ikasi baitzuen berea sortu aurretik. Haren ereduak (maisuak eta ikasleak jakintzari eskainitako erakunde batean biltzeak) arrasto luzea utzi zuen hezkuntzaren historia osoan, gure unibertsitateetaraino.</p>
 <p><strong>Elkarrizketaren forma.</strong> Azken irakurketa-ohar bat. Platonek ez zituen tratatuak idatzi, <em>elkarrizketak</em> baizik: solasaldiak, ia beti Sokrates protagonista dutela, non ideiak bilatu, eztabaidatu eta batzuetan itxi gabe geratzen baitira. Mugimenduan dagoen pentsamendua da, ez diktatutako doktrina. Gu batez ere haren heldutasuneko obretan oinarrituko gara, bereziki <em>Errepublikan</em>, non sistema jada osatua ageri baita.</p>
@@ -535,8 +547,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="sec-09">§09 · Platon: errealitatea — Formen teoria eta Ongia</h2>
 <p>Marraztu zirkulu bat paper batean. Kontu handiz aritu arren, marrazten dugun zirkunferentzia bat bera ere ez da zirkulu perfektua izango: beti egongo da puntu bat zentrotik beste bat baino zertxobait hurbilago, trazu bat pixka bat lodiagoa, pultsuaren dardara txikiren bat. Eta, hala ere, matematikari batek «zirkuluari» buruzko teorema bat frogatzen duenean, ez da marrazki akastun horietako bati buruz ari, haietako bat bera ere erabat izatera iristen ez den zerbaiti buruz baizik. Zertaz ari da, orduan? Non dago zirkulu perfektu hori, marraztutako guztiak haren kopia hutseginak badira?</p>
 <p>Galdera horri —eta justiziari, edertasunari edo ongiari buruzko antzeko beste batzuei— bere obra osoko tesirik eragin handienekoaz erantzuten dio Platonek: badago benetako errealitate bat, betierekoa eta aldaezina, ikusten eta ukitzen dugun mundutik bereizia. <em>Formen</em> mundua deitu zion. Atal honek azaltzen du zer diren Formak, zergatik ikusten den Platon haiek postulatzera behartuta, eta zergatik jartzen duen, gailurrean, gainerako guztiak ordenatzen eta zentzuz janzten dituen Forma bat: Ongiaren Forma.</p>
-<p><strong>Sokratesen herentzia: definizioen bilaketa.</strong> Platon ez da hutsetik abiatzen; maisuak utzitako arazo bat jasotzen du. Sokrates Atenasen barrena ibiltzen zen galdezka —«zer da adorea?», «zer da justizia?»; <a href="gaia-02.html#sec-06">§06</a>n ikusi genuen—, eta adibide-zerrenda baztertu egiten zuen erantzun gisa: ez zituen ekintza adoretsuen kasuak nahi, guzti-guztiek <em>komunean dutena</em> baizik, adoretsu egiten dituena, edozein kasutarako balioko lukeena, edozein garai eta lekutan. Horra apuntatzen zuen definizio sokratikoak: unibertsal egonkor batera. Baina Sokratesek unibertsal horiek bilatu zituen inoiz esan gabe non dauden eta zer errealitate mota duten. Platonek emango du maisuak eman ez zuen pausoa.</p>
-<p><strong>Presokratikoen herentzia: isuria eta izatea.</strong> Bigarren haria lehenagotik dator. Heraklitok irakatsia zuen dena isurian dagoela —<em>pánta rhei</em>, <a href="gaia-01.html#sec-03">§03</a>—: zentzumenezko gauzak jaio, aldatu eta hil egiten dira etengabe, halako moldez non hautematen dugun ezer ez baita bere buruarekiko berdin geratzen une bakar batez ere. Parmenidesek, aldiz, eutsia zion benetako izateaz gauza bakarra esan daitekeela: <em>badela</em>; bat, geldia, betierekoa (<a href="gaia-01.html#sec-03">§03</a>). Platonek ez du bien artean aukeratzen: banatu egiten ditu. Mundu sentikorra heraklitoarra da, aldaketa hutsa, eta horregatik hartaz <em>iritzia</em> baino ezin daiteke izan. Baina benetako ezagutzak, zientziak, objektu parmenidear bat eskatzen du: zerbait finkoa, hari buruz benetan jakin ahal izateko modukoa. Objektu hori aldatzen den munduan ez badago, beste nonbait egon behar du.</p>
+<p><strong>Sokratesen herentzia: definizioen bilaketa.</strong> Platon ez da hutsetik abiatzen; maisuak utzitako arazo bat jasotzen du. Sokrates Atenasen barrena ibiltzen zen galdezka —«zer da adorea?», «zer da justizia?»; <a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a>n ikusi genuen—, eta adibide-zerrenda baztertu egiten zuen erantzun gisa: ez zituen ekintza adoretsuen kasuak nahi, guzti-guztiek <em>komunean dutena</em> baizik, adoretsu egiten dituena, edozein kasutarako balioko lukeena, edozein garai eta lekutan. Horra apuntatzen zuen definizio sokratikoak: unibertsal egonkor batera. Baina Sokratesek unibertsal horiek bilatu zituen inoiz esan gabe non dauden eta zer errealitate mota duten. Platonek emango du maisuak eman ez zuen pausoa.</p>
+<p><strong>Presokratikoen herentzia: isuria eta izatea.</strong> Bigarren haria lehenagotik dator. Heraklitok irakatsia zuen dena isurian dagoela —<em>pánta rhei</em>, <a href="../chapters-web-eu/gaia-01.html#sec-03">§03</a>—: zentzumenezko gauzak jaio, aldatu eta hil egiten dira etengabe, halako moldez non hautematen dugun ezer ez baita bere buruarekiko berdin geratzen une bakar batez ere. Parmenidesek, aldiz, eutsia zion benetako izateaz gauza bakarra esan daitekeela: <em>badela</em>; bat, geldia, betierekoa (<a href="../chapters-web-eu/gaia-01.html#sec-03">§03</a>). Platonek ez du bien artean aukeratzen: banatu egiten ditu. Mundu sentikorra heraklitoarra da, aldaketa hutsa, eta horregatik hartaz <em>iritzia</em> baino ezin daiteke izan. Baina benetako ezagutzak, zientziak, objektu parmenidear bat eskatzen du: zerbait finkoa, hari buruz benetan jakin ahal izateko modukoa. Objektu hori aldatzen den munduan ez badago, beste nonbait egon behar du.</p>
 <p><strong>Zer den Forma bat —eta zergatik ez diogun «Idea» deitzen.</strong> «Beste nonbait» hori Formen mundua da. Eta hemen, hasi orduko, lagun faltsu bat desaktibatu behar dugu. Platonen hitza <em>idéa</em> edo <em>eîdos</em> da —«forma», «itxura», «begiradari erakusten zaiona»—, eta tradizioak «Idea» gisa itzuli zuen. Baina «ideak», gaur egun, <em>buruko eduki bat</em> esan nahi du: pentsamendu bat, buruan daukazun kontzeptu bat. Eta hori Platonek esan nahi duenaren justu kontrakoa da. Nahasbidea saihesteko, eskuliburu honetan <strong>Formak</strong> deituko diegu<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Forma bat ez da zure adimenak gauzetatik abiatuta fabrikatzen duen abstrakzio bat; <em>beregain den</em> errealitate bat da, pentsatuko duen inor egon zein ez. Gauzek ez dituzte Formak asmatzen: Formak lehenagokoak dira, eta gauzek kopiatu egiten dituzte.</p>
 <p>Zehazki, ezaugarri hauek biltzen ditu Forma batek —komeni da denak batera gogoan izatea—:</p>
 <ul>
@@ -552,13 +564,13 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Nola erlazionatzen diren gauzak eta Formak.</strong> Baina, bereizita badaude, zerk lotzen ditu bi munduak? Zergatik da ederra arrosa hau? Platonek hainbat erantzun saiatzen ditu, doktrina itxia baino gehiago irudiak direnak: gauzak Forman <em>parte hartzen</em> du (<em>méthexis</em>), <em>imitatu</em> egiten du (<em>mímesis</em>), edo Forma nolabait <em>presente</em> dago gauzan. Hiru kasuetan norabidea bera da: gauza sentikorra dena da —ederra, justua, berdina— berak agortzen ez duen Forma batera igortzen duelako. Kopiak ereduari zor dio bere izatea. Erlazio hori pentsatzeko zaila dela bazekien Platonek berak ere, urte batzuk geroago kritikapean jarri baitzuen<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <p><strong>Ongiak koroaturiko hierarkia.</strong> Formek ez dute pilo nahasi bat osatzen. Ordenatu egiten dira: zabalenek partikularragoak hartzen dituzte beren baitan, eta guztiak hierarkia batean artikulatzen dira. Eta hierarkia horrek gailur bat du. Guztien gainetik, <strong>Ongiaren Forma</strong> jartzen du Platonek: ez besteen arteko beste Forma bat, baizik eta guztiak aldi berean <em>baliotsu</em> eta <em>adigarri</em> egiten dituen printzipioa, mundu adigarri osoari batasuna eta zentzua ematen diona. Benetan ezagutzea, Platonentzat, Ongiraino igotzea da.</p>
 <p><strong>Eguzkiaren konparazioa.</strong> Ongia hain da gorena, non Platonek aitortzen baitu ezin duela aurrez aurre deskribatu, eta konparazio ospetsu batera jotzen du, <em>Errepublika</em>ren VI. liburuan: Ongia, mundu adigarrian, eguzkia mundu ikusgarrian dena da. Eguzkiak bi gauza egiten ditu. Lehenik, argia ematen du: haren bidez ikusten dute begiek, eta gauzak ikusgarri bihurtzen dira; era berean, Ongia da argia, zeinaren bidez adimenak ezagutzen baitu eta Formak adigarri bihurtzen baitira. Baina eguzkiak beste zerbait ere egiten du: bere beroaz, gauzak jaioarazi eta haziarazi egiten ditu. Hemen ere eusten dio paraleloak: Ongiak ez die Formei adigarritasuna bakarrik ematen; haien <em>izatearen</em> eta esentziaren kausa ere bada. Horregatik iristen da Platon esatera Ongia «izatearen harago» dagoela —<em>epékeina tēs ousías</em>— duintasunean eta boterean<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
-<p>Eta hemen, konparazioak galdera baten atarian uzten gaitu. Ongia baldin bada adigarri den oro argitzen duen eguzkia, nola igotzen da hartaraino giza arima, mundu sentikorreko itzaletatik abiatzen dena? Zer maila zeharkatzen ditu igoera horrek, zer metodok gidatzen du, eta zergatik konparatzen du Platonek gure abiapuntuko egoera haitzulo batean kateaturiko preso batzuenarekin? Bide horretaz —ezagutzaz eta haren metodoaz— <a href="gaia-03.html#sec-10">§10</a> arduratzen da.</p>
+<p>Eta hemen, konparazioak galdera baten atarian uzten gaitu. Ongia baldin bada adigarri den oro argitzen duen eguzkia, nola igotzen da hartaraino giza arima, mundu sentikorreko itzaletatik abiatzen dena? Zer maila zeharkatzen ditu igoera horrek, zer metodok gidatzen du, eta zergatik konparatzen du Platonek gure abiapuntuko egoera haitzulo batean kateaturiko preso batzuenarekin? Bide horretaz —ezagutzaz eta haren metodoaz— <a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a> arduratzen da.</p>
 </section>
 <section id="sec-10" class="level2">
 <h2 class="anchored" data-anchor-id="sec-10">§10 · Platon: ezagutza</h2>
-<p><a href="gaia-03.html#sec-09">§09</a> galdera batekin itxi zen: Ongia adigarri den guztia argitzen duen eguzkia bada, nola igotzen da harenganaino giza arima, itzaletatik abiatzen dena? Baina horren aurretik bada beste galdera bat, oinarrizkoagoa. Formak, esan genuen, ez dira ikusten, ez ukitzen: Justizian edo Berdintasunean ez dago hautemateko kolorerik, ez soinurik, ez pisurik. Eta, hala ere, ezagutu egiten ditugu. Bi makila «ia berdinak direla, baina ez erabat» diozunean, zure begiek inoiz ikusi ez duten Berdintasun perfektu baten aldean neurtzen ari zara. Nondik atera duzu? Horretaz arduratzen da atal hau: ezagutza nondik datorren, nola eraikitzen den eta noraino iristen den.</p>
-<p><strong>Jatorria: gogoratzen duen arima.</strong> Platonentzat, benetako ezagutza ez da zentzumenetatik sartzen. Zentzumenek aldatzen den mundua ematen digute, eta aldatzen denaz ez dago zientziarik, iritzia baino ez (<a href="gaia-03.html#sec-09">§09</a>). Orduan, nondik ateratzen da? Barrutik. Ezagutzea, dio Platonek, <strong>gogoratzea</strong> da (<em>anamnesia</em>): arimak, gorputz batean haragitu aurretik, Formak begietsi zituen, eta ikastea ez da zerbait berria jasotzea, jakite lokartu hura berreskuratzea baizik<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Platonek arima hegodun gisa ere irudikatu zuen: gorputz batera erori aurretik, jainkoen segizioari jarraitu eta Formak beren garbitasunean begietsi zituen arima gisa —gurdiaren irudi hori <a href="gaia-03.html#sec-11">§11</a>n zabalduko dugu—. Gainera, <em>Menon</em>eko esperimentu ospetsu batekin irudikatzen du: Sokratesek, galderen bidez, geometria inoiz ikasi ez duen esklabo bat gidatzen du, karratuari buruzko egia bat «aurkitzera» iritsi arte; ez dio ezer irakatsi, dio Platonek, gogoratzen lagundu baino ez dio egin. Eta <em>Fedon</em>en, lehengo adibidearekin arrazoitzen du: gauza berdinak Berdintasunaren beraren aldean «motz geratzen direla» epaitzen dugu; beraz, Berdintasun hori ezagutzen genuen jada. Formak ariman geratzen dira, zigilu baten aztarna bezala, eta horregatik antzematen ditugu gauzetan haien kopia inperfektuak. Eta kontuz: jakite hori ez da gure asmakizuna, ezta kontu subjektiboa ere —hala balitz, nork bere Formak izango lituzke; baina Berdintasuna, edo Justizia, berberak dira guztiontzat—. Gogoratzen duen ahalmena ez da begia, ez belarria, adimena baizik (<em>noûs</em>); zentzumenek, asko jota, oroitzapena esnatzen dute, erretratu batek bertan ez dagoen lagunaren oroimena esnatzen duen bezala.</p>
-<p><strong>Prozesua: jakitearen mailak eta dialektika.</strong> Gogoratzea ez da kolpe bakar bat, mailaz mailako igoera bat baizik. Eta mailak ez dira arbitrarioak: Platon printzipio batetik abiatzen da —izatea eta ezagutzea <em>proportzionalak</em> dira: gehiago dena hobeto ezagutzen da, eta ez denaz ez dago inolako ezagutzarik—, halako moldez non errealitate-maila bakoitzari jakite-maila bat dagokion. <strong>Lerro zatituaren</strong> irudiarekin marrazten du (<em>Errepublika</em> VI): imajinatu lau tartetan ebakitako lerro bat, ilunenetik argitsuenera <a href="gaia-03.html#tbl-lerro-zatitua">Taula 2</a>. Behean, mundu sentikorrean, <em>iritzia</em> (<em>doxa</em>) baino ez da posible: lehenik <em>irudimena</em> (<em>eikasía</em>), itzaletan eta irudietan geratzen dena —sagar baten marrazkia—; gero <em>sinestea</em> (<em>pistis</em>), gauza fisikoez fidatzen dena —sagarra bera—. Goian, mundu adigarrian, <em>zientzia</em> (<em>episteme</em>) hasten da: lehenik <em>arrazoi diskurtsiboa</em> (<em>diánoia</em>), matematikariarena, zorrotz arrazoitzen duena, baina zalantzan jartzen ez dituen hipotesietatik abiatzen dena eta marraztutako irudietan bermatzen dena; eta, gailurrean, <em>kontenplazioa</em> (<em>nóesis</em>), irudi oro alde batera utzi eta Formetara beretara igotzen dena.</p>
+<p><a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a> galdera batekin itxi zen: Ongia adigarri den guztia argitzen duen eguzkia bada, nola igotzen da harenganaino giza arima, itzaletatik abiatzen dena? Baina horren aurretik bada beste galdera bat, oinarrizkoagoa. Formak, esan genuen, ez dira ikusten, ez ukitzen: Justizian edo Berdintasunean ez dago hautemateko kolorerik, ez soinurik, ez pisurik. Eta, hala ere, ezagutu egiten ditugu. Bi makila «ia berdinak direla, baina ez erabat» diozunean, zure begiek inoiz ikusi ez duten Berdintasun perfektu baten aldean neurtzen ari zara. Nondik atera duzu? Horretaz arduratzen da atal hau: ezagutza nondik datorren, nola eraikitzen den eta noraino iristen den.</p>
+<p><strong>Jatorria: gogoratzen duen arima.</strong> Platonentzat, benetako ezagutza ez da zentzumenetatik sartzen. Zentzumenek aldatzen den mundua ematen digute, eta aldatzen denaz ez dago zientziarik, iritzia baino ez (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>). Orduan, nondik ateratzen da? Barrutik. Ezagutzea, dio Platonek, <strong>gogoratzea</strong> da (<em>anamnesia</em>): arimak, gorputz batean haragitu aurretik, Formak begietsi zituen, eta ikastea ez da zerbait berria jasotzea, jakite lokartu hura berreskuratzea baizik<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. Platonek arima hegodun gisa ere irudikatu zuen: gorputz batera erori aurretik, jainkoen segizioari jarraitu eta Formak beren garbitasunean begietsi zituen arima gisa —gurdiaren irudi hori <a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>n zabalduko dugu—. Gainera, <em>Menon</em>eko esperimentu ospetsu batekin irudikatzen du: Sokratesek, galderen bidez, geometria inoiz ikasi ez duen esklabo bat gidatzen du, karratuari buruzko egia bat «aurkitzera» iritsi arte; ez dio ezer irakatsi, dio Platonek, gogoratzen lagundu baino ez dio egin. Eta <em>Fedon</em>en, lehengo adibidearekin arrazoitzen du: gauza berdinak Berdintasunaren beraren aldean «motz geratzen direla» epaitzen dugu; beraz, Berdintasun hori ezagutzen genuen jada. Formak ariman geratzen dira, zigilu baten aztarna bezala, eta horregatik antzematen ditugu gauzetan haien kopia inperfektuak. Eta kontuz: jakite hori ez da gure asmakizuna, ezta kontu subjektiboa ere —hala balitz, nork bere Formak izango lituzke; baina Berdintasuna, edo Justizia, berberak dira guztiontzat—. Gogoratzen duen ahalmena ez da begia, ez belarria, adimena baizik (<em>noûs</em>); zentzumenek, asko jota, oroitzapena esnatzen dute, erretratu batek bertan ez dagoen lagunaren oroimena esnatzen duen bezala.</p>
+<p><strong>Prozesua: jakitearen mailak eta dialektika.</strong> Gogoratzea ez da kolpe bakar bat, mailaz mailako igoera bat baizik. Eta mailak ez dira arbitrarioak: Platon printzipio batetik abiatzen da —izatea eta ezagutzea <em>proportzionalak</em> dira: gehiago dena hobeto ezagutzen da, eta ez denaz ez dago inolako ezagutzarik—, halako moldez non errealitate-maila bakoitzari jakite-maila bat dagokion. <strong>Lerro zatituaren</strong> irudiarekin marrazten du (<em>Errepublika</em> VI): imajinatu lau tartetan ebakitako lerro bat, ilunenetik argitsuenera <a href="../chapters-web-eu/gaia-03.html#tbl-lerro-zatitua">Taula 2</a>. Behean, mundu sentikorrean, <em>iritzia</em> (<em>doxa</em>) baino ez da posible: lehenik <em>irudimena</em> (<em>eikasía</em>), itzaletan eta irudietan geratzen dena —sagar baten marrazkia—; gero <em>sinestea</em> (<em>pistis</em>), gauza fisikoez fidatzen dena —sagarra bera—. Goian, mundu adigarrian, <em>zientzia</em> (<em>episteme</em>) hasten da: lehenik <em>arrazoi diskurtsiboa</em> (<em>diánoia</em>), matematikariarena, zorrotz arrazoitzen duena, baina zalantzan jartzen ez dituen hipotesietatik abiatzen dena eta marraztutako irudietan bermatzen dena; eta, gailurrean, <em>kontenplazioa</em> (<em>nóesis</em>), irudi oro alde batera utzi eta Formetara beretara igotzen dena.</p>
 <span id="tbl-lerro-zatitua" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>Lerro zatitua: itzalak irudikatzetik Formak ezagutzera.</caption>
@@ -603,52 +615,52 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Nola igotzen da azken tarte hori? <strong>Dialektikaren</strong> bidez, filosofiaren berezko metodoaz. Matematika erdibidean geratzen da: bere hipotesiak ontzat ematen ditu —zer den puntua, zer den unitatea— eta ez ditu justifikatzen. Dialektika, aldiz, ez da batean ere gelditzen: batetik bestera doa gorantz, haien oinarriaren bila, ezeren hipotesi ez den printzipio batera iritsi arte —printzipio ez-hipotetikoa, Ongiaren Forma (<a href="gaia-03.html#sec-09">§09</a>)—, eta handik berriro jaisten da, dena haren argitan ordenatuz. Erabat ezagutzea horraino iritsi izana da: Forma bakoitza Ongiaren mende nola dagoen ikustea.</p>
+<p>Nola igotzen da azken tarte hori? <strong>Dialektikaren</strong> bidez, filosofiaren berezko metodoaz. Matematika erdibidean geratzen da: bere hipotesiak ontzat ematen ditu —zer den puntua, zer den unitatea— eta ez ditu justifikatzen. Dialektika, aldiz, ez da batean ere gelditzen: batetik bestera doa gorantz, haien oinarriaren bila, ezeren hipotesi ez den printzipio batera iritsi arte —printzipio ez-hipotetikoa, Ongiaren Forma (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>)—, eta handik berriro jaisten da, dena haren argitan ordenatuz. Erabat ezagutzea horraino iritsi izana da: Forma bakoitza Ongiaren mende nola dagoen ikustea.</p>
 <p>Eta bada oraindik igotzeko beste modu bat, ez arrazoibidez, desiraz baizik: <em>eros</em>. Platonentzat, maitasuna ez da Edertasuna, ez Ongia, bien <em>egarria</em> baizik. Gorputz eder batez maitemintzen hasten da eta, hor gelditzen ez bada, gorputzen edertasunetik arimen, legeen eta jakiteen edertasunera igotzen da, Edertasunera beraraino, dagoeneko Ongia dena. Benetako filosofoa, zentzu horretan, maitemindu bat da: <em>filo-sofia</em>k, hitzez hitz, jakitearekiko maitasuna esan nahi du. Dialektika arrazoiaren bidez igotzen da; erosa, absolutuaren irrikaz. Biek eguzki berera daramate.</p>
-<p><strong>Irismena: Formen zientzia, mundu sentikorraren iritzia.</strong> Horrek aldi berean finkatzen du ezagutzak zer bermatzen duen eta noraino iristen ez den. <em>Zientzia</em> bermatzen du —jakite sendo eta <em>kausala</em>, gauzen zergatia ezagutzen duena—, baina Formena bakarrik, haiek bakarrik baitira egonkorrak; eta haren azken bermea Ongiaren Forma da, Formak adigarri egiten dituen printzipioa (<a href="gaia-03.html#sec-09">§09</a>ko eguzkia). Mundu sentikorraz, aldatzeari uzten ez dionaz, ez dago zientzia posiblerik: gehienez ere iritzia dago, eta iritziak, itua jotzen badu ere, ez daki zergatik asmatzen duen; beraz, ez da zientzia. Horregatik, Platonentzat, gorputza eta zentzumenak ez dira jakitearen bidea, haren zama baizik: filosofoak haietaz ez fidatzen ikasten du.</p>
-<p>Ibilbide hori guztia —itzaletatik argira— irudi bakar batean kontatzen du Platonek, filosofiaren ospetsuenean: <strong>haitzuloaren alegoria</strong>, zeinarekin irekitzen baitu <em>Errepublika</em>ren VII. liburua, PAUko nahitaezko irakurgaietako bat<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Imajinatu preso batzuk, txikitatik kateaturik haitzulo baten hondoan, sarrerari bizkarra emanda: horman proiektatutako itzalak baino ez dituzte ikusten, eta errealitate bakartzat hartzen dituzte. Horixe da mailarik apalena, irudimena <a href="gaia-03.html#tbl-lerro-zatitua">Taula 2</a>. Haien bizkarrean su bat dago pizturik —imitaziozko eguzki bat—, itzal horiek proiektatzen dituena. Bat askatzen bada eta surantz eta objektuetarantz jiratzen bada, sinestera igaro da. Indarrez arrastaka eramanda, haitzuloaren ataria zeharkatzen du —bi munduen arteko muga markatzen duena— eta kanpora irteten da: argiak, hasieran, itsutu egiten du; pixkanaka, lehenik itzalak eta uretako islak bereizten ditu, gero gauzak berak eta, azkenean, eguzkia. Mundu adigarria zeharkatu du Ongiaren Formaraino (<a href="gaia-03.html#sec-09">§09</a>).</p>
-<p>Alegoriak beste bi gauza ere esaten ditu. Bat, hezkuntzaz: irakastea ez da datuak arima huts batera isurtzea, arima osoa argirantz jiraraztea baizik —<em>paideía</em> begiradaren bihurtze bat da, ez informazio-lekualdatze bat—. Bestea, betebeharraz: eguzkia ikusi duena ezin da kanpoan geratu; haitzulora itzuli behar du, ilunpetan eta isekaz inguraturik, kateaturik jarraitzen dutenak askatzera. Jaitsiera hori zergatik den betebehar bat —eta ikusi dutenek zergatik gobernatu behar duten— <a href="gaia-03.html#sec-13">§13</a>n ikusiko dugu.</p>
+<p><strong>Irismena: Formen zientzia, mundu sentikorraren iritzia.</strong> Horrek aldi berean finkatzen du ezagutzak zer bermatzen duen eta noraino iristen ez den. <em>Zientzia</em> bermatzen du —jakite sendo eta <em>kausala</em>, gauzen zergatia ezagutzen duena—, baina Formena bakarrik, haiek bakarrik baitira egonkorrak; eta haren azken bermea Ongiaren Forma da, Formak adigarri egiten dituen printzipioa (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>ko eguzkia). Mundu sentikorraz, aldatzeari uzten ez dionaz, ez dago zientzia posiblerik: gehienez ere iritzia dago, eta iritziak, itua jotzen badu ere, ez daki zergatik asmatzen duen; beraz, ez da zientzia. Horregatik, Platonentzat, gorputza eta zentzumenak ez dira jakitearen bidea, haren zama baizik: filosofoak haietaz ez fidatzen ikasten du.</p>
+<p>Ibilbide hori guztia —itzaletatik argira— irudi bakar batean kontatzen du Platonek, filosofiaren ospetsuenean: <strong>haitzuloaren alegoria</strong>, zeinarekin irekitzen baitu <em>Errepublika</em>ren VII. liburua, PAUko nahitaezko irakurgaietako bat<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. Imajinatu preso batzuk, txikitatik kateaturik haitzulo baten hondoan, sarrerari bizkarra emanda: horman proiektatutako itzalak baino ez dituzte ikusten, eta errealitate bakartzat hartzen dituzte. Horixe da mailarik apalena, irudimena <a href="../chapters-web-eu/gaia-03.html#tbl-lerro-zatitua">Taula 2</a>. Haien bizkarrean su bat dago pizturik —imitaziozko eguzki bat—, itzal horiek proiektatzen dituena. Bat askatzen bada eta surantz eta objektuetarantz jiratzen bada, sinestera igaro da. Indarrez arrastaka eramanda, haitzuloaren ataria zeharkatzen du —bi munduen arteko muga markatzen duena— eta kanpora irteten da: argiak, hasieran, itsutu egiten du; pixkanaka, lehenik itzalak eta uretako islak bereizten ditu, gero gauzak berak eta, azkenean, eguzkia. Mundu adigarria zeharkatu du Ongiaren Formaraino (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>).</p>
+<p>Alegoriak beste bi gauza ere esaten ditu. Bat, hezkuntzaz: irakastea ez da datuak arima huts batera isurtzea, arima osoa argirantz jiraraztea baizik —<em>paideía</em> begiradaren bihurtze bat da, ez informazio-lekualdatze bat—. Bestea, betebeharraz: eguzkia ikusi duena ezin da kanpoan geratu; haitzulora itzuli behar du, ilunpetan eta isekaz inguraturik, kateaturik jarraitzen dutenak askatzera. Jaitsiera hori zergatik den betebehar bat —eta ikusi dutenek zergatik gobernatu behar duten— <a href="../chapters-web-eu/gaia-03.html#sec-13">§13</a>n ikusiko dugu.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../assets/images/t03-caverna.jpg" class="img-fluid figure-img"></p>
 <figcaption>Haitzuloaren alegoria: preso kateatuak itzalen aurrean, sua eta, kanpoan, eguzkiaren argia. || Egiletza: Jan Saenredam (1604), Cornelis van Haarlemen arabera, jabari publikoa / Wikimedia Commons.</figcaption>
 </figure>
 </div>
-<p>Komeni da erreparatzea honek guztiak zer ematen duen jakintzat. Jaio aurretik begietsitakoa gogoratzea, itzaletatik Formetara igotzea, gorputzetik eta haren zentzumenetatik askatzea: horietako ezer ez litzateke posible izango sentikorretik aske egiteko gai den eta adigarriarekin ahaidetuta dagoen arimarik gabe. Zer da, orduan, gogoratzen, igotzen eta askatzen den arima hori? Horixe da <a href="gaia-03.html#sec-11">§11</a>ko galdera.</p>
+<p>Komeni da erreparatzea honek guztiak zer ematen duen jakintzat. Jaio aurretik begietsitakoa gogoratzea, itzaletatik Formetara igotzea, gorputzetik eta haren zentzumenetatik askatzea: horietako ezer ez litzateke posible izango sentikorretik aske egiteko gai den eta adigarriarekin ahaidetuta dagoen arimarik gabe. Zer da, orduan, gogoratzen, igotzen eta askatzen den arima hori? Horixe da <a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>ko galdera.</p>
 </section>
 <section id="sec-11" class="level2">
 <h2 class="anchored" data-anchor-id="sec-11">§11 · Platon: psikea</h2>
-<p><a href="gaia-03.html#sec-10">§10</a> galdera batekin amaitu zen: zer da Formak gogoratzen dituen, itzaletatik argira igotzen den eta gorputzetik askatzen den arima hori? Platonen ezagutzaren teoria osoa arimaren ideia baten gainean dago eraikita —<em>psyché</em>aren gainean—, eta horri eskaintzen diogu atal hau.</p>
-<p><strong>Bi printzipio: arima eta gorputza.</strong> Platonen antropologia <strong>dualista</strong> da: gizakia bi printzipioz osatua dago, arimaz eta gorputzaz, eta ez zati berdinetan. Gorputza jaio, aldatu eta hil egiten da; arimarengandik jasotzen du bizia, arima baita haren <em>bizi-printzipioa</em>. Arima, aldiz, zati jainkotiarra da, benetan gizaki egiten gaituena: gorputza baino lehen sortu zen, mundu sentikorraren gorabeherek ez dute ukitzen eta —bere zatirik gorenean bederen— hilezkorra da. Bien artean ez dago harmoniarik, tentsioa baizik. Orfismoaren oinordeko (<a href="gaia-01.html#sec-03">§03</a>), Platonek gorputza ia arimaren gartzelatzat dauka: haren erruz, dio, pasioetan, liskarretan eta ezjakintasunean nahasten gara<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Horregatik, filosofoaren zeregina arima <em>araztea</em> da gorputzean dagoen bitartean, sentikorretik askatzen trebatuz.</p>
+<p><a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a> galdera batekin amaitu zen: zer da Formak gogoratzen dituen, itzaletatik argira igotzen den eta gorputzetik askatzen den arima hori? Platonen ezagutzaren teoria osoa arimaren ideia baten gainean dago eraikita —<em>psyché</em>aren gainean—, eta horri eskaintzen diogu atal hau.</p>
+<p><strong>Bi printzipio: arima eta gorputza.</strong> Platonen antropologia <strong>dualista</strong> da: gizakia bi printzipioz osatua dago, arimaz eta gorputzaz, eta ez zati berdinetan. Gorputza jaio, aldatu eta hil egiten da; arimarengandik jasotzen du bizia, arima baita haren <em>bizi-printzipioa</em>. Arima, aldiz, zati jainkotiarra da, benetan gizaki egiten gaituena: gorputza baino lehen sortu zen, mundu sentikorraren gorabeherek ez dute ukitzen eta —bere zatirik gorenean bederen— hilezkorra da. Bien artean ez dago harmoniarik, tentsioa baizik. Orfismoaren oinordeko (<a href="../chapters-web-eu/gaia-01.html#sec-03">§03</a>), Platonek gorputza ia arimaren gartzelatzat dauka: haren erruz, dio, pasioetan, liskarretan eta ezjakintasunean nahasten gara<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>. Horregatik, filosofoaren zeregina arima <em>araztea</em> da gorputzean dagoen bitartean, sentikorretik askatzen trebatuz.</p>
 <p><strong>Hiru zatiko arima.</strong> Baina arima ez da bakuna. Platonek <strong>hiru zati</strong> bereizten ditu hartan, bakoitza bere funtzioarekin, gorputzean bere kokalekuarekin eta bere desira propioarekin. Hori begi-bistakoa egiteko, irudi batera jo zuen, <em>Fedro</em>ko gurdi hegodunarenera: gidari bat, bi zaldiko uztarri bat gidatzen.</p>
 <ul>
 <li><strong>Arrazoi-zatia</strong> (<em>logistikón</em>), pentsamenduaren eta borondatearen egoitza, beste biak gobernatu eta orekatu behar dituena da; zentzumenetatik urrunen dagoena eta benetan hilezkorra den bakarra. Buruan dago. Hedeak daramatzan gidaria da.</li>
 <li><strong>Zati suminkorra</strong> (<em>thymoeidés</em>), adorearen, kemenaren eta ohore-senaren egoitza, bularrean dago. Zaldi zuria da, berez arrazoiaren alde jartzen dena —nahiz eta heziketa txar batek apetituen bandora pasa dezakeen—.</li>
 <li><strong>Irritsezko zatia</strong> (<em>epithymetikón</em>), apetituen eta bizi-beharren egoitza —jana, edana, sexua—, sabelean dago. Zaldi basatia da, lurrerantz tiratzen duena eta eutsi beharrekoa.</li>
 </ul>
-<p>Zati bakoitzari bertute propio bat dagokio, eta haien orekari arimaren justizia; baina bertuteez <a href="gaia-03.html#sec-12">§12</a>n arduratuko gara. Eta Platonek hiruko egitura bera hirian errepikatua ikusiko duenez, hartara itzuliko gara haren politika lantzean (<a href="gaia-03.html#sec-13">§13</a>).</p>
-<p><strong>Arima hilezkorra eta metempsikosia.</strong> Arimak jaio aurretik Formak kontenplatu bazituen (<a href="gaia-03.html#sec-10">§10</a>eko anamnesia), gorputza baino lehen existitzen dela eta hari bizirik irauten diola esan nahi du. Platonek defendatzen du, hain zuzen, arima —haren arrazoi-zatia— <strong>hilezkorra</strong> dela<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, eta <strong>metempsikosia</strong> edo berraragiztapena jasaten duela, doktrina hori ere orfismotik hartu eta bere erara birlandua. <em>Fedon</em>en, heriotzaren ostean gorputzezkoari atxikita noraezean dabiltzan arimak deskribatzen ditu, gorputz berri batean berraragiztatu arte —gizakiarenean nahiz animaliarenean—, nola bizi izan diren arabera: arima justuak bizitza hobe bat espero dezake. Eta <em>Errepublika</em>n <strong>Er-en mitoa</strong>rekin kontatzen du, hildakoen artetik itzultzen den gerlari batena: arimek, kopuru mugatuan, mila urte inguruko zikloa egiten dute bizitza batetik bestera<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, eta berraragiztatu aurretik beren hurrengo bizitza <em>aukeratzen</em> dute, halako moldez non bakoitza baita, neurri handi batean, bere patuaren erantzule.</p>
-<p>Horrelako arima batek —hirutan banatua, ordenatua ala desordenatua, hedeak nork daramatzan arabera— berehalako galdera moral bat planteatzen du: noiz dago ondo arima bat? Zati bakoitzak berea egiten duenean, arrazoiaren agindupean. Hori da bertuteen atea, eta hortik sartuko gara <a href="gaia-03.html#sec-12">§12</a>n.</p>
+<p>Zati bakoitzari bertute propio bat dagokio, eta haien orekari arimaren justizia; baina bertuteez <a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>n arduratuko gara. Eta Platonek hiruko egitura bera hirian errepikatua ikusiko duenez, hartara itzuliko gara haren politika lantzean (<a href="../chapters-web-eu/gaia-03.html#sec-13">§13</a>).</p>
+<p><strong>Arima hilezkorra eta metempsikosia.</strong> Arimak jaio aurretik Formak kontenplatu bazituen (<a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a>eko anamnesia), gorputza baino lehen existitzen dela eta hari bizirik irauten diola esan nahi du. Platonek defendatzen du, hain zuzen, arima —haren arrazoi-zatia— <strong>hilezkorra</strong> dela<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>, eta <strong>metempsikosia</strong> edo berraragiztapena jasaten duela, doktrina hori ere orfismotik hartu eta bere erara birlandua. <em>Fedon</em>en, heriotzaren ostean gorputzezkoari atxikita noraezean dabiltzan arimak deskribatzen ditu, gorputz berri batean berraragiztatu arte —gizakiarenean nahiz animaliarenean—, nola bizi izan diren arabera: arima justuak bizitza hobe bat espero dezake. Eta <em>Errepublika</em>n <strong>Er-en mitoa</strong>rekin kontatzen du, hildakoen artetik itzultzen den gerlari batena: arimek, kopuru mugatuan, mila urte inguruko zikloa egiten dute bizitza batetik bestera<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>, eta berraragiztatu aurretik beren hurrengo bizitza <em>aukeratzen</em> dute, halako moldez non bakoitza baita, neurri handi batean, bere patuaren erantzule.</p>
+<p>Horrelako arima batek —hirutan banatua, ordenatua ala desordenatua, hedeak nork daramatzan arabera— berehalako galdera moral bat planteatzen du: noiz dago ondo arima bat? Zati bakoitzak berea egiten duenean, arrazoiaren agindupean. Hori da bertuteen atea, eta hortik sartuko gara <a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>n.</p>
 </section>
 <section id="sec-12" class="level2">
 <h2 class="anchored" data-anchor-id="sec-12">§12 · Platon: bertuteak</h2>
-<p><a href="gaia-03.html#sec-11">§11</a>k galdera bat utzi zuen airean: noiz dago ondo arima bat? Platonen erantzuna dotorea da, eta haren psikologiaren forma bera du. Arima bat ondo dago bere hiru zatietako bakoitzak berea egiten duenean eta arrazoiak gobernatzen duenean; gaizki dago zaldiek gainezka egin eta gurdi-gidaria arrastaka daramatenean. Arimaren jarrera on horri <strong>bertutea</strong> (<em>areté</em>) deitzen diogu.</p>
-<p><strong>Bertute bat zati bakoitzarentzat.</strong> Gogora dezagun zer den <em>areté</em> bat: zerbaitek bere funtzioa ondo betetzea dakarren bikaintasuna; zaldiarena, korrika egitea da, eta aiztoarena, ebakitzea (<a href="gaia-02.html#sec-06">§06</a>). Arimak hiru zati dituenez (<a href="gaia-03.html#sec-11">§11</a>), hiru bikaintasun ditu, zati bakoitzeko bana:</p>
+<p><a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>k galdera bat utzi zuen airean: noiz dago ondo arima bat? Platonen erantzuna dotorea da, eta haren psikologiaren forma bera du. Arima bat ondo dago bere hiru zatietako bakoitzak berea egiten duenean eta arrazoiak gobernatzen duenean; gaizki dago zaldiek gainezka egin eta gurdi-gidaria arrastaka daramatenean. Arimaren jarrera on horri <strong>bertutea</strong> (<em>areté</em>) deitzen diogu.</p>
+<p><strong>Bertute bat zati bakoitzarentzat.</strong> Gogora dezagun zer den <em>areté</em> bat: zerbaitek bere funtzioa ondo betetzea dakarren bikaintasuna; zaldiarena, korrika egitea da, eta aiztoarena, ebakitzea (<a href="../chapters-web-eu/gaia-02.html#sec-06">§06</a>). Arimak hiru zati dituenez (<a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>), hiru bikaintasun ditu, zati bakoitzeko bana:</p>
 <ul>
 <li><strong>jakinduria</strong> (<em>sophía</em>) arrazoi-zatiaren bertutea da: multzo osoaren onari begira gobernatzea ahalbidetzen dion jakintza;</li>
 <li><strong>ausardia</strong> (<em>andreía</em>) zati suminkorraren bertutea da: arriskuaren eta desiraren aurrean, arrazoiak agindu duenari tinko eustea;</li>
 <li><strong>neurritasuna</strong> (<em>sōphrosýnē</em>) irritsezko zatiaren bertutea da: apetituak menderatzea<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>.</li>
 </ul>
 <p><strong>Justizia: arimaren ordena.</strong> Laugarren bat falta da, eta erabakigarria da. <strong>Justizia</strong> (<em>dikaiosýnē</em>) ez da beste hiruren ondoko bertute bat gehiago, hirurak beren lekuan daudenean sortzen dena baizik: zati bakoitzak bere zeregina egiten du, eta ez dago besterena usurpatzen duenik. Arima justua <em>ordenan</em> dagoen arima da (arrazoiak gobernatua, kemenak defendatua, apetituek zerbitzatua), eta ordena hori, Platonek dioenez, arimaren <em>osasuna</em> da; injustizia, berriz, haren gaixotasuna da: arima gaixoa, konturatzen ez bada ere. Hortik dator Platonek indar handiz defendatuko duen ondorioa: justu izatea ez da gogoz bestera onartzen den sakrifizio bat, norberari benetan komeni zaion gauza bakarra baizik. Inork ez du, jakinaren gainean, gaixorik egotea aukeratzen.</p>
-<p>Eta hori guztia, azken batean, jakintzan oinarritzen da. Agindu behar duen zatia arrazoi-zatia da, hain zuzen ere, ongia <em>ezagutu</em> dezakeelako; eta zer den ona benetan ezagutzen duenak ongi jokatzen du. Sokratesen eta Platonen tesia da, <a href="gaia-02.html#sec-07">§07</a>an ikusi genuena: «bertutea ezagutza da, bizioa ezjakintasuna». Bertuteak heztea, beraz, ezagutzen duen zati hori lantzea izango da batez ere.</p>
+<p>Eta hori guztia, azken batean, jakintzan oinarritzen da. Agindu behar duen zatia arrazoi-zatia da, hain zuzen ere, ongia <em>ezagutu</em> dezakeelako; eta zer den ona benetan ezagutzen duenak ongi jokatzen du. Sokratesen eta Platonen tesia da, <a href="../chapters-web-eu/gaia-02.html#sec-07">§07</a>an ikusi genuena: «bertutea ezagutza da, bizioa ezjakintasuna». Bertuteak heztea, beraz, ezagutzen duen zati hori lantzea izango da batez ere.</p>
 <p>Lau bertute hauek (jakinduria, ausardia, neurritasuna eta justizia) arrakasta izango dute: geroko tradizioak <em>bertute kardinalak</em> deituko dienak dira, Erdi Aro kristauak bizitza moralaren gontz (latinez <em>cardo</em>, «gontza») gisa jarriko dituenak.</p>
-<p>Azken gauza bat, hurrengo atala irekitzen duena. Justizia baldin bada arimaren zati bakoitzak berea egitea, arrazoiaren gobernupean, ez ote da gauza bera gertatuko komunitate batean? Platon ziur dago arimak eta hiriak egitura bera partekatzen dutela (hiru zati, hiru funtzio, justizia bakar bat), eta bata bestera begiratuz ulertzen dela. Hiri justu horretaz dihardu <a href="gaia-03.html#sec-13">§13</a>k.</p>
+<p>Azken gauza bat, hurrengo atala irekitzen duena. Justizia baldin bada arimaren zati bakoitzak berea egitea, arrazoiaren gobernupean, ez ote da gauza bera gertatuko komunitate batean? Platon ziur dago arimak eta hiriak egitura bera partekatzen dutela (hiru zati, hiru funtzio, justizia bakar bat), eta bata bestera begiratuz ulertzen dela. Hiri justu horretaz dihardu <a href="../chapters-web-eu/gaia-03.html#sec-13">§13</a>k.</p>
 </section>
 <section id="sec-13" class="level2">
 <h2 class="anchored" data-anchor-id="sec-13">§13 · Platon: proiektu politikoa</h2>
-<p>Ikusi ditugu errealitatea (<a href="gaia-03.html#sec-09">§09</a>), ezagutza (<a href="gaia-03.html#sec-10">§10</a>), arima (<a href="gaia-03.html#sec-11">§11</a>) eta haren bertuteak (<a href="gaia-03.html#sec-12">§12</a>); orain pieza horiek galdera bakar batean muntatzen dira, Sokratesen heriotzak iltzatuta utzi zion hartan: nork gobernatu behar du, eta nola eraikitzen da hiri justu bat? Hari erantzuteko idatzi zuen bere obra nagusia, <em>Errepublika</em>, eta bertan diseinatu zuen hiri ideala, <em>kallípolis</em> edo «hiri ederra».</p>
+<p>Ikusi ditugu errealitatea (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>), ezagutza (<a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a>), arima (<a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>) eta haren bertuteak (<a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>); orain pieza horiek galdera bakar batean muntatzen dira, Sokratesen heriotzak iltzatuta utzi zion hartan: nork gobernatu behar du, eta nola eraikitzen da hiri justu bat? Hari erantzuteko idatzi zuen bere obra nagusia, <em>Errepublika</em>, eta bertan diseinatu zuen hiri ideala, <em>kallípolis</em> edo «hiri ederra».</p>
 <p><strong>Nondik sortzen den hiria.</strong> Has gaitezen kontu lauenetik: zergatik bizi gara hirietan? Geure kabuz aski ez garelako. Inork ez du bere kasa ekoizten behar duen janaria, jantzia eta etxea; besteak behar ditugu. Mendekotasun horretatik sortzen da lan-banaketa, eta harekin batera hiru oinarrizko zeregin: ondasunak <em>ekoiztea</em>, komunitatea <em>defendatzea</em> eta multzoa <em>zuzentzea</em>. Zeregin bakoitzari talde bat dagokio, eta hala, hiri justuak hiru klase ditu: ekoizleak (nekazariak, artisauak, merkatariak), zaindariak (gudariak) eta agintariak.</p>
-<p><strong>Hiria arima da, tamaina handian.</strong> Hemen agertzen da haren politika osoa egituratzen duen ideia: hiriak arimaren egitura bera du. Hiru klaseak arimaren hiru zatiei dagozkie (<a href="gaia-03.html#sec-11">§11</a>), eta bakoitzak bere bertutea du (<a href="gaia-03.html#sec-12">§12</a>), haiek bezalaxe.</p>
+<p><strong>Hiria arima da, tamaina handian.</strong> Hemen agertzen da haren politika osoa egituratzen duen ideia: hiriak arimaren egitura bera du. Hiru klaseak arimaren hiru zatiei dagozkie (<a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>), eta bakoitzak bere bertutea du (<a href="../chapters-web-eu/gaia-03.html#sec-12">§12</a>), haiek bezalaxe.</p>
 <span id="tbl-arima-hiria-paraleloa" class="tbl-ancla"></span>
 <table class="caption-top table">
 <caption>Arima–hiria paraleloa: hiru zati, hiru klase, justizia bera.</caption>
@@ -688,7 +700,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p>Eta justiziak berdin funtzionatzen du bi planoetan: hiri bat justua da klase bakoitzak berea egiten duenean eta bat ere besteenean sartzen ez denean, ekoizleak ekoizten, zaindariak defendatzen eta agintariak zuzentzen duenean; arima justua den bezalaxe, zati bakoitzak bere funtzioa arrazoiaren agindupean betetzen duenean. Justizia, hirian nahiz ariman, ordena harmoniko hori da; injustizia, haren desordena.</p>
-<p><strong>Errege-filosofoa.</strong> Eta nork gobernatu behar du? Platonen erantzuna da haren politikako ospetsuena, eta polemikoena: filosofoek gobernatu behar dute. Ez apetaz, aurreko guztiarekiko koherentziaz baizik. Ondo gobernatzea hiria onerantz zuzentzea da; eta hori Ongia <em>ezagutzen</em> duenak bakarrik egin dezake, haitzulotik irten eta eguzkia ikusi duenak (<a href="gaia-03.html#sec-09">§09</a>, <a href="gaia-03.html#sec-10">§10</a>). Horregatik idazten du Platonek ezen, filosofoak errege izan arte edo erregeak filosofatzen hasi arte, hirien gaitzek ez dutela amaierarik izango. Agintari horiek prestatzeak bide luzea eskatzen du: matematika-urteen ondoren, hogeita hamar urte inguru dituztela dialektikari ekiten diote, eta horrek Ongiaren Forma kontenplatzera eramaten ditu; gero, hamabost urte kargu praktikoetan, zaildu egiten dituztenak; eta berrogeita hamar urte aldera bakarrik, jada frogatuta, gobernatzen dute. Eta hemen kitatzen du Platonek haitzuloak zintzilik utzitako zorra: argia ikusi duenak nahiago luke hura kontenplatzen geratu, baina erdi-ilunpera <em>itzuli</em> behar du, besteak gobernatzera. Ez du anbizioz egiten, hori baita agintari batengan seinalerik txarrena, betebeharrez baizik. Ia behartu egin behar da.</p>
+<p><strong>Errege-filosofoa.</strong> Eta nork gobernatu behar du? Platonen erantzuna da haren politikako ospetsuena, eta polemikoena: filosofoek gobernatu behar dute. Ez apetaz, aurreko guztiarekiko koherentziaz baizik. Ondo gobernatzea hiria onerantz zuzentzea da; eta hori Ongia <em>ezagutzen</em> duenak bakarrik egin dezake, haitzulotik irten eta eguzkia ikusi duenak (<a href="../chapters-web-eu/gaia-03.html#sec-09">§09</a>, <a href="../chapters-web-eu/gaia-03.html#sec-10">§10</a>). Horregatik idazten du Platonek ezen, filosofoak errege izan arte edo erregeak filosofatzen hasi arte, hirien gaitzek ez dutela amaierarik izango. Agintari horiek prestatzeak bide luzea eskatzen du: matematika-urteen ondoren, hogeita hamar urte inguru dituztela dialektikari ekiten diote, eta horrek Ongiaren Forma kontenplatzera eramaten ditu; gero, hamabost urte kargu praktikoetan, zaildu egiten dituztenak; eta berrogeita hamar urte aldera bakarrik, jada frogatuta, gobernatzen dute. Eta hemen kitatzen du Platonek haitzuloak zintzilik utzitako zorra: argia ikusi duenak nahiago luke hura kontenplatzen geratu, baina erdi-ilunpera <em>itzuli</em> behar du, besteak gobernatzera. Ez du anbizioz egiten, hori baita agintari batengan seinalerik txarrena, betebeharrez baizik. Ia behartu egin behar da.</p>
 <p><strong>Hiriaren batasuna eta legea.</strong> Zertarako hau guztia? Platonek beste edozeinen gainetik jartzen duen helburu baterako: hiriaren batasuna. Hiri baten gaitzik handiena, dio, hura zatitzen eta alderditan banatzen duena da; onik handiena, batuta mantentzen duena<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a>. Legea eta erakundeak batasun hori eta multzoaren ona lortzeko existitzen dira, ez zati batena. Hortik datoz <em>Errepublika</em>ko neurririk zorrotzenak eta eztabaidatuenak, guztiak zaindari eta agintarientzat pentsatuak: haien artean ez da jabetza pribaturik izango, ez familia propiorik; aitzitik, ondasunak partekatuko dituzte, eta seme-alabak ere elkarrekin haziko dira, jabetzak eta familiak sortzen baitute hiria puskatan hausten duen «hau nirea da eta ez zurea» hura. Kontua da inork ez dezala beretzat tira egin, denek esan dezatela «gurea». Logika beraren arabera, zaindarien artean emakumeek eta gizonek hezkuntza bera jasotzen dute eta funtzio berak betetzen dituzte, nahiz eta Platonek emakumeak berez ahulagotzat hartzen jarraitu<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p>
 <p><strong>Aristokrazia eta haren degradazioa.</strong> Onenek gobernatutako hiria da Platonek aristokrazia deitzen duena; hitzez hitz, «onenen gobernua» esan nahi du. Harentzat erregimen justu bakarra da, bertan arrazoiak gobernatzen duelako, filosofoengan haragituta. Baina giza obra bakar batek ere ez du betiko irauten, eta Platonek deskribatzen du nola hiri ideala, usteltzen bada, gero eta erregimen okerragoetan endekatuz doan, bakoitza arrazoia tronutik kendu duen desira batek gobernatua<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a>:</p>
 <ol type="1">
@@ -698,8 +710,8 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Demokrazia.</strong> Gehiengoaren gobernua, askatasuna beste ezeren gainetik jartzen duena. Nork bere gogara jokatzen du, eta iritzi guztiak berdintzat hartzen dira.</li>
 <li><strong>Tirania.</strong> Erregimenik okerrena, demokraziaren askatasun-gehiegikeriatik jaioa: desordenatik buruzagi bat sortzen da, denak menderatzen dituena. Neurririk gabeko askatasuna esklabotzan amaitzen da.</li>
 </ol>
-<p>Platonek mesfidantza bereziz begiratzen dio demokraziari: gehiengoak jakin gabe agintzen duen hiria, edonork edozertaz iritzia ematen duena iritzi guztiek berdin balio balute bezala (sofisten erlatibismo zaharra, <a href="gaia-02.html#sec-05">§05</a>), lemarik gabeko hiria da harentzat. Eta ez zuen ahazten demokrazia bat izan zela Sokrates kondenatu zuena.</p>
-<p>Komeni da sekuentzia hau Aristotelesen sailkapenarekin ez nahastea (<a href="gaia-04.html#sec-19">§19</a>). Platonena <em>dekadentzia</em>-kontakizun bat da, arima-motei lotua, erregimen onenetik okerrenera jaisten dena. Aristotelesena <em>tipologia</em> estatiko bat izango da, konstituzioak zenbatek gobernatzen duten eta noren interesetan gobernatzen duten arabera ordenatzen dituena. Biek erabiltzen dute «aristokrazia» izena gobernu on baterako, baina Platonengan ideal bakarra da; Aristotelesek, berriz, forma posibleen arteko bat gehiago bezala ikusiko du, eta praktikan klase ertainaren errepublika hobetsiko du.</p>
+<p>Platonek mesfidantza bereziz begiratzen dio demokraziari: gehiengoak jakin gabe agintzen duen hiria, edonork edozertaz iritzia ematen duena iritzi guztiek berdin balio balute bezala (sofisten erlatibismo zaharra, <a href="../chapters-web-eu/gaia-02.html#sec-05">§05</a>), lemarik gabeko hiria da harentzat. Eta ez zuen ahazten demokrazia bat izan zela Sokrates kondenatu zuena.</p>
+<p>Komeni da sekuentzia hau Aristotelesen sailkapenarekin ez nahastea (<a href="../chapters-web-eu/gaia-04.html#sec-19">§19</a>). Platonena <em>dekadentzia</em>-kontakizun bat da, arima-motei lotua, erregimen onenetik okerrenera jaisten dena. Aristotelesena <em>tipologia</em> estatiko bat izango da, konstituzioak zenbatek gobernatzen duten eta noren interesetan gobernatzen duten arabera ordenatzen dituena. Biek erabiltzen dute «aristokrazia» izena gobernu on baterako, baina Platonengan ideal bakarra da; Aristotelesek, berriz, forma posibleen arteko bat gehiago bezala ikusiko du, eta praktikan klase ertainaren errepublika hobetsiko du.</p>
 <p>Hiri justuarekin ixten da Platonen sistema: Formetatik politikara, dena arkitektura berean ahokatzen da, Ongiak eutsia eta Justizia-ideia bakar batek zeharkatua. Eraikin ikusgarria da.</p>
 
 
@@ -712,32 +724,144 @@ ul.task-list li input[type="checkbox"] {
 <li id="fn3"><p>«Bi munduez» hitz egitea sinplifikazio didaktiko baliagarria da, baina eztabaidatua: interprete askok nahiago dute Platonengan <em>errealitate mailak</em> irakurri —itzaletik Formara— bi lurralde bereizi baino. Irudiari eutsi diogu bere argitasunagatik, haren mugaren jakitun.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p><em>Parmenides</em> elkarrizketan, Platonek berak Parmenidesen ahotan jartzen ditu partaidetzaren teoriaren aurkako objekzioak —haien artean, «hirugarren gizona» deritzon argudioa—. Egileak bere ideia propioa kritikatzeak seinale garbia da: inoiz ez zuen amaitutzat eman.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Platon, <em>Errepublika</em>, VI, 508a-509b; «izatearen harago» formulak <em>epékeina tēs ousías</em> itzultzen du (509b). Egilearen itzulpena: «dignitatean eta boterean esentziaren gainetik dagoen gauza bat».<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p><em>Anamnesiak</em> aurresuposatzen du arima gorputza baino lehen existitu dela: jaraunspen orfiko-pitagoriko bat —arimaren hilezkortasuna eta transmigrazioa—, Platonek bere egin eta berlantzen duena. Pitagorasi eta orfismoari buruz, ikus <a href="gaia-01.html#sec-03">§03</a>; metempsikosi platonikoaz, ikus <a href="gaia-03.html#sec-11">§11</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>Haitzuloak hiru irakurketa onartzen ditu aldi berean: gnoseologikoa (ezagutzearen igoera), hezkuntzazkoa (heziketa, begiradaren bihurtze gisa) eta politikoa (ikusi duenaren betebeharra). Hemen jakitearen igoera gisa jarraitzen diogu; haren alde politikoa <a href="gaia-03.html#sec-13">§13</a>n lantzen da.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p><em>Anamnesiak</em> aurresuposatzen du arima gorputza baino lehen existitu dela: jaraunspen orfiko-pitagoriko bat —arimaren hilezkortasuna eta transmigrazioa—, Platonek bere egin eta berlantzen duena. Pitagorasi eta orfismoari buruz, ikus <a href="../chapters-web-eu/gaia-01.html#sec-03">§03</a>; metempsikosi platonikoaz, ikus <a href="../chapters-web-eu/gaia-03.html#sec-11">§11</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Haitzuloak hiru irakurketa onartzen ditu aldi berean: gnoseologikoa (ezagutzearen igoera), hezkuntzazkoa (heziketa, begiradaren bihurtze gisa) eta politikoa (ikusi duenaren betebeharra). Hemen jakitearen igoera gisa jarraitzen diogu; haren alde politikoa <a href="../chapters-web-eu/gaia-03.html#sec-13">§13</a>n lantzen da.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p>Orfikoek <em>sôma</em> (gorputza) eta <em>sêma</em> (hilobia) hitzen antzarekin jolasten zuten: gorputza arimaren hilobia litzateke. Platonek motiboa jasotzen du, nahiz eta ez den iristen gorputzarekiko erabateko mespretxura.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p>Platon ez da erabat uniformea: <em>Fedon</em>ek arimaren hilezkortasuna argudiatzen du besterik gabe; beste leku batzuetan, ordea, arrazoi-zatiak bakarrik egiten dio ihes heriotzari, eta beste biak gorputzarekin batera hiltzen dira. Bigarren irakurketa horri jarraitzen diogu hemen.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p>Mila urte: ehun urte lurreko bizitzako, hamar urte mundu-ostean egon bakoitzeko. Hamar zenbakia ez da kasualitatea: pitagorismoaren zenbaki nagusia da.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn11"><p>Zehatz-mehatz, Platonek neurritasuna ez du hainbeste aurkezten zati bakar baten bertute gisa, hiru zatiek nork agindu behar duen erabakitzeko duten adostasun gisa baizik: kemenak eta apetituek arrazoiaren gobernua onartzeko duten akordioa.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn12"><p>Hiriaren onik handiena batasuna izatea eta gaitzik handiena zatiketa: Platon, <em>Errepublika</em>, V, 462a-b; filosofoen gobernua, 473c-d-n.&nbsp;Tarte horretatik, legea eta hiriaren batasuna, dator PAU ereduko testua.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn13"><p>Ondasunen eta familien komunitatea, eta jakintsu gutxi batzuen gobernua gainerakoen gainean, dira Platoni gehien kritikatu zaizkion puntuak: Aristotelesek gezurtatuko ditu (ikus <a href="gaia-04.html#sec-19">§19</a>), eta irakurle moderno batzuek, Popperrek esaterako, autoritarismoaren hazi bat ikusi zuten hemen. Beste batzuek justiziaren erretratu gisa irakurtzen dute, ez gobernu-plan gisa.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Ondasunen eta familien komunitatea, eta jakintsu gutxi batzuen gobernua gainerakoen gainean, dira Platoni gehien kritikatu zaizkion puntuak: Aristotelesek gezurtatuko ditu (ikus <a href="../chapters-web-eu/gaia-04.html#sec-19">§19</a>), eta irakurle moderno batzuek, Popperrek esaterako, autoritarismoaren hazi bat ikusi zuten hemen. Beste batzuek justiziaren erretratu gisa irakurtzen dute, ez gobernu-plan gisa.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn14"><p>Platonek <em>Errepublika</em>ko VIII–IX. liburuetan azaltzen du erregimenen sekuentzia, eta arimaren dekadentziarekin paraleloan marrazten du: erregimen bakoitzari izaera-mota bat dagokio.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
 </main> <!-- /main -->
+<!--
+  CORNISA MÓVIL (D259, 2026-11-20) · colección Areté
+  En pantallas estrechas Quarto ya pinta una barra superior fija con el hilo
+  de Ariadna: la parte y el título del tema. Al leer un tema largo en el móvil
+  eso no dice dónde estás. Este guion pone en esa misma barra el tema y el
+  apartado (§) que tienes delante, como la cornisa de un libro impreso, y lo
+  actualiza al hacer scroll.
+
+  Cómo: un IntersectionObserver vigila los h2 del cuerpo. Cada vez que uno
+  cruza la línea que hay a un quinto de la altura de la pantalla, la cornisa
+  toma el último h2 que ya ha pasado por encima de esa línea. La zona vigilada
+  empieza muy por encima de la pantalla, para que un scroll rápido que salta
+  un apartado entero también avise. No escucha cada píxel de scroll.
+
+  Dónde se ve: solo cuando la barra superior existe, que desde D259 es por
+  debajo de 768 px (custom.scss esconde la barra a partir de ese ancho,
+  porque ahí la barra lateral ya está fija). En escritorio no hace nada
+  visible. El aspecto —una o dos líneas recortadas con puntos suspensivos—
+  vive en custom.scss, sección «CORNISA MÓVIL».
+
+  Quarto pega este fichero al final de cada página (`include-after-body` en
+  los seis _quarto.yml); no se publica como fichero aparte. Ninguna sintaxis
+  nueva en el Markdown (D43).
+-->
+<script>
+(function () {
+  "use strict";
+  var barra = document.querySelector(".quarto-secondary-nav .container-fluid");
+  var cuerpo = document.getElementById("quarto-document-content");
+  var h1 = cuerpo && cuerpo.querySelector("header h1.title, h1.title");
+  if (!barra || !h1 || document.querySelector(".arete-portada")) return;
+
+  var texto = function (el) {
+    var c = el.cloneNode(true);
+    c.querySelectorAll(".anchorjs-link, .header-section-number").forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, " ").trim();
+  };
+
+  var tema = texto(h1);
+  var titulos = Array.prototype.slice.call(cuerpo.querySelectorAll("section.level2 > h2"));
+
+  var cornisa = document.createElement("div");
+  cornisa.className = "arete-cornisa";
+  cornisa.setAttribute("aria-hidden", "true");   // el hilo de Ariadna de Quarto sigue ahí para los lectores de pantalla
+  var lineaTema = document.createElement("span");
+  lineaTema.className = "arete-cornisa__tema";
+  lineaTema.textContent = tema;
+  var lineaSeccion = document.createElement("span");
+  lineaSeccion.className = "arete-cornisa__seccion";
+  cornisa.appendChild(lineaTema);
+  cornisa.appendChild(lineaSeccion);
+
+  var hilo = barra.querySelector(".quarto-page-breadcrumbs");
+  barra.insertBefore(cornisa, hilo ? hilo.nextSibling : barra.firstChild.nextSibling);
+  document.body.classList.add("arete-con-cornisa");
+
+  var actual = null;
+  var pinta = function () {
+    var limite = window.innerHeight * 0.2, elegido = null;
+    for (var i = 0; i < titulos.length; i++) {
+      if (titulos[i].getBoundingClientRect().top <= limite) elegido = titulos[i];
+      else break;
+    }
+    if (elegido === actual) return;
+    actual = elegido;
+    lineaSeccion.textContent = elegido ? texto(elegido) : "";
+    cornisa.classList.toggle("arete-cornisa--seccion", !!elegido);
+  };
+
+  if (titulos.length && "IntersectionObserver" in window) {
+    var vigia = new IntersectionObserver(pinta, { rootMargin: "100000px 0px -80% 0px" });
+    titulos.forEach(function (t) { vigia.observe(t); });
+  }
+  window.addEventListener("hashchange", function () { setTimeout(pinta, 60); });
+  pinta();
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
     if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
-      const a = window.document.createElement('a');
-      a.classList.add('top-right');
-      a.classList.add('quarto-color-scheme-toggle');
-      a.href = "";
-      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Aldatu modu iluna");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
       const i = window.document.createElement("i");
       i.classList.add('bi');
-      a.appendChild(i);
-      window.document.body.appendChild(a);
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Aldatu modu iluna");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
     }
     setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
@@ -816,7 +940,8 @@ ul.task-list li input[type="checkbox"] {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -825,8 +950,69 @@ ul.task-list li input[type="checkbox"] {
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -840,6 +1026,7 @@ ul.task-list li input[type="checkbox"] {
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1002,44 +1189,54 @@ ul.task-list li input[type="checkbox"] {
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1138,7 +1335,10 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
-<nav class="page-navigation">
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Korritu daitekeen kodea","output":"Korritu daitekeen irteera"};
+  </script>
+<nav class="page-navigation" aria-label="Orrialdea">
   <div class="nav-page nav-page-previous">
       <a href="../chapters-web-eu/gaia-02.html" class="pagination-link" aria-label="2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">2. gaia · Greziar Ilustrazioa: sofistak eta Sokrates</span></span>
